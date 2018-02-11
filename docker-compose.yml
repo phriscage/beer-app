@@ -1,0 +1,17 @@
+################################################################################
+##
+##  Purpose: Provide a Beer application with several microservices
+##  Email: phriscage@gmail.com
+##
+################################################################################
+version: "3.4"
+services:
+  api:
+    image: phriscage/beer-api:${TAG}
+    ports:
+      - 5000:5000
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 256m

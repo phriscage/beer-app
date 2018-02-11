@@ -1,0 +1,21 @@
+################################################################################
+##
+##  Purpose: Provide a api for Beer data
+##  Email: phriscage@gmail.com
+##
+################################################################################
+version: "3.4"
+services:
+  api:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    image: phriscage/beer-api:${TAG}
+    ports:
+      - 5000:5000
+    volumes:
+      - ${PWD}:${PWD}
+    #working_dir: ${PWD}
+    entrypoint: 
+      - python 
+      - ${PWD}/backend/api/main.py
