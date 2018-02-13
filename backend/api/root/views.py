@@ -55,25 +55,3 @@ def random_number():
     """
     return jsonify(data={'randomNumber': randint(1, 100)}, **http_status_response('OK')
                   ), HTTPStatus.OK.value
-@root.route('/random', methods=['GET'])
-def index():
-    """
-    **Example request:**
-
-    .. sourcecode:: http
-
-    GET HTTP/1.1
-    Accept: */*
-
-    **Example response:**
-
-    .. sourcecode:: http
-
-    HTTP/1.1 200 OK
-    Content-Type: application/json
-
-    :statuscode 200: Ok
-    :statuscode 500: server error
-    """
-    return jsonify(data={'randomNumber': randint(1, 100)}, **http_status_response('OK')
-                  ), HTTPStatus.OK.value

@@ -26,7 +26,7 @@ Build and run the development environment as a Node instance and Docker applicat
 Frontend:
         
         cd frontend
-        npm build dev
+        npm run dev
 
 Backend
 

@@ -44,7 +44,9 @@ def create_app():
     from root.views import root
     app.register_blueprint(root, url_prefix="")
     from health.views import health
-    app.register_blueprint(health, url_prefix="/health")
+    app.register_blueprint(health, url_prefix="/api/health")
+    from beers.views import beers
+    app.register_blueprint(beers, url_prefix="/api/beers")
     return app
 
 
