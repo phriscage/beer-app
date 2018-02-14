@@ -53,5 +53,8 @@ def random_number():
     :statuscode 200: Ok
     :statuscode 500: server error
     """
-    return jsonify(data={'randomNumber': randint(1, 100)}, **http_status_response('OK')
+    data = {
+        'randomNumber': randint(1, 100)
+    }
+    return jsonify(data=data, **http_status_response('OK')
                   ), HTTPStatus.OK.value

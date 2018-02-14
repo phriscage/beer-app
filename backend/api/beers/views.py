@@ -27,6 +27,12 @@ beer_details = {
     "children" : []
 }
 
+beer_reviews = {
+    "name" : "http://reviews-api:8080",
+    "endpoint" : "reviews",
+    "children" : []
+}
+
 def get_beer_details(beer_id, headers, params=None):
     """ get the beer details from the service """
     url = beer_details['name'] + "/" + beer_details['endpoint']
@@ -43,6 +49,20 @@ def get_beer_details(beer_id, headers, params=None):
         status = res.status_code if res is not None and res.status_code else 500
         return status, {'error': 'Sorry, beer details are currently unavailable.'}
 
+def get_beer_reviews(beer_id, headers, params=None):
+    """ get the beer reviews from the service """
+    url = beer_reviews['name'] + "/beers" + "/" + str(beer_id) + "/" + beer_reviews['endpoint']
+    try:
+        res = requests.get(url, headers=headers, params=params, timeout=3.0)
+    except:
+        res = None
+    if res and res.status_code == 200:
+        return 200, res.json()
+    else:
+        logger.debug(res)
+        status = res.status_code if res is not None and res.status_code else 500
+        return status, {'error': 'Sorry, beer reviews are currently unavailable.'}
+
 
 @beers.route('', methods=['GET'])
 def get_beers():
@@ -53,9 +73,17 @@ def get_beers():
     return jsonify(details), status
 
 @beers.route('/<int:beer_id>', methods=['GET'])
-def get_by_beer_id(beer_id):
+def get_beer_by_beer_id(beer_id):
     """
     """
     headers = {}
     status, details = get_beer_details(beer_id, headers, request.query_string)
     return jsonify(details), status
+
+@beers.route('/<int:beer_id>/reviews', methods=['GET'])
+def get_beer_reviews_by_beer_id(beer_id):
+    """
+    """
+    headers = {}
+    status, reviews = get_beer_reviews(beer_id, headers, request.query_string)
+    return jsonify(reviews), status
