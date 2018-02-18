@@ -72,7 +72,7 @@ def get_beers():
     status, details = get_beer_details(None, headers, request.query_string)
     return jsonify(details), status
 
-@beers.route('/<int:beer_id>', methods=['GET'])
+@beers.route('/<string:beer_id>', methods=['GET'])
 def get_beer_by_beer_id(beer_id):
     """
     """
@@ -80,7 +80,7 @@ def get_beer_by_beer_id(beer_id):
     status, details = get_beer_details(beer_id, headers, request.query_string)
     return jsonify(details), status
 
-@beers.route('/<int:beer_id>/reviews', methods=['GET'])
+@beers.route('/<string:beer_id>/reviews', methods=['GET'])
 def get_beer_reviews_by_beer_id(beer_id):
     """
     """

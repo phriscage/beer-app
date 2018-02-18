@@ -7,6 +7,7 @@ import sys
 import argparse
 import logging
 from flask import Flask, jsonify
+from flask_cors import CORS
 import requests
 
 sys.path.insert(0, os.path.dirname(
@@ -29,6 +30,7 @@ def create_app():
     app.config.from_object(__name__)
     app.secret_key = APP_SECRET_KEY
     app.json_encoder = PythonObjectEncoder
+    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     def default_error_handle(error=None):
         """ create a default json error handle """

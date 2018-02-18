@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "moment": "^2.20.1",
     "vue": "^2.5.2",
     "vue-cli": "^2.9.3",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuetable-2": "^1.7.5"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -7,7 +7,7 @@
 version: "3.4"
 services:
   reviews-api:
-    image: phriscage/beer-reviews-api:${TAG}
+    image: phriscage/beer-reviews-api:0.2.0
     environment:
       - ELASTICSEARCH_DATABASE_URI=http://reviews-db:9200
     restart: always
