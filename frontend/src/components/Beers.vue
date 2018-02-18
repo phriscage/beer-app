@@ -1,30 +1,38 @@
-
+// Beers.vue
 <template>
   <div>
     <div class="ui container">
-      <p>Beers page</p>
-      <p>Random number from backend: {{ randomNumber }}</p>
-      <button @click="getRandom">New random number</button>
     </div>
     </br>
     <div class="ui container">
+      <filter-bar></filter-bar>
       <vuetable ref="vuetable"
         api-url="http://localhost:5000/api/beers"
         data-path="data"
         :fields="fields"
+        :append-params="moreParams"
       ></vuetable>
     </div>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
+import VueEvents from 'vue-events'
 import Vuetable from 'vuetable-2/src/components/Vuetable'
+import FilterBar from './FilterBar'
+
 import moment from 'moment'
-import axios from 'axios'
+
+Vue.use(VueEvents)
+// Vue.component('custom-actions', CustomActions)
+// Vue.component('my-detail-row', DetailRow)
+Vue.component('filter-bar', FilterBar)
 
 export default {
   components: {
-    Vuetable
+    Vuetable,
+    FilterBar
   },
   data () {
     return {
@@ -69,10 +77,28 @@ export default {
           callback: 'priceLabel'
           // visible: false
         }
-      ]
+      ],
+      moreParams: {}
     }
   },
+  mounted () {
+    this.$events.$on('filter-set', eventData => this.onFilterSet(eventData))
+    this.$events.$on('filter-reset', e => this.onFilterReset())
+  },
   methods: {
+    // filter
+    onFilterSet (filterText) {
+      console.log('filter-set', filterText)
+      var filter = filterText.split(':', 2)
+      // this.moreParams = {}
+      this.moreParams[filter[0]] = filter[1]
+      Vue.nextTick(() => this.$refs.vuetable.refresh())
+    },
+    onFilterReset () {
+      console.log('filter-reset')
+      this.moreParams = {}
+      Vue.nextTick(() => this.$refs.vuetable.refresh())
+    },
     // table
     allcap (value) {
       return value.toUpperCase()
@@ -99,30 +125,7 @@ export default {
         default:
           return '<span class="ui brown label"><i class="large bar icon"></i>Other</span>'
       }
-    },
-    // random
-    getRandomInt (min, max) {
-      min = Math.ceil(min)
-      max = Math.floor(max)
-      return Math.floor(Math.random() * (max - min + 1)) + min
-    },
-    getRandom () {
-      this.randomNumber = this.getRandomInt(1, 100)
-      // this.randomNumber = this.getRandomFromBackend()
-    },
-    getRandomFromBackend () {
-      const path = `http://localhost:5000/random`
-      axios.get(path)
-      .then(response => {
-        this.randomNumber = response.data.data.randomNumber
-      })
-      .catch(error => {
-        console.log(error)
-      })
     }
-  },
-  created () {
-    this.getRandom()
   }
 }
 </script>

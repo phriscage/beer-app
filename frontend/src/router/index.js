@@ -4,6 +4,7 @@ const routerOptions = [
   { path: '/', component: 'Home' },
   { path: '/about', component: 'About' },
   { path: '/beers', component: 'Beers' },
+  { path: '/random', component: 'Random' },
   { path: '*', component: 'NotFound' }
 ]
 const routes = routerOptions.map(route => {
