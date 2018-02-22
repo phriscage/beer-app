@@ -1,6 +1,13 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div v-if="$auth.ready() && loaded">
+      <router-view/>
+    </div>
+    <div v-if="!$auth.ready() || !loaded">
+      <div style="text-align:center; padding-top:50px;">
+          Loading site...
+      </div>
+    </div>
     <appFooter></appFooter>
   </div>
 </template>
@@ -12,6 +19,23 @@ export default {
   name: 'app',
   components: {
     appFooter: Footer
+  },
+  data () {
+    return {
+      context: 'app context',
+      loaded: false
+    }
+  },
+  mounted () {
+    var _this = this
+    setTimeout(function () {
+      _this.loaded = true
+    }, 500)
+  },
+  created () {
+    this.$auth.ready(function () {
+      console.log('ready ' + this.context)
+    })
   }
 }
 </script>

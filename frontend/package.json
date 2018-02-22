@@ -11,9 +11,11 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "@websanova/vue-auth": "^2.21.3-beta",
     "axios": "^0.16.2",
     "moment": "^2.20.1",
     "vue": "^2.5.2",
+    "vue-axios": "^2.0.2",
     "vue-cli": "^2.9.3",
     "vue-events": "^3.1.0",
     "vue-router": "^3.0.1",
