@@ -16,10 +16,22 @@ Vue.use(require('@websanova/vue-auth'), {
   http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),
   router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
   rolesVar: 'role',
+  fetchData: {
+    url: 'http://localhost:5000/api/oauth/user'
+  },
+  loginData: {
+    url: 'http://localhost:5000/api/oauth/jwt'
+  },
   // googleOauth2Data: {
   // }
+  googleData: {
+    url: 'http://localhost:5000/api/oauth/jwt'
+  },
   googleOauth2Data: {
-    // url: 'https://accounts.google.com/o/oauth2/auth'
+    url: 'https://accounts.google.com/o/oauth2/auth',
+    params: {
+      client_id: '823357352754-ej9k1n120u9nn8pljr5gbghesjm0h5tk.apps.googleusercontent.com'
+    }
     // params: {
       // redirect_uri: function () {
         // return this.options.getUrl() + '/login'

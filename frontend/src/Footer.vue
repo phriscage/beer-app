@@ -6,6 +6,8 @@
         |
         <router-link to="/about">About</router-link>
         |
+        <router-link to="/account">Account</router-link>
+        |
         <small>&copy; Copyright 2018, Chris Page</small>
   </div>
 </template>
