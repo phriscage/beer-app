@@ -49,6 +49,8 @@ def create_app():
     app.register_blueprint(health, url_prefix="/api/health")
     from beers.views import beers
     app.register_blueprint(beers, url_prefix="/api/beers")
+    from oauth.views import oauth
+    app.register_blueprint(oauth, url_prefix="/api/oauth")
     return app
 
 

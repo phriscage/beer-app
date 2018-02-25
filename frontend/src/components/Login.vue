@@ -57,7 +57,7 @@
 export default {
   data () {
     return {
-      context: 'oauth2 context',
+      context: 'login context',
       credentials: {
         username: '',
         password: ''
@@ -75,41 +75,22 @@ export default {
     }
   },
   mounted () {
-    console.log('redirect: ' + this.$auth.redirect())
-    console.log('id_token: ' + this.id_token)
     if (this.id_token) {
-      /* this.$auth.oauth2({
-        code: true,
-        provider: this.type,
-        headers: {
-          'X-Provider': this.type,
-          'X-Provider-id_token': this.id_token,
-          'X-Provider-access_token': this.access_token
-        },
-        params: {
-        },
-        success: function (res) {
-          console.log('success ' + this.context)
-        },
-        error: function (res) {
-          console.log('error ' + this.context)
-        }
-      }) */
-
-      // trying to login
+      // store third-party id_token and access token
       var redirect = this.$auth.redirect()
       console.log('redirect: ' + redirect)
       this.$auth.login({
         headers: {
           'X-Provider': this.type,
           'X-Provider-id_token': this.id_token,
-          'X-Provider-access_token': this.access_token
+          'Authorization': 'Bearer ' + this.access_token
         },
         rememberMe: this.data.rememberMe,
-        redirect: {
-          name: 'account'
-        },
-        fetchUser: this.data.fetchUser
+        redirect: {name: redirect ? redirect.from.name : 'account'},
+        fetchUser: this.data.fetchUser,
+        success: res => {
+          console.log(res.headers)
+        }
       })
       .then(() => {
         console.log('success ' + this.context)
@@ -117,24 +98,30 @@ export default {
         console.log('error ' + this.context)
         this.error = res.data
       })
+      console.log('this.$auth: ' + this.$auth)
+      console.log('this.$auth.token(): ' + this.$auth.token())
+      console.log('$auth.user(): ' + this.$auth.user())
+      console.log('$auth.user().username: ' + this.$auth.user().username)
+    } else {
+        console.log('Id Token DNE')
     }
   },
   methods: {
-    // parse access token
+    // parse url fragment by parameter key
     getFragmentValue (key) {
       let params = this.$route.hash.split('&')
       if (params.length > 1) {
         for (var i = 0; i < params.length; i++) {
           let pair = params[i].split('=')
-          console.log(pair)
           if (pair[0] === key) {
-            console.log('found')
+            console.log('found: ' + pair)
             return pair[1]
           }
         }
       }
     },
     login () {
+      // TO-DO
       console.log(this.credentials.username)
       console.log(this.credentials.password)
     },

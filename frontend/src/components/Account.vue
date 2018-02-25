@@ -16,6 +16,7 @@ import Vue from 'vue'
 export default {
   data () {
     return {
+      context: 'account context',
       vueVersion: Vue.version
     }
   },

@@ -20,12 +20,13 @@ Vue.use(require('@websanova/vue-auth'), {
     url: 'http://localhost:5000/api/oauth/user'
   },
   loginData: {
-    url: 'http://localhost:5000/api/oauth/jwt'
+    url: 'http://localhost:5000/api/oauth/token'
   },
-  // googleOauth2Data: {
-  // }
+  refreshData: {
+    url: 'http://localhost:5000/api/oauth/token/refresh'
+  },
   googleData: {
-    url: 'http://localhost:5000/api/oauth/jwt'
+    url: 'http://localhost:5000/api/oauth/token'
   },
   googleOauth2Data: {
     url: 'https://accounts.google.com/o/oauth2/auth',
