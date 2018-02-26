@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <appHeader></appHeader>
     <div v-if="$auth.ready() && loaded">
       <router-view/>
     </div>
@@ -13,11 +14,13 @@
 </template>
 
 <script>
+import Header from './Header.vue'
 import Footer from './Footer.vue'
 
 export default {
   name: 'app',
   components: {
+    appHeader: Header,
     appFooter: Footer
   },
   data () {

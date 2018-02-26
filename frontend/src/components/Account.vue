@@ -6,6 +6,7 @@
     <ul>
       <li><a v-on:click="fetch()" href="javascript:void(0);">Test fetch user</a></li>
       <li><a v-on:click="refresh()" href="javascript:void(0);">Test refresh token</a></li>
+      <li><a v-on:click="logout()" href="javascript:void(0);">Logout</a></li>
     </ul>
     <p>Version: {{ vueVersion }}</p>
   </div>
@@ -33,6 +34,16 @@ export default {
     },
     refresh () {
       this.$auth.refresh({
+        success () {
+          console.log('success ' + this.context)
+        },
+        error () {
+          console.log('error ' + this.context)
+        }
+      })
+    },
+    logout () {
+      this.$auth.logout({
         success () {
           console.log('success ' + this.context)
         },

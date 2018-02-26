@@ -103,7 +103,7 @@ export default {
       console.log('$auth.user(): ' + this.$auth.user())
       console.log('$auth.user().username: ' + this.$auth.user().username)
     } else {
-        console.log('Id Token DNE')
+      console.log('Id Token DNE')
     }
   },
   methods: {

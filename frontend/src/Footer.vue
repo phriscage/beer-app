@@ -1,14 +1,14 @@
 <template>
   <div class="container-fluid footer">
-        <router-link to="/">Home</router-link>
+        <router-link :to="{name: 'home'}">Home</router-link>
         |
-        <router-link to="/random">Random</router-link>
+        <router-link :to="{name: 'random'}">Random</router-link>
         |
-        <router-link to="/about">About</router-link>
-        |
-        <router-link to="/account">Account</router-link>
+        <router-link :to="{name: 'beers'}">Beers</router-link>
         |
         <small>&copy; Copyright 2018, Chris Page</small>
+        |
+        <router-link :to="{name: 'about'}">About</router-link>
   </div>
 </template>
 
@@ -16,8 +16,8 @@
 .footer {
   position: fixed;
   bottom: 0;
-  height: 60px;
-  line-height: 60px;
+  height: 40px;
+  line-height: 40px;
   width: 100%;
   background-color: #f5f5f5;
 }
