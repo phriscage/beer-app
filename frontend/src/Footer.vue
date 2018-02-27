@@ -1,14 +1,6 @@
 <template>
   <div class="container-fluid footer">
-        <router-link :to="{name: 'home'}">Home</router-link>
-        |
-        <router-link :to="{name: 'random'}">Random</router-link>
-        |
-        <router-link :to="{name: 'beers'}">Beers</router-link>
-        |
-        <small>&copy; Copyright 2018, Chris Page</small>
-        |
-        <router-link :to="{name: 'about'}">About</router-link>
+     <small>&copy; Copyright 2018, Chris Page</small>
   </div>
 </template>
 
