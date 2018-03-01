@@ -18,6 +18,7 @@
     "vue-axios": "^2.0.2",
     "vue-cli": "^2.9.3",
     "vue-events": "^3.1.0",
+    "vue-form": "^4.7.1",
     "vue-router": "^3.0.1",
     "vuetable-2": "^1.7.5"
   },

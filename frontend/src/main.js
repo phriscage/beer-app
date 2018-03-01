@@ -3,15 +3,20 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VueForm from 'vue-form'
 
 Vue.config.productionTip = false
+
+// Enable vue-form
+Vue.use(VueForm)
 
 // Setup some global shared variables across all Vue components
 // This can be sources from process.env or equiv.
 const shared = {
   abc: 123,
-  apiUrl: 'http://localhost:5000/api',
-  clientId: ''
+  apiBaseUrl: 'http://localhost:5000/api',
+  clientId: '',
+  googleClientId: '823357352754-ej9k1n120u9nn8pljr5gbghesjm0h5tk.apps.googleusercontent.com'
 }
 shared.install = function () {
   Object.defineProperty(Vue.prototype, '$shared', {
@@ -22,7 +27,7 @@ Vue.use(shared)
 
 // Setup axios for AJAX calls. Use default api for all axios calls
 Vue.use(VueAxios, axios)
-Vue.axios.defaults.baseURL = shared.apiUrl
+Vue.axios.defaults.baseURL = shared.apiBaseUrl
 
 // Setup router for Vue-Auth
 Vue.router = router
@@ -49,7 +54,7 @@ Vue.use(require('@websanova/vue-auth'), {
   googleOauth2Data: {
     url: 'https://accounts.google.com/o/oauth2/auth',
     params: {
-      client_id: '823357352754-ej9k1n120u9nn8pljr5gbghesjm0h5tk.apps.googleusercontent.com'
+      client_id: shared.googleClientId
     }
     // params: {
       // redirect_uri: function () {

@@ -18,6 +18,11 @@ const routerOptions = [
     meta: {auth: true}
   },
   {
+    path: '/settings',
+    name: 'settings',
+    component: 'Settings'
+  },
+  {
     path: '/login',
     name: 'login',
     component: 'Login',
