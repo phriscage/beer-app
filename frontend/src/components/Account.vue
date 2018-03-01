@@ -1,24 +1,28 @@
 <template>
-  <div>
-    <h3>Account</h3>
-    <b>Username:</b> {{ $auth.user().username }}
-    <hr/>
-    <ul>
-      <li><a v-on:click="fetch()" href="javascript:void(0);">Test fetch user</a></li>
-      <li><a v-on:click="refresh()" href="javascript:void(0);">Test refresh token</a></li>
-      <li><a v-on:click="logout()" href="javascript:void(0);">Logout</a></li>
-    </ul>
-    <p>Version: {{ vueVersion }}</p>
+  <div class="ui container">
+    <p>Account</p>
+    </hr>
+    <p><a v-on:click="fetch()" href="javascript:void(0);">Test fetch user</a></p>
+    <p><a v-on:click="refresh()" href="javascript:void(0);">Test refresh token</a></p>
+    <div class="ui form">
+      <div class="field">
+        <label>Access Token</label>
+        <textarea rows="1">{{ $auth.token() }}</textarea>
+      </div>
+      <div class="field">
+        <label>ID Token | <a target="_blank" v-bind:href="'https://jwt.io/?value='+ $auth.token('id_token')">jwt.io</a></label>
+        <textarea rows="6">{{ $auth.token('id_token') }}</textarea>
+     </div>
+    </div>
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
+
 export default {
   data () {
     return {
-      context: 'account context',
-      vueVersion: Vue.version
+      context: 'account context'
     }
   },
   methods: {
@@ -34,16 +38,6 @@ export default {
     },
     refresh () {
       this.$auth.refresh({
-        success () {
-          console.log('success ' + this.context)
-        },
-        error () {
-          console.log('error ' + this.context)
-        }
-      })
-    },
-    logout () {
-      this.$auth.logout({
         success () {
           console.log('success ' + this.context)
         },

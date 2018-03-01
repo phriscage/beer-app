@@ -1,8 +1,7 @@
 <template>
   <div>
     <div v-show="!id_token || !type">
-      <p>Login</p>
-      <form id="login" class="ui large form">
+      <p>Login</p> <form id="login" class="ui large form">
         <div class="ui stacked segment">
           <p>Login via credentials</p>
           <div class="field">
@@ -79,29 +78,32 @@ export default {
       // store third-party id_token and access token
       var redirect = this.$auth.redirect()
       console.log('redirect: ' + redirect)
+      var querystring = require('querystring')
       this.$auth.login({
+        data: querystring.stringify({
+          grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+          assertion: this.id_token
+        }),
         headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
           'X-Provider': this.type,
-          'X-Provider-id_token': this.id_token,
           'Authorization': 'Bearer ' + this.access_token
         },
         rememberMe: this.data.rememberMe,
         redirect: {name: redirect ? redirect.from.name : 'account'},
         fetchUser: this.data.fetchUser,
         success: res => {
+          this.$auth.token('id_token', this.id_token)
           console.log(res.headers)
         }
       })
       .then(() => {
         console.log('success ' + this.context)
+        console.log('this.$auth.token(): ' + this.$auth.token())
       }, (res) => {
         console.log('error ' + this.context)
         this.error = res.data
       })
-      console.log('this.$auth: ' + this.$auth)
-      console.log('this.$auth.token(): ' + this.$auth.token())
-      console.log('$auth.user(): ' + this.$auth.user())
-      console.log('$auth.user().username: ' + this.$auth.user().username)
     } else {
       console.log('Id Token DNE')
     }

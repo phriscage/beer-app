@@ -8,6 +8,8 @@
       <filter-bar></filter-bar>
       <vuetable ref="vuetable"
         api-url="http://localhost:5000/api/beers"
+        :http-options="httpOptions"
+        :http-fetch="getBeerData"
         data-path="data"
         :fields="fields"
         :append-params="moreParams"
@@ -21,6 +23,7 @@ import Vue from 'vue'
 import VueEvents from 'vue-events'
 import Vuetable from 'vuetable-2/src/components/Vuetable'
 import FilterBar from './FilterBar'
+import axios from 'axios'
 
 import moment from 'moment'
 
@@ -36,6 +39,11 @@ export default {
   },
   data () {
     return {
+      httpOptions: {
+        headers: {
+          test: 123
+        }
+      },
       randomNumber: 0,
       fields: [
         'brewery',
@@ -86,6 +94,10 @@ export default {
     this.$events.$on('filter-reset', e => this.onFilterReset())
   },
   methods: {
+    // getBeerData
+    getBeerData (apiUrl, httpOptions) {
+      return axios.get(apiUrl, httpOptions)
+    },
     // filter
     onFilterSet (filterText) {
       console.log('filter-set', filterText)

@@ -3,10 +3,28 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-Vue.use(VueAxios, axios)
 
 Vue.config.productionTip = false
 
+// Setup some global shared variables across all Vue components
+// This can be sources from process.env or equiv.
+const shared = {
+  abc: 123,
+  apiUrl: 'http://localhost:5000/api',
+  clientId: ''
+}
+shared.install = function () {
+  Object.defineProperty(Vue.prototype, '$shared', {
+    get () { return shared }
+  })
+}
+Vue.use(shared)
+
+// Setup axios for AJAX calls. Use default api for all axios calls
+Vue.use(VueAxios, axios)
+Vue.axios.defaults.baseURL = shared.apiUrl
+
+// Setup router for Vue-Auth
 Vue.router = router
 /* Http */
 // Vue.http.options.root = 'https://api-demo.websanova.com/api/v1'
@@ -17,16 +35,16 @@ Vue.use(require('@websanova/vue-auth'), {
   router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
   rolesVar: 'role',
   fetchData: {
-    url: 'http://localhost:5000/api/oauth/user'
+    url: '/oauth/user'
   },
   loginData: {
-    url: 'http://localhost:5000/api/oauth/token'
+    url: '/oauth/token'
   },
   refreshData: {
-    url: 'http://localhost:5000/api/oauth/token/refresh'
+    url: '/oauth/token/refresh'
   },
   googleData: {
-    url: 'http://localhost:5000/api/oauth/token'
+    url: '/oauth/token'
   },
   googleOauth2Data: {
     url: 'https://accounts.google.com/o/oauth2/auth',

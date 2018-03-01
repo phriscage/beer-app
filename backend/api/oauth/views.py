@@ -48,7 +48,7 @@ def return_token():
     }
     data = {
         'access_token': request.headers.get('Authorization', None),
-        'id_token': request.headers.get('X-Provider-id_token', None),
+        'id_token': request.form.get('assertion', None),
     }
     return jsonify(message="Success", **data, **http_status_response('OK')
                   ), HTTPStatus.OK.value, headers
