@@ -1,54 +1,54 @@
 <template>
   <div class="container">
-    <vue-form id="settings" class="ui large form warning" :state="formstate" @submit.prevent="onSubmit">
+    <vue-form id="settings" class="ui warning error success form" :state="formstate" @submit.prevent="onSubmit">
       <div class="ui clearing segment">
 
-         <validate tag="label" class="required field">
-         <span>Client ID:</span>
+         <validate auto-label class="required field" :class="fieldClassName(formstate.clientId)">
+         <label>Client ID:</label>
          <div class="ui left icon input">
            <i class="lock icon"></i>
             <input
                type="text"
-               required
                name="clientId"
-               v-model="model.cliendId"
+               required
+               v-model.lazy="model.clientId"
             />
            </div>
-          <field-messages name="clientId" class="ui warning message">
+          <field-messages name="clientId" show="$touched || $submitted" :class="fieldMessageClassName(formstate.clientId)">
             <div slot="required">Client ID is a required field</div>
-            <div slot="clientId">Client ID is not valid</div>
           </field-messages>
         </validate>
         <p/>
-        <validate tag="label" class="required field">
-        <span>Google Client ID:</span>
+
+        <validate auto-label class="field">
+        <label>Google Client ID:</label>
          <div class="ui left icon input">
            <i class="lock icon"></i>
             <input
                type="text"
-               required
                name="googleClientId"
-               v-model="model.googleClientId"
+               required
+               v-model.lazy="model.googleClientId"
             />
            </div>
-          <field-messages name="googleClientId" class="ui warning message">
-            <div slot="required">Google Client ID is a required field</div>
-            <div slot="googleClientId">Google Client ID is not valid</div>
+          <field-messages name="googleClientId" show="$touched || $submitted" :class="fieldMessageClassName(formstate.googleClientId)">
+            <div slot="required">Google Client ID is a required for Google Login</div>
           </field-messages>
         </validate>
         <p/>
-        <validate tag="label" class="required field">
-        <span>API Base URL:</span>
+
+        <validate auto-label class="required field" :class="fieldClassName(formstate.apiBaseUrl)">
+        <label>API Base URL:</label>
          <div class="ui left icon input">
            <i class="lock icon"></i>
             <input
                type="text"
-               required
                name="apiBaseUrl"
-               v-model="model.apiBaseUrl"
+               required
+               v-model.lazy="model.apiBaseUrl"
             />
            </div>
-          <field-messages name="apiBaseUrl" class="ui warning message">
+          <field-messages name="apiBaseUrl" show="$touched || $submitted" :class="fieldMessageClassName(formstate.apiBaseUrl)">
             <div slot="required">API Base URL is a required field</div>
             <div slot="apiBaseUrl">API Base URL is not valid</div>
           </field-messages>
@@ -57,7 +57,7 @@
         <button type="submit" class="ui fluid large blue submit button">Save</button>
       </div>
       </vue-form>
-      <!--<pre>{{ formstate }}</pre>-->
+      <pre>{{ formstate }}</pre>
   </div>
 </template>
 
@@ -80,28 +80,44 @@ export default {
       if (!field) {
         return ''
       }
+      if ((field.$touched || field.$submitted) && field.$invalid) {
+        return 'field error'
+      }
+    },
+    fieldMessageClassName: function (field) {
+      if (!field) {
+        return ''
+      }
       if ((field.$touched || field.$submitted) && field.$valid) {
-        return 'ui message'
+        return 'ui success message'
       }
       if ((field.$touched || field.$submitted) && field.$invalid) {
-        return 'ui warning message'
+        if (field.$name === 'googleClientId') {
+          return 'ui warning message'
+        } else {
+          return 'ui error message'
+        }
       }
     },
     onSubmit: function () {
       if (this.formstate.$invalid) {
         // alert user and exit early
         console.log(this.formstate.$invalid)
+        return ''
       }
-      console.log(this.model.clientId)
-      if (this.model.clientId !== this.$shared.clientID) {
-        console.log('changing ' + this.$shared.clientID)
-        this.$shared.clientID = this.model.clientId
-      }
+      this.$shared.clientId = this.model.clientId
+      this.$shared.googleClientId = this.model.googleClientId
+      this.$shared.apiBaseUrl = this.model.apiBaseUrl
     }
   }
 }
 </script>
 <style>
+.required-field > label::after {
+  content: '*';
+  color: red;
+  margin-left: 0.25rem;
+}
 #settings {
   text-align: left;
   width: 600px;
