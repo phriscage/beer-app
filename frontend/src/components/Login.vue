@@ -21,8 +21,7 @@
               <input
                 type="password"
                 name="password"
-                placeholder="Password"
-                v-model="credentials.password"
+                placeholder="Password" v-model="credentials.password"
               >
             </div>
           </div>
@@ -91,13 +90,10 @@ export default {
         },
         rememberMe: this.data.rememberMe,
         redirect: {name: redirect ? redirect.from.name : 'account'},
-        fetchUser: this.data.fetchUser,
-        success: res => {
-          this.$auth.token('id_token', this.id_token)
-          console.log(res.headers)
-        }
+        fetchUser: this.data.fetchUser
       })
       .then(() => {
+        this.$auth.token('id_token', this.id_token)
         console.log('success ' + this.context)
         console.log('this.$auth.token(): ' + this.$auth.token())
       }, (res) => {
@@ -105,7 +101,7 @@ export default {
         this.error = res.data
       })
     } else {
-      console.log('Id Token DNE')
+      console.log('Id Token URL fragment DNE')
     }
   },
   methods: {
