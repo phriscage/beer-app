@@ -48,6 +48,8 @@ export default {
       this.$auth.logout({
         success () {
           console.log('success ' + this.context)
+          this.$session.clear()
+          this.$session.set('shared', this.$shared)
         },
         error () {
           console.log('error ' + this.context)

@@ -4,6 +4,7 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueForm from 'vue-form'
+import VueSession from 'vue-session'
 
 Vue.config.productionTip = false
 
@@ -13,17 +14,25 @@ Vue.use(VueForm)
 // Setup some global shared variables across all Vue components
 // This can be sources from process.env or equiv.
 const shared = {
-  abc: 123,
   apiBaseUrl: 'http://localhost:5000/api',
   clientId: '',
   googleClientId: '823357352754-ej9k1n120u9nn8pljr5gbghesjm0h5tk.apps.googleusercontent.com'
 }
 shared.install = function () {
+  var _shared = shared
   Object.defineProperty(Vue.prototype, '$shared', {
-    get () { return shared }
+    get () {
+      return _shared
+    },
+    set (value) {
+      _shared = value
+    }
   })
 }
 Vue.use(shared)
+
+// Enable vue-session #across tabs and browser instances
+Vue.use(VueSession, {persist: true})
 
 // Setup axios for AJAX calls. Use default api for all axios calls
 Vue.use(VueAxios, axios)

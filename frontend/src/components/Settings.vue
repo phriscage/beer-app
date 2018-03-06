@@ -105,9 +105,11 @@ export default {
         console.log(this.formstate.$invalid)
         return ''
       }
+      // update the shared object then session
       this.$shared.clientId = this.model.clientId
       this.$shared.googleClientId = this.model.googleClientId
       this.$shared.apiBaseUrl = this.model.apiBaseUrl
+      this.$session.set('shared', this.$shared)
     }
   }
 }

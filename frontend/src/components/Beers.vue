@@ -7,7 +7,7 @@
     <div class="ui container">
       <filter-bar></filter-bar>
       <vuetable ref="vuetable"
-        api-url="http://localhost:5000/api/beers"
+        :api-url="this.$data.beersUrl"
         :http-options="httpOptions"
         :http-fetch="getBeerData"
         data-path="data"
@@ -39,6 +39,7 @@ export default {
   },
   data () {
     return {
+      beersUrl: this.$shared.apiBaseUrl + '/beers',
       httpOptions: {
         headers: {
           test: 123
