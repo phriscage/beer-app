@@ -55,7 +55,11 @@
         </validate>
         <p/>
         <button type="submit" class="ui fluid large blue submit button">Save</button>
-      </div>
+        <div v-if="model.success" class="ui success message">
+          <i v-on:click="onSuccessClose()" class="close icon"></i>
+            <div class="header">Success!</div>
+          </div>
+        </div>
       </vue-form>
       <pre>{{ formstate }}</pre>
   </div>
@@ -70,7 +74,8 @@ export default {
       model: {
         apiBaseUrl: this.$shared.apiBaseUrl,
         clientId: this.$shared.clientId,
-        googleClientId: this.$shared.googleClientId
+        googleClientId: this.$shared.googleClientId,
+        success: false
       },
       context: 'settings context'
     }
@@ -102,14 +107,21 @@ export default {
     onSubmit: function () {
       if (this.formstate.$invalid) {
         // alert user and exit early
-        console.log(this.formstate.$invalid)
+        console.log('this.formstate.$invalid: ' + this.formstate.$invalid)
         return ''
       }
-      // update the shared object then session
-      this.$shared.clientId = this.model.clientId
-      this.$shared.googleClientId = this.model.googleClientId
-      this.$shared.apiBaseUrl = this.model.apiBaseUrl
-      this.$session.set('shared', this.$shared)
+      // only update if something changed from original
+      if (this.formstate.$dirty) {
+        this.$shared.clientId = this.model.clientId
+        this.$shared.googleClientId = this.model.googleClientId
+        this.$shared.apiBaseUrl = this.model.apiBaseUrl
+        this.$session.set('shared', this.$shared)
+        this.model.success = true
+        this.formstate._reset()
+      }
+    },
+    onSuccessClose: function () {
+      this.model.success = !this.model.success
     }
   }
 }
@@ -123,5 +135,11 @@ export default {
 #settings {
   text-align: left;
   width: 600px;
+}
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+    opacity: 0
 }
 </style>
