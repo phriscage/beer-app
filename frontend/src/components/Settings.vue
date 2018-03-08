@@ -57,11 +57,10 @@
         <button type="submit" class="ui fluid large blue submit button">Save</button>
         <div v-if="model.success" class="ui success message">
           <i v-on:click="onSuccessClose()" class="close icon"></i>
-            <div class="header">Success!</div>
-          </div>
+          <div class="header">Success!</div>
         </div>
-      </vue-form>
-      <pre>{{ formstate }}</pre>
+      </div>
+    </vue-form>
   </div>
 </template>
 

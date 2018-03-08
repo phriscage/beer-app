@@ -139,6 +139,8 @@ export default {
       console.log(this.credentials.password)
     },
     social (type) {
+      // set googleOauth2Data client_id
+      this.$auth.options.googleOauth2Data.params.client_id = this.$shared.googleClientId
       this.$auth.oauth2({
         provider: type || this.type,
         rememberMe: this.data.rememberMe,

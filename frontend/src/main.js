@@ -12,11 +12,10 @@ Vue.config.productionTip = false
 Vue.use(VueForm)
 
 // Setup some global shared variables across all Vue components
-// This can be sources from process.env or equiv.
 const shared = {
-  apiBaseUrl: 'http://localhost:5000/api',
-  clientId: '',
-  googleClientId: '823357352754-ej9k1n120u9nn8pljr5gbghesjm0h5tk.apps.googleusercontent.com'
+  apiBaseUrl: process.env.API_BASE_URL,
+  clientId: process.env.CLIENT_ID,
+  googleClientId: process.env.GOOGLE_CLIENT_ID
 }
 shared.install = function () {
   var _shared = shared
