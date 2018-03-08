@@ -1,49 +1,57 @@
 <template>
   <div>
     <div v-show="!id_token || !type">
-      <p>Login</p> <form id="login" class="ui large form">
-        <div class="ui stacked segment">
-          <p>Login via credentials</p>
-          <div class="field">
-            <div class="ui left icon input">
-              <i class="user icon"></i>
-              <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                v-model="credentials.username"
-              >
+      <div class="ui stacked segment">
+        <p>Login</p>
+        <form id="login" class="ui large form">
+          <div class="ui clearing segment">
+            <p>Login via credentials</p>
+            <div class="field">
+              <div class="ui left icon input">
+                <i class="user icon"></i>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Username"
+                  v-model="credentials.username"
+                >
+              </div>
             </div>
-          </div>
-          <div class="field">
-            <div class="ui left icon input">
-              <i class="lock icon"></i>
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                v-model="credentials.password"
-              >
+            <div class="field">
+              <div class="ui left icon input">
+                <i class="lock icon"></i>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password" v-model="credentials.password"
+                >
+              </div>
             </div>
+            <div class="ui fluid large blue submit button" @click="login()">Login</div>
           </div>
-          <div class="ui fluid large blue submit button" @click="login()">Login</div>
-        </div>
 
-        <div class="ui error message" v-if="error">
-          <p>{{ error }}</p>
-        </div>
-      </form>
+          <div class="ui error message" v-if="error">
+            <p>{{ error }}</p>
+          </div>
+        </form>
 
-      <div class="ui clearing segment">
-        <p>Login via @google credentials</p>
-        <button class="ui google plus button" v-on:click="social('google')">
-          <i class="google icon"></i>
-            Google
-        </button>
-        <!--<button class="ui facebook button" v-on:click="social('facebook')">
-          <i class="facebook icon"></i>
-            Facebook
-        </button>-->
+        <div class="ui clearing segment">
+          <p>Login via @google credentials</p>
+          <button class="ui google plus button" v-on:click="social('google')">
+            <i class="google icon"></i>
+              Google
+          </button>
+          <!--<button class="ui facebook button" v-on:click="social('facebook')">
+            <i class="facebook icon"></i>
+              Facebook
+          </button>-->
+        </div>
+         <div class="field">
+         <div class="ui toggle checkbox">
+           <input id="privacy" v-model="data.rememberMe" type="checkbox">
+           <label for="privacy">Remember Me</label>
+         </div>
+        </div>
       </div>
     </div>
     <div v-show="id_token && type">
@@ -62,6 +70,7 @@ export default {
         password: ''
       },
       data: {
+        test: false,
         rememberMe: false,
         fetchUser: true
       },
@@ -69,15 +78,20 @@ export default {
       type: this.$route.params.type,
       access_token: this.getFragmentValue('access_token'),
       id_token: this.getFragmentValue('id_token'),
+      state: this.getFragmentValue('state'),
       response_type: this.$route.params.type,
       error: ''
     }
   },
   mounted () {
+    // id_token found from 3rd party IdP
     if (this.id_token) {
+      // state found from 3rd party IdP
+      if (this.state) {
+        console.log('this.state: ' + this.state)
+      }
       // store third-party id_token and access token
       var redirect = this.$auth.redirect()
-      console.log('redirect: ' + redirect)
       var querystring = require('querystring')
       this.$auth.login({
         data: querystring.stringify({
@@ -91,13 +105,10 @@ export default {
         },
         rememberMe: this.data.rememberMe,
         redirect: {name: redirect ? redirect.from.name : 'account'},
-        fetchUser: this.data.fetchUser,
-        success: res => {
-          this.$auth.token('id_token', this.id_token)
-          console.log(res.headers)
-        }
+        fetchUser: this.data.fetchUser
       })
       .then(() => {
+        this.$auth.token('id_token', this.id_token)
         console.log('success ' + this.context)
         console.log('this.$auth.token(): ' + this.$auth.token())
       }, (res) => {
@@ -105,18 +116,18 @@ export default {
         this.error = res.data
       })
     } else {
-      console.log('Id Token DNE')
+      console.log('Id Token URL fragment DNE')
     }
   },
   methods: {
     // parse url fragment by parameter key
     getFragmentValue (key) {
-      let params = this.$route.hash.split('&')
+      let fragment = this.$route.hash.replace(/^#/, '')
+      let params = fragment.split('&')
       if (params.length > 1) {
         for (var i = 0; i < params.length; i++) {
           let pair = params[i].split('=')
           if (pair[0] === key) {
-            console.log('found: ' + pair)
             return pair[1]
           }
         }
@@ -128,10 +139,11 @@ export default {
       console.log(this.credentials.password)
     },
     social (type) {
-      console.log(this.$auth)
-      console.log(this.$auth.oauth2)
+      // set googleOauth2Data client_id
+      this.$auth.options.googleOauth2Data.params.client_id = this.$shared.googleClientId
       this.$auth.oauth2({
         provider: type || this.type,
+        rememberMe: this.data.rememberMe,
         response_type: 'token id_token'
       })
     }

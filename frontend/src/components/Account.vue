@@ -7,7 +7,7 @@
     <div class="ui form">
       <div class="field">
         <label>Access Token</label>
-        <textarea rows="1">{{ $auth.token() }}</textarea>
+        <textarea rows="6">{{ $auth.token() }}</textarea>
       </div>
       <div class="field">
         <label>ID Token | <a target="_blank" v-bind:href="'https://jwt.io/?value='+ $auth.token('id_token')">jwt.io</a></label>

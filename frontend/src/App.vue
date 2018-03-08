@@ -38,7 +38,22 @@ export default {
   created () {
     this.$auth.ready(function () {
       console.log('ready ' + this.context)
+      this.setSessionData()
     })
+  },
+  methods: {
+    // set the session info
+    setSessionData () {
+      // start a new session
+      this.$session.start()
+      if (!this.$session.get('shared')) {
+        console.log('setting session from this.$shared')
+        this.$session.set('shared', this.$shared)
+      } else {
+        console.log('setting this.$shared from session')
+        this.$shared = this.$session.get('shared')
+      }
+    }
   }
 }
 </script>
