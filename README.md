@@ -29,7 +29,7 @@ TBD
 
 
 ## <a name="development"></a>Development:
-Build and run the development environment as a Node instance and Docker application locally. Make changes accordingly.
+Build and run the development environment as a Node instance and Docker application locally. You can specify configuration variables if needed via command line.I.E. `CLIENT_ID=1234 npm run dev`. Make changes accordingly.
 
 Frontend:
         
