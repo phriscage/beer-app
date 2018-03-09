@@ -31,7 +31,7 @@
           </div>
 
           <div class="ui error message" v-if="error">
-            <p>{{ error }}</p>
+            <p>{{ errorMessage }}</p>
           </div>
         </form>
 
@@ -55,7 +55,12 @@
       </div>
     </div>
     <div v-show="id_token && type">
-        Verifying {{ type }} id_token...
+        <p>Verifying {{ type }} id_token...</p>
+        <div class="ui error message" v-if="error">
+          <i v-on:click="onErrorClose()" class="close icon"></i>
+          <div class="header">Something broke!</div>
+          <div id="error"><pre>{{ errorMessage }}</pre></div>
+       </div>
     </div>
   </div>
 </template>
@@ -80,7 +85,8 @@ export default {
       id_token: this.getFragmentValue('id_token'),
       state: this.getFragmentValue('state'),
       response_type: this.$route.params.type,
-      error: ''
+      error: false,
+      errorMessage: ''
     }
   },
   mounted () {
@@ -93,10 +99,13 @@ export default {
       // store third-party id_token and access token
       var redirect = this.$auth.redirect()
       var querystring = require('querystring')
+      this.axios.defaults.baseURL = this.$shared.apiBaseUrl
+      console.log(this.$auth.options)
       this.$auth.login({
         data: querystring.stringify({
           grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-          assertion: this.id_token
+          assertion: this.id_token,
+          client_id: this.$shared.clientId
         }),
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -113,7 +122,17 @@ export default {
         console.log('this.$auth.token(): ' + this.$auth.token())
       }, (res) => {
         console.log('error ' + this.context)
-        this.error = res.data
+        console.log(res)
+        if (res.response.data) {
+          console.log(res.response.data)
+          // this.errorMessage = res.response.status + ': ' + JSON.stringify(res.response.data)
+          // this.errorMessage = res.response.data
+          this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
+                'Body: ' + JSON.stringify(res.response.data, null, 4)
+        } else {
+          this.errorMessage = res
+        }
+        this.error = true
       })
     } else {
       console.log('Id Token URL fragment DNE')
@@ -146,6 +165,10 @@ export default {
         rememberMe: this.data.rememberMe,
         response_type: 'token id_token'
       })
+    },
+    onErrorClose: function () {
+      this.error = !this.error
+      console.log(this.error)
     }
   }
 }
@@ -154,5 +177,8 @@ export default {
 #login {
   text-align: left;
   width: 340px;
+}
+#error {
+  text-align: left;
 }
 </style>
