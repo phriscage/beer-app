@@ -123,7 +123,7 @@ export default {
       }, (res) => {
         console.log('error ' + this.context)
         console.log(res)
-        if (res.response.data) {
+        if (res.response && res.response.status) {
           console.log(res.response.data)
           // this.errorMessage = res.response.status + ': ' + JSON.stringify(res.response.data)
           // this.errorMessage = res.response.data

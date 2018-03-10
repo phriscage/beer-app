@@ -1,7 +1,17 @@
 // Beers.vue
 <template>
   <div>
-    <div class="ui container">
+    <div class="ui grid">
+     <div class="row">
+       <div class="three wide column"></div>
+       <div class="ten wide column">
+         <div class="ui error message" v-if="error">
+           <i v-on:click="onErrorClose()" class="close icon"></i>
+           <div class="header">Something broke!</div>
+           <div id="error"><pre>{{ errorMessage }}</pre></div>
+         </div>
+       </div>
+      </div>
     </div>
     </br>
     <div class="ui container">
@@ -13,6 +23,7 @@
         data-path="data"
         :fields="fields"
         :append-params="moreParams"
+        @vuetable:load-error="handleLoadError"
       ></vuetable>
     </div>
   </div>
@@ -45,6 +56,8 @@ export default {
           test: 123
         }
       },
+      error: false,
+      errorMessage: '',
       randomNumber: 0,
       fields: [
         'brewery',
@@ -99,6 +112,19 @@ export default {
     getBeerData (apiUrl, httpOptions) {
       return axios.get(apiUrl, httpOptions)
     },
+    // handle errors
+    handleLoadError (res) {
+      console.log(res)
+      if (res.response && res.response.status) {
+        this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
+             'Body: ' + JSON.stringify(res.response.data, null, 4)
+      }
+      this.error = true
+    },
+    onErrorClose: function () {
+      this.error = !this.error
+      console.log(this.error)
+    },
     // filter
     onFilterSet (filterText) {
       console.log('filter-set', filterText)
@@ -142,3 +168,9 @@ export default {
   }
 }
 </script>
+<style>
+#error {
+  text-align: left;
+  width: 340px;
+}
+</style>
