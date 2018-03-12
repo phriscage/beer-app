@@ -37,20 +37,38 @@
         </validate>
         <p/>
 
-        <validate auto-label class="required field" :class="fieldClassName(formstate.apiBaseUrl)">
-        <label>API Base URL:</label>
+        <validate auto-label class="required field" :class="fieldClassName(formstate.oauthApiBaseUrl)">
+        <label>OAuth API Base URL:</label>
          <div class="ui left icon input">
            <i class="lock icon"></i>
             <input
                type="text"
-               name="apiBaseUrl"
+               name="oauthApiBaseUrl"
                required
-               v-model.lazy="model.apiBaseUrl"
+               v-model.lazy="model.oauthApiBaseUrl"
             />
            </div>
-          <field-messages name="apiBaseUrl" show="$touched || $submitted" :class="fieldMessageClassName(formstate.apiBaseUrl)">
-            <div slot="required">API Base URL is a required field</div>
-            <div slot="apiBaseUrl">API Base URL is not valid</div>
+          <field-messages name="oauthApiBaseUrl" show="$touched || $submitted" :class="fieldMessageClassName(formstate.oauthApiBaseUrl)">
+            <div slot="required">OAuth API Base URL is a required field</div>
+            <div slot="oauthApiBaseUrl">OAuth API Base URL is not valid</div>
+          </field-messages>
+        </validate>
+        <p/>
+
+        <validate auto-label class="required field" :class="fieldClassName(formstate.beersApiBaseUrl)">
+        <label>Beers API Base URL:</label>
+         <div class="ui left icon input">
+           <i class="lock icon"></i>
+            <input
+               type="text"
+               name="beersApiBaseUrl"
+               required
+               v-model.lazy="model.beersApiBaseUrl"
+            />
+           </div>
+          <field-messages name="beersApiBaseUrl" show="$touched || $submitted" :class="fieldMessageClassName(formstate.beersApiBaseUrl)">
+            <div slot="required">Beers API Base URL is a required field</div>
+            <div slot="beersApiBaseUrl">Beers API Base URL is not valid</div>
           </field-messages>
         </validate>
         <p/>
@@ -71,7 +89,8 @@ export default {
     return {
       formstate: {},
       model: {
-        apiBaseUrl: this.$shared.apiBaseUrl,
+        beersApiBaseUrl: this.$shared.beersApiBaseUrl,
+        oauthApiBaseUrl: this.$shared.oauthApiBaseUrl,
         clientId: this.$shared.clientId,
         googleClientId: this.$shared.googleClientId,
         success: false
@@ -113,7 +132,8 @@ export default {
       if (this.formstate.$dirty) {
         this.$shared.clientId = this.model.clientId
         this.$shared.googleClientId = this.model.googleClientId
-        this.$shared.apiBaseUrl = this.model.apiBaseUrl
+        this.$shared.beersApiBaseUrl = this.model.beersApiBaseUrl
+        this.$shared.oauthApiBaseUrl = this.model.oauthApiBaseUrl
         this.$session.set('shared', this.$shared)
         this.model.success = true
         this.formstate._reset()

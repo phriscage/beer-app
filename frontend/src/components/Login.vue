@@ -99,8 +99,9 @@ export default {
       // store third-party id_token and access token
       var redirect = this.$auth.redirect()
       var querystring = require('querystring')
-      this.axios.defaults.baseURL = this.$shared.apiBaseUrl
       console.log(this.$auth.options)
+      // TODO need a better method to update all vue-auth default URLs
+      this.axios.defaults.baseURL = this.$shared.oauthApiBaseUrl
       this.$auth.login({
         data: querystring.stringify({
           grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
@@ -124,13 +125,10 @@ export default {
         console.log('error ' + this.context)
         console.log(res)
         if (res.response && res.response.status) {
-          console.log(res.response.data)
-          // this.errorMessage = res.response.status + ': ' + JSON.stringify(res.response.data)
-          // this.errorMessage = res.response.data
           this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
-                'Body: ' + JSON.stringify(res.response.data, null, 4)
+               'Body: ' + JSON.stringify(res.response.data, null, 4)
         } else {
-          this.errorMessage = res
+          this.errorMessage = res.toString()
         }
         this.error = true
       })

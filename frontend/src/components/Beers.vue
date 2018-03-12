@@ -17,7 +17,7 @@
     <div class="ui container">
       <filter-bar></filter-bar>
       <vuetable ref="vuetable"
-        :api-url="this.$data.beersUrl"
+        :api-url="this.$data.beersApiUrl"
         :http-options="httpOptions"
         :http-fetch="getBeerData"
         data-path="data"
@@ -50,7 +50,7 @@ export default {
   },
   data () {
     return {
-      beersUrl: this.$shared.apiBaseUrl + '/beers',
+      beersApiUrl: this.$shared.beersApiBaseUrl + '/beers',
       httpOptions: {
         headers: {
           test: 123
@@ -114,16 +114,18 @@ export default {
     },
     // handle errors
     handleLoadError (res) {
+      console.log('handleLoadError: ')
       console.log(res)
       if (res.response && res.response.status) {
         this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
              'Body: ' + JSON.stringify(res.response.data, null, 4)
+      } else {
+        this.errorMessage = res.toString()
       }
       this.error = true
     },
     onErrorClose: function () {
       this.error = !this.error
-      console.log(this.error)
     },
     // filter
     onFilterSet (filterText) {

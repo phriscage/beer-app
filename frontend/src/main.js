@@ -13,7 +13,8 @@ Vue.use(VueForm)
 
 // Setup some global shared variables across all Vue components
 const shared = {
-  apiBaseUrl: process.env.API_BASE_URL,
+  beersApiBaseUrl: process.env.BEERS_API_BASE_URL,
+  oauthApiBaseUrl: process.env.OAUTH_API_BASE_URL,
   clientId: process.env.CLIENT_ID,
   googleClientId: process.env.GOOGLE_CLIENT_ID
 }
@@ -35,29 +36,31 @@ Vue.use(VueSession, {persist: true})
 
 // Setup axios for AJAX calls. Use default api for all axios calls
 Vue.use(VueAxios, axios)
-Vue.axios.defaults.baseURL = shared.apiBaseUrl
+Vue.axios.defaults.baseURL = shared.oauthApiBaseUrl
 
 // Setup router for Vue-Auth
 Vue.router = router
 /* Http */
 // Vue.http.options.root = 'https://api-demo.websanova.com/api/v1'
 
+// Vue-Auth will append the *Data urls without http?s:// to the Axios baseURL.
+// Need a better method to set these dynamically...
 Vue.use(require('@websanova/vue-auth'), {
   auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
   http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),
   router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
   rolesVar: 'role',
   fetchData: {
-    url: '/oauth/user'
+    url: '/user'
   },
   loginData: {
-    url: '/oauth/token'
+    url: '/token'
   },
   refreshData: {
-    url: '/oauth/token/refresh'
+    url: '/token/refresh'
   },
   googleData: {
-    url: '/oauth/token'
+    url: '/token'
   },
   googleOauth2Data: {
     url: 'https://accounts.google.com/o/oauth2/auth',
