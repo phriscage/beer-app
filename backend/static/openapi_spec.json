@@ -1,0 +1,369 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample Beer Service API",
+    "version": "1.0.0",
+    "title": "Beer Service",
+    "termsOfService": "http://openapi.spec/terms/",
+    "contact": {
+      "email": "chrispage@google.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "beer-app.demo.s.apigee.com",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "beers",
+      "description": "Everything about your Beer",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://openapi.spec"
+      }
+    },
+    {
+      "name": "reviews",
+      "description": "All the reviews about your Beer"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/beers": {
+      "get": {
+        "tags": [
+          "beers"
+        ],
+        "summary": "Filter a list of beers",
+        "description": "Search be name:abc or brewery:123",
+        "operationId": "getBeers",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "'name:value' needs to be formatted for name filter",
+            "required": false,
+            "type": "string",
+            "items": {
+              "type": "string",
+              "enum": [
+                "name:123"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "brewery",
+            "in": "query",
+            "description": "'brewery:value' needs to be formatted for brewery filter",
+            "required": false,
+            "type": "string",
+            "items": {
+              "type": "string",
+              "enum": [
+                "brewery:123"
+              ]
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Beer"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        },
+        "security": [
+          {
+            "beer_auth": [
+              "read:beers"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "beers"
+        ],
+        "summary": "Add a new beer to the store",
+        "description": "",
+        "operationId": "addBeer",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Beer object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Beer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Beer"
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "beer_auth": [
+              "write:beers",
+              "read:beers"
+            ]
+          }
+        ]
+      }
+    },
+    "/beer/{beerId}": {
+      "get": {
+        "tags": [
+          "beers"
+        ],
+        "summary": "Find beer by ID",
+        "description": "Returns a single beer",
+        "operationId": "getBeerById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "beerId",
+            "in": "path",
+            "description": "ID of beer to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Beer"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Beer not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/beer/{beerId}/reviews": {
+      "get": {
+        "tags": [
+          "reviews"
+        ],
+        "summary": "Return list of beer reviews",
+        "description": "",
+        "operationId": "getBeerReviews",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "beerId",
+            "in": "path",
+            "description": "ID of beer to list reviews",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/BeerReview"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Beer review not found"
+          }
+        },
+        "security": [
+          {
+            "beer_auth": [
+              "read:beers"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "reviews"
+        ],
+        "summary": "Add a new review to the ber",
+        "description": "",
+        "operationId": "addBeerReview",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "beerId",
+            "in": "path",
+            "description": "ID of beer to list reviews",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Beer object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BeerReview"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/BeerReview"
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "beer_auth": [
+              "write:beers",
+              "read:beers"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "beer_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://beerstore.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:beers": "modify beers in your account",
+        "read:beers": "read your beers"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "Beer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string",
+          "example": "Best Beer Ever"
+        },
+        "price": {
+          "type": "string",
+          "example": "5.99"
+        },
+        "brewery": {
+          "type": "string",
+          "example": "Backyard brewery"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-02-27T00:54:00Z"
+        }
+      }
+    },
+    "BeerReview": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "reviewer": {
+          "type": "object"
+        },
+        "text": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-02-27T00:54:00Z"
+        }
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
