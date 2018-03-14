@@ -78,5 +78,11 @@ Check the status:
         kubectl get deploy,po,svc -o wide
 
 
+### Deployment Updates:
+Update the container image name/version for an existing deployment
+
+        kubectl set image deployment/beer-api beer-api=gcr.io/${PROJECT_ID}/beer-api:${TAG}
+
+
 ## To-Do
 * automated builds
