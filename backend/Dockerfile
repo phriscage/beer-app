@@ -25,6 +25,7 @@ RUN pip install -r requirements.txt && \
 # Explicitly copy our files from the current folder to /app inside the container
 ADD api /app/api 
 ADD lib /app/lib 
+ADD static /app/static
 
 #EXPOSE 8080
 EXPOSE 5000

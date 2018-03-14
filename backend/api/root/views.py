@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.dirname(
 from lib.utils import http_status_response # noqak
 
 logger = logging.getLogger(__name__)
-root = Blueprint('root', __name__)
+root = Blueprint('root', __name__, static_folder='../../static')
 
 
 @root.route('/', defaults={'path': ''})
@@ -31,6 +31,14 @@ def catch_all(path):
     if app.debug:
         return requests.get('http://docker.for.mac.host.internal:8080/{}'.format(path)).text
     return render_template("index.html")
+
+@root.route('/openapi_spec', methods=['GET'])
+@root.route('/openapi_spec<string:extension>', methods=['GET'])
+def get_openapi_spec(extension=None):
+    """ return the yaml openapi_spec in JSON or YAML """
+    if extension == '.yaml':
+        return root.send_static_file('openapi_spec.yaml')
+    return root.send_static_file('openapi_spec.json')
 
 @root.route('/random', methods=['GET'])
 @cross_origin()
