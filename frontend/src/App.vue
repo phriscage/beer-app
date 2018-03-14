@@ -9,8 +9,7 @@
           Loading site...
       </div>
     </div>
-    <appFooter></appFooter>
-  </div>
+    <appFooter></appFooter> </div>
 </template>
 
 <script>
@@ -36,9 +35,10 @@ export default {
     }, 500)
   },
   created () {
+    this.setSessionData()
+    this.axios.defaults.baseURL = this.$shared.oauthApiBaseUrl
     this.$auth.ready(function () {
       console.log('ready ' + this.context)
-      this.setSessionData()
     })
   },
   methods: {

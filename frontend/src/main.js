@@ -16,7 +16,10 @@ const shared = {
   beersApiBaseUrl: process.env.BEERS_API_BASE_URL,
   oauthApiBaseUrl: process.env.OAUTH_API_BASE_URL,
   clientId: process.env.CLIENT_ID,
-  googleClientId: process.env.GOOGLE_CLIENT_ID
+  googleClientId: process.env.GOOGLE_CLIENT_ID,
+  getValue: function (key) {
+    return this[key]
+  }
 }
 shared.install = function () {
   var _shared = shared
@@ -36,7 +39,6 @@ Vue.use(VueSession, {persist: true})
 
 // Setup axios for AJAX calls. Use default api for all axios calls
 Vue.use(VueAxios, axios)
-Vue.axios.defaults.baseURL = shared.oauthApiBaseUrl
 
 // Setup router for Vue-Auth
 Vue.router = router
@@ -57,7 +59,7 @@ Vue.use(require('@websanova/vue-auth'), {
     url: '/token'
   },
   refreshData: {
-    url: '/token/refresh'
+    url: shared.getValue('oauthApiBaseUrl') + '/token/refresh'
   },
   googleData: {
     url: '/token'

@@ -1,7 +1,7 @@
 <template>
   <div class="ui fixed menu beer-header">
     <router-link :to="{name: 'home'}" class="item logo">
-      <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Vue.js_Logo.svg">
+      <img class="logo" src="https://apigee.com/api-management/ui/images/apigee-logo.svg">
     </router-link>
     <router-link :to="{name: 'beers'}" class="item"><i class="beer icon"></i> Beers</router-link>
     <div class="ui simple dropdown item">More<i class="dropdown icon"></i>

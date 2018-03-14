@@ -2,7 +2,6 @@
   <div>
     <div v-show="!id_token || !type">
       <div class="ui stacked segment">
-        <p>Login</p>
         <form id="login" class="ui large form">
           <div class="ui clearing segment">
             <p>Login via credentials</p>
@@ -46,11 +45,16 @@
               Facebook
           </button>-->
         </div>
-         <div class="field">
-         <div class="ui toggle checkbox">
-           <input id="privacy" v-model="data.rememberMe" type="checkbox">
-           <label for="privacy">Remember Me</label>
-         </div>
+        <div class="ui clearing segment">
+          <div class="ui toggle checkbox custom">
+            <input id="rememberMe" v-model="data.rememberMe" type="checkbox">
+            <label for="rememberMe">Remember Me</label>
+          </div>
+          <br>
+          <div class="ui toggle checkbox custom">
+            <input id="accessTokenFormat" v-on:click="onAccessTokenFormatClick()" v-model.lazy="data.accessTokenFormat" true-value="jwt" false-value="opaque" type="checkbox">
+            <label for="accessTokenFormat">Access Token Format: {{ data.accessTokenFormat }}</label>
+          </div>
         </div>
       </div>
     </div>
@@ -77,6 +81,7 @@ export default {
       data: {
         test: false,
         rememberMe: false,
+        accessTokenFormat: this.$session.get('access_token_format') || 'opaque',
         fetchUser: true
       },
       code: this.$route.query.code,
@@ -106,7 +111,8 @@ export default {
         data: querystring.stringify({
           grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
           assertion: this.id_token,
-          client_id: this.$shared.clientId
+          client_id: this.$shared.clientId,
+          token_format: this.$session.get('access_token_format')
         }),
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -167,6 +173,13 @@ export default {
     onErrorClose: function () {
       this.error = !this.error
       console.log(this.error)
+    },
+    onAccessTokenFormatClick: function () {
+      var accessTokenFormat = 'opaque'
+      if (this.data.accessTokenFormat === 'opaque') {
+        accessTokenFormat = 'jwt'
+      }
+      this.$session.set('access_token_format', accessTokenFormat)
     }
   }
 }
@@ -178,5 +191,10 @@ export default {
 }
 #error {
   text-align: left;
+}
+.custom {
+  float: left;
+  margin: 5px 5px 5px 5px;
+
 }
 </style>
