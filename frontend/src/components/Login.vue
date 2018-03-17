@@ -53,7 +53,7 @@
           <br>
           <div class="ui toggle checkbox custom">
             <input id="accessTokenFormat" v-on:click="onAccessTokenFormatClick()" v-model.lazy="data.accessTokenFormat" true-value="jwt" false-value="opaque" type="checkbox">
-            <label for="accessTokenFormat">Access Token Format: {{ data.accessTokenFormat }}</label>
+            <label for="accessTokenFormat">Access Token Format: <b>{{ data.accessTokenFormat }}</b></label>
           </div>
         </div>
       </div>
