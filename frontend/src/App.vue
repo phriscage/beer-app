@@ -1,16 +1,15 @@
 <template>
   <div id="app">
     <appHeader></appHeader>
-    <div v-if="$auth.ready() && loaded">
+    <div v-if="authSuccess()">
       <router-view/>
     </div>
-    <div v-if="!$auth.ready() || !loaded">
-      <div style="text-align:center; padding-top:50px;">
-          Loading site...
+    <div v-if="authFail()">
+      <div class="ui active inverted dimmer">
+        <div class="ui text loader">Loading site...</div>
       </div>
     </div>
-    <appFooter></appFooter>
-  </div>
+    <appFooter></appFooter> </div>
 </template>
 
 <script>
@@ -38,21 +37,14 @@ export default {
   created () {
     this.$auth.ready(function () {
       console.log('ready ' + this.context)
-      this.setSessionData()
     })
   },
   methods: {
-    // set the session info
-    setSessionData () {
-      // start a new session
-      this.$session.start()
-      if (!this.$session.get('shared')) {
-        console.log('setting session from this.$shared')
-        this.$session.set('shared', this.$shared)
-      } else {
-        console.log('setting this.$shared from session')
-        this.$shared = this.$session.get('shared')
-      }
+    authSuccess () {
+      return (this.$auth.ready() && this.loaded)
+    },
+    authFail () {
+      return (!this.$auth.ready() || !this.loaded)
     }
   }
 }

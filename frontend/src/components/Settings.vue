@@ -134,6 +134,7 @@ export default {
         this.$shared.googleClientId = this.model.googleClientId
         this.$shared.beersApiBaseUrl = this.model.beersApiBaseUrl
         this.$shared.oauthApiBaseUrl = this.model.oauthApiBaseUrl
+        this.axios.defaults.baseURL = this.$shared.oauthApiBaseUrl
         this.$session.set('shared', this.$shared)
         this.model.success = true
         this.formstate._reset()
