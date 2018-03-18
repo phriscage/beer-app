@@ -13,12 +13,13 @@ Vue.use(VueForm)
 
 // Setup some global shared variables across all Vue components
 // hack to get session variables and load as shared defaults
-var sessionShared = JSON.parse(window.localStorage.getItem(VueSession.key)).shared
+var vueSession = JSON.parse(window.localStorage.getItem(VueSession.key)) || {}
+var sharedSession = vueSession.shared || {}
 const shared = {
-  beersApiBaseUrl: sessionShared.beersApiBaseUrl || process.env.BEERS_API_BASE_URL,
-  oauthApiBaseUrl: sessionShared.oauthApiBaseUrl || process.env.OAUTH_API_BASE_URL,
-  clientId: sessionShared.clientId || process.env.CLIENT_ID,
-  googleClientId: sessionShared.googleClientId || process.env.GOOGLE_CLIENT_ID
+  beersApiBaseUrl: sharedSession.beersApiBaseUrl || process.env.BEERS_API_BASE_URL,
+  oauthApiBaseUrl: sharedSession.oauthApiBaseUrl || process.env.OAUTH_API_BASE_URL,
+  clientId: sharedSession.clientId || process.env.CLIENT_ID,
+  googleClientId: sharedSession.googleClientId || process.env.GOOGLE_CLIENT_ID
 }
 shared.install = function () {
   var _this = this
