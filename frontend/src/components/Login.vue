@@ -1,6 +1,11 @@
 <template>
   <div>
     <div v-show="!id_token || !type">
+      <div class="ui error message" v-if="error">
+        <i v-on:click="onErrorClose()" class="close icon"></i>
+        <div class="header">Something broke!</div>
+        <div id="error"><pre>{{ errorMessage }}</pre></div>
+      </div>
       <div class="ui stacked segment">
         <form id="login" class="ui large form">
           <div class="ui clearing segment">
@@ -27,10 +32,6 @@
               </div>
             </div>
             <div class="ui fluid large blue submit button" @click="login()">Login</div>
-          </div>
-
-          <div class="ui error message" v-if="error">
-            <p>{{ errorMessage }}</p>
           </div>
         </form>
 
@@ -70,6 +71,8 @@
 </template>
 
 <script>
+var querystring = require('querystring')
+
 export default {
   data () {
     return {
@@ -103,7 +106,6 @@ export default {
       }
       // store third-party id_token and access token
       var redirect = this.$auth.redirect()
-      var querystring = require('querystring')
       console.log(this.$auth.options)
       // TODO need a better method to update all vue-auth default URLs
       this.axios.defaults.baseURL = this.$shared.oauthApiBaseUrl
@@ -158,8 +160,38 @@ export default {
     },
     login () {
       // TO-DO
-      console.log(this.credentials.username)
-      console.log(this.credentials.password)
+      var redirect = this.$auth.redirect()
+      this.$auth.login({
+        data: querystring.stringify({
+          username: this.credentials.username,
+          password: this.credentials.password,
+          grant_type: 'password',
+          client_id: this.$shared.clientId,
+          token_format: this.$session.get('access_token_format')
+        }),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-Provider': this.type
+        },
+        rememberMe: this.data.rememberMe,
+        redirect: {name: redirect ? redirect.from.name : 'account'},
+        fetchUser: this.data.fetchUser
+      })
+      .then(() => {
+        // this.$auth.token('id_token', '', 'remove')
+        console.log('success ' + this.context)
+        console.log('this.$auth.token(): ' + this.$auth.token())
+      }, (res) => {
+        console.log('error ' + this.context)
+        console.log(res)
+        if (res.response && res.response.status) {
+          this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
+               'Body: ' + JSON.stringify(res.response.data, null, 4)
+        } else {
+          this.errorMessage = res.toString()
+        }
+        this.error = true
+      })
     },
     social (type) {
       // set googleOauth2Data client_id
