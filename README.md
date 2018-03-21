@@ -1,47 +1,20 @@
 # Beer App
-This application provides information about Beers. The Beer data is constructed from various Beer microservices.
+This application provides information about Beers in a simple interface. The application is comprised of a lightweight, responsive Javascript interface and a Beer Data API. The Beer API is exposed through an API Proxy endpoint point that enforces AuthN/AuthZ, Security, Rate limting, etc. The Beer API version 1 is constructed from various Beer microservices (Details, Reviews, etc.) that run in a Kubernetes (K8s) cluster. Beer service version 1 can currenlty run in any K8s compatible environment. 
+
+This initial example focuses on running the Beer App in [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/). Additional examples will be provided for Minikube, Pivotal Cloud Foundry, etc.
 
 * [Prerequisites](#prerequisites)
 * [Setup](#setup)
-* [Development](#development)
-* [Deployment](#deployment)
+* [Development](DEVELOPMENT.md)
 
 
 ## <a name="prerequisites"></a>Prerequisites:
-* [Docker](https://www.docker.com) installed and running
-* [Docker Compose](https://www.docker.com/products/docker-compose) installed
-* [Node](https://nodejs.org/en/) installed
-* [Npm](https://www.npmjs.com/) installed
 * [Google Cloud Platform](https://cloud.google.com/) project created
 * [Google Cloud Platform SDK](https://cloud.google.com/sdk/) installed and configured
-* [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/) cluster created
+* [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/) cluster knowledge
 
 
-## <a name="setup"></a>Setup:
-Frontend: 
-Install the Node packages via NPM
-        
-        cd frontend
-        npm install
-
-Backend:
-TBD
-
-
-## <a name="development"></a>Development:
-Build and run the development environment as a Node instance and Docker application locally. You can specify configuration variables if needed via command line.I.E. `CLIENT_ID=1234 npm run dev`. Make changes accordingly.
-
-Frontend:
-        
-        cd frontend
-        npm run dev
-
-Backend
-
-        TAG=dev make test
-
-
-## <a name="deployment"></a>Deployment:
+## <a name="Setup"></a>Deployment:
 Set your **PROJECT_ID** environment variable
 
         export PROJECT_ID="$(gcloud config get-value project -q)"
@@ -50,24 +23,13 @@ Set your **CLUSTER_NAME** environment variable
 
         export CLUSTER_NAME=beers-cluster
 
-Create a GKE multi-zone cluster with alpha versions enabled:
+Create a GKE multi-zone cluster with GKE alpha versions enabled:
 
         gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.2-gke.1 --enable-kubernetes-alpha
 
 Check status:
 
         gcloud compute instances list
-
-Define the version number as the _TAG_ environment variable and build the image.
-
-        export TAG=<VERSION NUMBER>
-        make
-
-Tag and push the new image for GCR
-
-         docker tag <IMAGE ID> gcr.io/${PROJECT_ID}/beer-api:${TAG}
-         gcloud docker -- push gcr.io/${PROJECT_ID}/beer-api:${TAG}
-
 
 Create the application and dependencies in the GKE cluster:
 
@@ -77,12 +39,7 @@ Check the status:
 
         kubectl get deploy,po,svc -o wide
 
+Launch browser to UI and API:
 
-### Deployment Updates:
-Update the container image name/version for an existing deployment
-
-        kubectl set image deployment/beer-api beer-api=gcr.io/${PROJECT_ID}/beer-api:${TAG}
-
-
-## To-Do
-* automated builds
+        http://localhost:80
+        http://localhost:8080
