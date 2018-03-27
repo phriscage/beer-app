@@ -41,7 +41,11 @@ Set your **PROJECT_ID** environment variable
 
 Set your **CLUSTER_NAME** environment variable
 
-        export CLUSTER_NAME=beers-cluster
+        export CLUSTER_NAME=beer-app
+
+Get the credentials for Kubectl:
+
+        gcloud container clusters get-credentials $CLUSTER_NAME
 
 Define the version number as the _TAG_ environment variable and build the image.
 
