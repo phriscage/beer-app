@@ -1,98 +1,22 @@
 # Beer App
-This application provides information about Beers in a simple interface. The application is comprised of a lightweight, responsive browser interface, a Beer Data API, and corespeonding Beer microservices. The Beer API is exposed through an API Proxy endpoint point that enforces AuthN/AuthZ, Security, Rate limting, etc. The Beer API is constructed from various Beer microservices (Details, Reviews, etc.) that run in a Kubernetes (K8s) cluster. 
+This application provides information about Beers in a simple interface. The application is comprised of a lightweight, responsive browser interface, a Beer Data API, and corespeonding Beer microservices. The Beer API is exposed through an API Management proxy endpoint point that enforces AuthN/AuthZ, Security, Rate limting, etc. The Beer API is constructed from various Beer microservices (Details, Reviews, etc.) that run in a Kubernetes (K8s) cluster. 
 
 These are the initial deployment patterns:
 
 * **Self-contained application environment:** The Beer API and services reside in a K8s environment (private or public cloud) and is proxied directly from the API Management platform.
 
-<details>
-  <summary>Graphviz Source</summary>
-  <pre><code>
-![alt text]('https://g.gravizo.com/svg?
-  digraph G {
-    rankdir=LR;
-    edge [dir=both];
-    {rank=same; idp, proxy};
-    {rank=same; };
-
-    subgraph cluster_ms {
-      api; ms1; ms2; db1; db2;
-      label="private/public";
-    }
-
-    client [label="client", shape=box];
-    idp [label="identity"];
-    proxy [label="proxy"];
-    api [label="api"];
-    ms1 [label="service"];
-    ms2 [label="service"];
-    db1  [label="data", shape=box];
-    db2  [label="data", shape=box];
-
-    spacing [label="", style=invisible];
-    client -> proxy;
-    proxy -> idp [style=dotted, dir=none];
-    proxy -> api [style=dotted, dir=none];
-    api -> ms1 [style=dotted, dir=none];
-    api -> ms2 [style=dotted, dir=none];
-    ms1 -> db1 [style=dotted, dir=none];
-    ms2 -> db2 [style=dotted,  dir=none];
-  })
-  </pre></code>
-</details>
-
-![alt text](https://g.gravizo.com/svg?%20digraph%20G%20{%20rankdir=LR;%20edge%20[dir=both];%20{rank=same;%20idp,%20proxy};%20{rank=same;%20};%20subgraph%20cluster_ms%20{%20api;%20ms1;%20ms2;%20db1;%20db2;%20label=%22private/public%22;%20}%20client%20[label=%22client%22,%20shape=box];%20idp%20[label=%22identity%22];%20proxy%20[label=%22proxy%22];%20api%20[label=%22api%22];%20ms1%20[label=%22service%22];%20ms2%20[label=%22service%22];%20db1%20[label=%22data%22,%20shape=box];%20db2%20[label=%22data%22,%20shape=box];%20spacing%20[label=%22%22,%20style=invisible];%20client%20-%3E%20proxy;%20proxy%20-%3E%20idp%20[style=dotted,%20dir=none];%20proxy%20-%3E%20api%20[style=dotted,%20dir=none];%20api%20-%3E%20ms1%20[style=dotted,%20dir=none];%20api%20-%3E%20ms2%20[style=dotted,%20dir=none];%20ms1%20-%3E%20db1%20[style=dotted,%20dir=none];%20ms2%20-%3E%20db2%20[style=dotted,%20dir=none];%20})
-
+![alt text](images/beer-app_architecture.png)
 
 * **Hybrid private and public application environment:** The Beer API services reside in separate or hybrid K8s environment(s) (private and public cloud) and the Beer API is orchestrated and proxied from the API Management platform.
 
-<details>
-  <summary>Graphviz Source</summary>
-  <pre><code>
-![alt text]('https://g.gravizo.com/svg?
-  digraph G {
-    rankdir=LR;
-    edge [dir=both];
-    {rank=same; idp, proxy};
-    {rank=same; };
-
-    subgraph cluster_ms1 {
-      ms1; db1;
-      label="public";
-    }
-
-    subgraph cluster_ms2 {
-      ms2; db2;
-      label="private";
-    }
-
-    client [label="client", shape=box];
-    idp [label="identity"];
-    proxy [label="proxy"];
-    ms1 [label="service"];
-    ms2 [label="service"];
-    db1  [label="data", shape=box];
-    db2  [label="data", shape=box];
- 
-    spacing [label="", style=invisible];
-    client -> proxy;
-    proxy -> idp [style=dotted, dir=none];
-    proxy -> ms1 [style=dotted, dir=none];
-    proxy -> ms2 [style=dotted, dir=none];
-    ms1 -> db1 [style=dotted, dir=none];
-    ms2 -> db2 [style=dotted,  dir=none];
-  })
-  </pre></code>
-</details>
-
-![alt text](https://g.gravizo.com/svg?%20digraph%20G%20{%20rankdir=LR;%20edge%20[dir=both];%20{rank=same;%20idp,%20proxy};%20{rank=same;%20};%20subgraph%20cluster_ms1%20{%20ms1;%20db1;%20label=%22public%22;%20}%20subgraph%20cluster_ms2%20{%20ms2;%20db2;%20label=%22private%22;%20}%20client%20[label=%22client%22,%20shape=box];%20idp%20[label=%22identity%22];%20proxy%20[label=%22proxy%22];%20ms1%20[label=%22service%22];%20ms2%20[label=%22service%22];%20db1%20[label=%22data%22,%20shape=box];%20db2%20[label=%22data%22,%20shape=box];%20spacing%20[label=%22%22,%20style=invisible];%20client%20-%3E%20proxy;%20proxy%20-%3E%20idp%20[style=dotted,%20dir=none];%20proxy%20-%3E%20ms1%20[style=dotted,%20dir=none];%20proxy%20-%3E%20ms2%20[style=dotted,%20dir=none];%20ms1%20-%3E%20db1%20[style=dotted,%20dir=none];%20ms2%20-%3E%20db2%20[style=dotted,%20dir=none];%20})
-
+![alt text](images/beer-app_architecture-hybrid.png)
 
 The initial example, **Self-contained**, focuses on running the Beer App in [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/). Additional examples will be provided for Minikube, Pivotal Cloud Foundry, etc. 
 
 * [Prerequisites](#prerequisites)
 * [Setup](#setup)
 * [Quickstart](#quickstart)
+* [API Management](APIGEE.md)
 * [Development](DEVELOPMENT.md)
 * [To-Do](#todo)
 
