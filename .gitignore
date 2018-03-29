@@ -1,2 +1,11 @@
 ## Deployment
-dist
+dist 
+
+*.pyc
+.*
+!/.gitignore
+*.log
+**/log
+*.zip
+**/certs
+*.retry
