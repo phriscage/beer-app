@@ -1,4 +1,4 @@
-# Copyright 2018 
+# Copyright 2018
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@ spec:
         app: reviews-api
     spec:
       containers:
-        - image: gcr.io/chrispage-dev/beer-reviews-api:0.2.0
+        - image: gcr.io/chrispage-dev/beer-reviews-api:0.2.1
           name: reviews-api
           # imagePullPolicy: Always
           env:

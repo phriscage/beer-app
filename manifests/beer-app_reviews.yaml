@@ -47,7 +47,7 @@ spec:
         app: reviews-api
     spec:
       containers:
-        - image: gcr.io/chrispage-dev/beer-reviews-api:0.2.0
+        - image: gcr.io/chrispage-dev/beer-reviews-api:0.2.1
           name: reviews-api
           # imagePullPolicy: Always
           env:
