@@ -51,7 +51,7 @@ def get_beer_details(beer_id, headers, params=None):
 
 def get_beer_reviews(beer_id, headers, params=None):
     """ get the beer reviews from the service """
-    url = beer_reviews['name'] + "/beers" + "/" + str(beer_id) + "/" + beer_reviews['endpoint']
+    url = beer_reviews['name'] + "/beer" + "/" + str(beer_id) + "/" + beer_reviews['endpoint']
     try:
         res = requests.get(url, headers=headers, params=params, timeout=3.0)
     except:
@@ -64,7 +64,7 @@ def get_beer_reviews(beer_id, headers, params=None):
         return status, {'error': 'Sorry, beer reviews are currently unavailable.'}
 
 
-@beers.route('', methods=['GET'])
+@beers.route('s', methods=['GET'])
 def get_beers():
     """
     """
