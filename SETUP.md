@@ -28,7 +28,7 @@ Set your **CLUSTER_NAME** environment variable
 
 Create a GKE multi-zone cluster with GKE alpha versions enabled:
 
-        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.2-gke.1 --enable-kubernetes-alpha
+        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.6-gke.0 --enable-kubernetes-alpha
 
         gcloud compute instances list
 
@@ -63,7 +63,7 @@ Set your **CLUSTER_NAME** environment variable
 
 Create a GKE multi-zone cluster with GKE alpha versions enabled:
 
-        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.2-gke.1 --enable-kubernetes-alpha
+        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.6-gke.0 --enable-kubernetes-alpha
 
         gcloud compute instances list
 
@@ -94,7 +94,7 @@ Set your **CLUSTER_NAME** environment variable
 
 Create a GKE multi-zone cluster with GKE alpha versions enabled:
 
-        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.2-gke.1 --enable-kubernetes-alpha
+        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.6-gke.0 --enable-kubernetes-alpha
 
         gcloud compute instances list
 
