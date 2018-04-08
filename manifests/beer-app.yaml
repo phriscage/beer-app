@@ -47,7 +47,7 @@ spec:
         app: beer-api
     spec:
       containers:
-        - image: gcr.io/chrispage-dev/beer-api:dev
+        - image: gcr.io/chrispage-dev/beer-api:0.1.1
           name: beer-api
           ports:
             - containerPort: 5000
