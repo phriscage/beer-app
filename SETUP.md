@@ -28,7 +28,7 @@ Set your **CLUSTER_NAME** environment variable
 
 Create a GKE multi-zone cluster with GKE alpha versions enabled:
 
-        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.6-gke.0 --enable-kubernetes-alpha
+        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.6 --enable-kubernetes-alpha
 
         gcloud compute instances list
 
@@ -36,9 +36,21 @@ Get the credentials for Kubectl:
 
         gcloud container clusters get-credentials $CLUSTER_NAME
 
+Enable cluster-admin-binding clusterrolebinding in the cluster:
+
+        kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
+
+Install Istio:
+
+        kubectl apply -f install/kubernetes/istio-auth.yaml
+
 Create the application and dependencies in the GKE cluster:
 
         kubectl create -f manifests/beer-app.yaml
+
+Inject the Istio sidecar proxies to the application Pods:
+
+        kubectl apply -f <(istioctl kube-inject -f manifests/beer-app.yaml )
 
 Check the status:
 
@@ -46,7 +58,7 @@ Check the status:
 
 Get the external IP:
 
-        kubectl get svc -l app=beer-api
+        kubectl get ing -o wide
 
 Launch browser to view the API and OpenAPI Spec:
 
@@ -63,7 +75,7 @@ Set your **CLUSTER_NAME** environment variable
 
 Create a GKE multi-zone cluster with GKE alpha versions enabled:
 
-        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.6-gke.0 --enable-kubernetes-alpha
+        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.6 --enable-kubernetes-alpha
 
         gcloud compute instances list
 
@@ -71,9 +83,21 @@ Get the credentials for Kubectl:
 
         gcloud container clusters get-credentials $CLUSTER_NAME
 
+Enable cluster-admin-binding clusterrolebinding in the cluster:
+
+        kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
+
+Install Istio:
+
+        kubectl apply -f install/kubernetes/istio-auth.yaml
+
 Create the application and dependencies in the GKE cluster:
 
         kubectl create -f manifests/beer-app_details.yaml
+
+Inject the Istio sidecar proxies to the application Pods:
+
+        kubectl apply -f <(istioctl kube-inject -f manifests/beer-app_details.yaml)
 
 Check the status:
 
@@ -81,7 +105,7 @@ Check the status:
 
 Get the external IP:
 
-        kubectl get svc -l app=details-api
+        kubectl get ing -o wide
 
 Launch browser to view the API and OpenAPI Spec:
 
@@ -94,7 +118,7 @@ Set your **CLUSTER_NAME** environment variable
 
 Create a GKE multi-zone cluster with GKE alpha versions enabled:
 
-        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.6-gke.0 --enable-kubernetes-alpha
+        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.6 --enable-kubernetes-alpha
 
         gcloud compute instances list
 
@@ -102,9 +126,21 @@ Get the credentials for Kubectl:
 
         gcloud container clusters get-credentials $CLUSTER_NAME
 
+Enable cluster-admin-binding clusterrolebinding in the cluster:
+
+        kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
+
+Install Istio:
+
+        kubectl apply -f install/kubernetes/istio-auth.yaml
+
 Create the application and dependencies in the GKE cluster:
 
         kubectl create -f manifests/beer-app_reviews.yaml
+
+Inject the Istio sidecar proxies to the application Pods:
+
+        kubectl apply -f <(istioctl kube-inject -f manifests/beer-app_reviews.yaml)
 
 Check the status:
 
@@ -112,7 +148,7 @@ Check the status:
 
 Get the external IP:
 
-        kubectl get svc -l app=reviews-api
+        kubectl get ing -o wide
 
 Launch browser to view the API and OpenAPI Spec:
 

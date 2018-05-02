@@ -14,7 +14,6 @@
 ################################################################################
 # Reviews API service
 ################################################################################
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -22,11 +21,10 @@ metadata:
     app: reviews-api
   name: reviews-api
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
-    - port: 80
-      targetPort: 8080
-      protocol: TCP
+    - port: 8080
+      name: http
   selector:
     app: reviews-api
 ---
@@ -56,11 +54,10 @@ spec:
           ports:
             - containerPort: 8080
               name: reviews-api
-
+---
 ################################################################################
 # Reviews DB service
 ################################################################################
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -104,3 +101,22 @@ spec:
               name: rest
             - containerPort: 9300
               name: nodes
+---
+###########################################################################
+# Ingress resource (gateway)
+##########################################################################
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gateway
+  annotations:
+    kubernetes.io/ingress.class: "istio"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /.*
+      # - path: /reviews.
+        backend:
+          serviceName: reviews-api
+          servicePort: 8080
