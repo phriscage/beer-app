@@ -21,6 +21,7 @@ tags:
     description: All the reviews about your Beer
 schemes:
   - http
+  - https
 paths:
   /beers:
     get:
@@ -92,7 +93,7 @@ paths:
         - beer_auth:
             - 'write:beers'
             - 'read:beers'
-  '/beer/{beerId}':
+  '/beers/{beerId}':
     get:
       tags:
         - beers
@@ -119,7 +120,7 @@ paths:
           description: Beer not found
       security:
         - api_key: []
-  '/beer/{beerId}/reviews':
+  '/beers/{beerId}/reviews':
     get:
       tags:
         - reviews

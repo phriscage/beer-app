@@ -64,7 +64,7 @@ def get_beer_reviews(beer_id, headers, params=None):
         return status, {'error': 'Sorry, beer reviews are currently unavailable.'}
 
 
-@beers.route('s', methods=['GET'])
+@beers.route('', methods=['GET'])
 def get_beers():
     """
     """
