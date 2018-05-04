@@ -1,5 +1,5 @@
 # Beer App
-This application provides information about Beers in a simple interface. The application is comprised of a lightweight, responsive browser interface, a Beer Data API, and corespeonding Beer microservices. The Beer API is exposed through an API Management proxy endpoint point that enforces AuthN/AuthZ, Security, Rate limting, etc. The Beer API is constructed from various Beer microservices (Details, Reviews, etc.) that run in a Kubernetes (K8s) cluster. 
+This application provides information about Beers in a simple interface. The application is comprised of a lightweight, responsive browser interface, a Beer Data API, and corespeonding Beer microservices. The Beer API is exposed through an API Management proxy endpoint point that enforces AuthN/AuthZ, Security, Rate limting, etc. The Beer API is constructed from various Beer microservices (Details, Reviews, etc.) that run in a Kubernetes (K8s) cluster. Istio is installed in the K8s cluster to provide service mesh management by leveraging Envoy as a sidecar proxy. Istio initially provides routing, load balancing, and security (mTLS) for the cluster services.
 
 These are the initial deployment patterns:
 
@@ -24,6 +24,7 @@ The initial examples, **Stand-alone** and **Hybrid**, focuses on running the Bee
 * [Google Cloud Platform](https://cloud.google.com/) project created
 * [Google Cloud Platform SDK](https://cloud.google.com/sdk/) installed and configured
 * [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/) cluster knowledge
+* [Istio](https://istio.io/) service mesh management knowledge
 
 * [Node](https://nodejs.org/en/) installed
 * [Npm](https://www.npmjs.com/) installed
