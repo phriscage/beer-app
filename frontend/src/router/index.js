@@ -39,6 +39,11 @@ const routerOptions = [
     component: 'Beers'
   },
   {
+    path: '/beers/new',
+    name: 'new_beer',
+    component: 'NewBeer'
+  },
+  {
     path: '/random',
     name: 'random',
     component: 'Random',
