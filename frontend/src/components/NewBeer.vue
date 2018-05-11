@@ -1,5 +1,18 @@
 <template>
-  <div class="container">
+  <div>
+    <div class="ui grid">
+     <div class="row">
+       <div class="three wide column"></div>
+       <div class="ten wide column">
+         <div class="ui error message" v-if="error">
+           <i v-on:click="onErrorClose()" class="close icon"></i>
+           <div class="header">Something broke!</div>
+           <div id="error"><pre>{{ errorMessage }}</pre></div>
+         </div>
+       </div>
+      </div>
+    </div>
+    <div class="container">
     <vue-form id="new_beer" class="ui warning error success form" :state="formstate" @submit.prevent="onSubmit">
       <div class="ui clearing segment">
 
@@ -45,14 +58,19 @@
       </div>
     </vue-form>
   </div>
+  </div>
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
   data () {
     return {
+      beersApiUrl: this.$shared.beersApiBaseUrl + '/beers',
       formstate: {},
+      error: false,
+      errorMessage: '',
       model: {
         name: '',
         brewery: '',
@@ -62,6 +80,20 @@ export default {
     }
   },
   methods: {
+    // handle errors
+    handleLoadError (res) {
+      console.log('handleLoadError: ')
+      if (res.response && res.response.status) {
+        this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
+             'Body: ' + JSON.stringify(res.response.data, null, 4)
+      } else {
+        this.errorMessage = res.toString()
+      }
+      this.error = true
+    },
+    onErrorClose: function () {
+      this.error = !this.error
+    },
     fieldClassName: function (field) {
       if (!field) {
         return ''
@@ -86,15 +118,31 @@ export default {
       }
     },
     onSubmit: function () {
-      if (this.formstate.$invalid) {
+      var _this = this
+      if (_this.formstate.$invalid) {
         // alert user and exit early
-        console.log('this.formstate.$invalid: ' + this.formstate.$invalid)
+        console.log('this.formstate.$invalid: ' + _this.formstate.$invalid)
         return ''
       }
       // only update if something changed from original
-      if (this.formstate.$dirty) {
-        this.model.success = true
-        this.formstate._reset()
+      if (_this.formstate.$dirty) {
+        axios({
+          method: 'post',
+          url: _this.$shared.beersApiBaseUrl + '/beers',
+          data: {
+            name: _this.model.name,
+            brewery: _this.model.brewery
+          }
+        })
+        .then(function (response) {
+          console.log(response)
+          _this.model.success = true
+          _this.formstate._reset()
+        })
+        .catch(function (error) {
+          console.log(error)
+          _this.handleLoadError(error)
+        })
       }
     },
     onSuccessClose: function () {
@@ -118,5 +166,9 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
     opacity: 0
+}
+#error {
+  text-align: left;
+  width: 340px;
 }
 </style>
