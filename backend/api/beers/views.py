@@ -33,6 +33,20 @@ beer_reviews = {
     "children" : []
 }
 
+def post_beer_details(headers, body):
+    """ post the beer details from the service """
+    url = beer_details['name'] + "/" + beer_details['endpoint']
+    try:
+        res = requests.post(url, headers=headers, json=body, timeout=3.0)
+    except:
+        res = None
+    if res.status_code in (201, 400):
+        return res.status_code, res.json()
+    else:
+        logger.debug(res.status_code)
+        status = res.status_code if res is not None and res.status_code else 500
+        return status, {'error': 'Sorry, beer details are currently unavailable.'}
+
 def get_beer_details(beer_id, headers, params=None):
     """ get the beer details from the service """
     url = beer_details['name'] + "/" + beer_details['endpoint']
@@ -64,12 +78,16 @@ def get_beer_reviews(beer_id, headers, params=None):
         return status, {'error': 'Sorry, beer reviews are currently unavailable.'}
 
 
-@beers.route('', methods=['GET'])
-def get_beers():
+@beers.route('', methods=['GET', 'POST'])
+def index():
     """
     """
     headers = {}
-    status, details = get_beer_details(None, headers, request.query_string)
+    if request.method == 'POST':
+        # headers = {'content-type': 'application/json'}
+        status, details = post_beer_details(headers, request.json)
+    else:
+        status, details = get_beer_details(None, headers, request.query_string)
     return jsonify(details), status
 
 @beers.route('/<string:beer_id>', methods=['GET'])
