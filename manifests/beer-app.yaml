@@ -46,7 +46,7 @@ spec:
         app: beer-api
     spec:
       containers:
-        - image: gcr.io/chrispage-dev/beer-api:0.3.0
+        - image: gcr.io/chrispage-dev/beer-api:0.4.0
           name: beer-api
           ports:
             - containerPort: 5000
@@ -186,6 +186,9 @@ spec:
           ports:
             - containerPort: 8080
               name: details-api
+          resources:
+            requests:
+              cpu: 10m
 
 ################################################################################
 # Details DB service

@@ -63,6 +63,20 @@ def get_beer_details(beer_id, headers, params=None):
         status = res.status_code if res is not None and res.status_code else 500
         return status, {'error': 'Sorry, beer details are currently unavailable.'}
 
+def delete_beer_details(beer_id, headers, params=None):
+    """ delete the beer details from the service """
+    url = beer_details['name'] + "/" + beer_details['endpoint'] + "/" + str(beer_id)
+    try:
+        res = requests.delete(url, headers=headers, params=params, timeout=3.0)
+    except:
+        res = None
+    if res and res.status_code == 200:
+        return 200, res.json()
+    else:
+        logger.debug(res)
+        status = res.status_code if res is not None and res.status_code else 500
+        return status, {'error': 'Sorry, beer details are currently unavailable.'}
+
 def get_beer_reviews(beer_id, headers, params=None):
     """ get the beer reviews from the service """
     url = beer_reviews['name'] + "/beer" + "/" + str(beer_id) + "/" + beer_reviews['endpoint']
@@ -90,12 +104,15 @@ def index():
         status, details = get_beer_details(None, headers, request.query_string)
     return jsonify(details), status
 
-@beers.route('/<string:beer_id>', methods=['GET'])
-def get_beer_by_beer_id(beer_id):
+@beers.route('/<string:beer_id>', methods=['GET', 'DELETE'])
+def get_or_delete_beer_by_beer_id(beer_id):
     """
     """
     headers = {}
-    status, details = get_beer_details(beer_id, headers, request.query_string)
+    if request.method == 'DELETE':
+        status, details = delete_beer_details(beer_id, headers, request.query_string)
+    else:
+        status, details = get_beer_details(beer_id, headers, request.query_string)
     return jsonify(details), status
 
 @beers.route('/<string:beer_id>/reviews', methods=['GET'])
