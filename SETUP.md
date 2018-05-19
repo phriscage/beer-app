@@ -28,13 +28,9 @@ Set your **CLUSTER_NAME** environment variable
 
 [Setup Kubernetes and Istio](#setup_kubernetes_and_istio)
 
-Create the application and dependencies in the GKE cluster:
+Create the application and inject the Istio sidecar proxies to the application Pods:
 
-        kubectl create -f manifests/beer-app.yaml
-
-Inject the Istio sidecar proxies to the application Pods:
-
-        kubectl apply -f <(istioctl kube-inject -f manifests/beer-app.yaml )
+        kubectl create -f <(istioctl kube-inject -f manifests/beer-app.yaml )
 
 Check the status, get external ingress IP, and export IP as GATEWAY_URL=<IP:PORT>:
 
@@ -55,13 +51,9 @@ Set your **CLUSTER_NAME** environment variable
 
 [Setup Kubernetes and Istio](#setup_kubernetes_and_istio)
 
-Create the application and dependencies in the GKE cluster:
+Create the application and inject the Istio sidecar proxies to the application Pods:
 
-        kubectl create -f manifests/beer-app_details.yaml
-
-Inject the Istio sidecar proxies to the application Pods:
-
-        kubectl apply -f <(istioctl kube-inject -f manifests/beer-app_details.yaml)
+        kubectl create -f <(istioctl kube-inject -f manifests/beer-app_details.yaml)
 
 Check the status, get external ingress IP, and export IP as GATEWAY_URL=<IP:PORT>:
 
@@ -78,13 +70,9 @@ Set your **CLUSTER_NAME** environment variable
 
 [Setup Kubernetes and Istio](#setup_kubernetes_and_istio)
 
-Create the application and dependencies in the GKE cluster:
+Create the application and inject the Istio sidecar proxies to the application Pods:
 
-        kubectl create -f manifests/beer-app_reviews.yaml
-
-Inject the Istio sidecar proxies to the application Pods:
-
-        kubectl apply -f <(istioctl kube-inject -f manifests/beer-app_reviews.yaml)
+        kubectl create -f <(istioctl kube-inject -f manifests/beer-app_reviews.yaml)
 
 Check the status, get external ingress IP, and export IP as GATEWAY_URL=<IP:PORT>:
 

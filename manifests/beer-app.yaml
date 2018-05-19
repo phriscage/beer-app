@@ -235,6 +235,9 @@ spec:
           volumeMounts:
             - name: details-db-initdb
               mountPath: /docker-entrypoint-initdb.d
+          resources:
+            requests:
+              cpu: 10m
       volumes:
         - name: details-db-initdb
           configMap:
