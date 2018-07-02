@@ -88,15 +88,11 @@ You can now add an A/CNAME DNS record to the GATEWAY_URL in Cloud DNS. _Integrat
 ## <a name="setup_kubernetes_and_istio">Setup Kubernetes and Istio</a>
 _CLUSTER_NAME should be already defined_
 
-Create a GKE multi-zone cluster with GKE alpha versions enabled:
+Create a GKE cluster with GKE alpha versions enabled:
 
-        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.6 --enable-kubernetes-alpha
+        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --num-nodes=4 --cluster-version=1.10 --enable-kubernetes-alpha
 
         gcloud compute instances list
-
-Get the credentials for Kubectl:
-
-        gcloud container clusters get-credentials $CLUSTER_NAME
 
 Enable cluster-admin-binding clusterrolebinding in the cluster:
 
