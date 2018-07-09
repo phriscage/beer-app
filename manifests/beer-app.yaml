@@ -22,11 +22,10 @@ metadata:
     app: beer-api
   name: beer-api
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
-    - port: 80
-      targetPort: 5000
-      protocol: TCP
+    - port: 5000
+      name: http
   selector:
     app: beer-api
 ---
@@ -47,7 +46,7 @@ spec:
         app: beer-api
     spec:
       containers:
-        - image: gcr.io/chrispage-dev/beer-api:0.1.1
+        - image: gcr.io/chrispage-dev/beer-api:0.4.0
           name: beer-api
           ports:
             - containerPort: 5000
@@ -179,7 +178,7 @@ spec:
         app: details-api
     spec:
       containers:
-        - image: gcr.io/chrispage-dev/beer-details-api:0.3.1
+        - image: gcr.io/chrispage-dev/beer-details-api:0.4.0
           name: details-api
           env:
           - name: SQLALCHEMY_DATABASE_URI
@@ -187,6 +186,9 @@ spec:
           ports:
             - containerPort: 8080
               name: details-api
+          resources:
+            requests:
+              cpu: 10m
 
 ################################################################################
 # Details DB service
@@ -233,6 +235,9 @@ spec:
           volumeMounts:
             - name: details-db-initdb
               mountPath: /docker-entrypoint-initdb.d
+          resources:
+            requests:
+              cpu: 10m
       volumes:
         - name: details-db-initdb
           configMap:
@@ -295,4 +300,22 @@ data:
         ('Russian River Brewing Company', 'IPA - Imperial / Double', 6.95, 'Pliny the Elder'),
         ('Stone Brewing', 'IPA - Session / India Session Ale', 5.95, 'Stone Go To IPA'),
         ('Firestone Walker Brewing Company', 'IPA - Session / India Session Ale', 5.95, 'Easy Jack');
+---
+###########################################################################
+# Ingress resource (gateway)
+##########################################################################
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gateway
+  annotations:
+    kubernetes.io/ingress.class: "istio"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /.*
+        backend:
+          serviceName: beer-api
+          servicePort: 5000
 

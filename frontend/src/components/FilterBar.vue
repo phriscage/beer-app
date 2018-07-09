@@ -10,9 +10,14 @@
       <div class='one wide column'>
         <button class="ui primary button" @click="doFilter">Go</button>
       </div>
+        |
       <div class='one wide column'>
          <button class="ui button" @click="resetFilter">Reset</button>
       </div>
+      <div class='right floated left aligned one wide column'>
+         <router-link :to="{name: 'new_beer'}" class="ui primary button">New</router-link>
+      </div>
+      <div class='one wide column'></div>
     </div>
   </div>
 </div>
@@ -34,6 +39,9 @@
         this.filterText = ''
         console.log('resetFilter')
         this.$events.fire('filter-reset')
+      },
+      newBeer () {
+        console.log('newBeer')
       }
     }
   }

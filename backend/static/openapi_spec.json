@@ -30,7 +30,8 @@
     }
   ],
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "paths": {
     "/beers": {
@@ -141,7 +142,7 @@
         ]
       }
     },
-    "/beer/{beerId}": {
+    "/beers/{beerId}": {
       "get": {
         "tags": [
           "beers"
@@ -183,7 +184,7 @@
         ]
       }
     },
-    "/beer/{beerId}/reviews": {
+    "/beers/{beerId}/reviews": {
       "get": {
         "tags": [
           "reviews"

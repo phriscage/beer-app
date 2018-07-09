@@ -26,33 +26,21 @@ Set your **CLUSTER_NAME** environment variable
 
         export CLUSTER_NAME=beer-app
 
-Create a GKE multi-zone cluster with GKE alpha versions enabled:
+[Setup Kubernetes and Istio](#setup_kubernetes_and_istio)
 
-        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.6-gke.0 --enable-kubernetes-alpha
+Create the application and inject the Istio sidecar proxies to the application Pods:
 
-        gcloud compute instances list
+        kubectl create -f <(istioctl kube-inject -f manifests/beer-app.yaml )
 
-Get the credentials for Kubectl:
+Check the status, get external ingress IP, and export IP as GATEWAY_URL=<IP:PORT>:
 
-        gcloud container clusters get-credentials $CLUSTER_NAME
-
-Create the application and dependencies in the GKE cluster:
-
-        kubectl create -f manifests/beer-app.yaml
-
-Check the status:
-
-        kubectl get deploy,po,svc -o wide
-
-Get the external IP:
-
-        kubectl get svc -l app=beer-api
+        kubectl get ing,deploy,po,svc -o wide
 
 Launch browser to view the API and OpenAPI Spec:
 
-        http://{EXTERNAL-IP}:80/openapi_spec
+        http://{GATEWAY_URL}/openapi_spec
 
-You can now add an A/CNAME DNS record to the EXTERNAL-IP in Cloud DNS. _Integration of Cloud DNS into kubectl ToDo_
+You can now add an A/CNAME DNS record to the GATEWAY_URL in Cloud DNS. _Integration of Cloud DNS into kubectl ToDo_
 
 
 ## <a name="setup_backend_hybrid">Setup Backend - Hybrid</a>
@@ -61,62 +49,56 @@ Set your **CLUSTER_NAME** environment variable
 
         export CLUSTER_NAME=details-api
 
-Create a GKE multi-zone cluster with GKE alpha versions enabled:
+[Setup Kubernetes and Istio](#setup_kubernetes_and_istio)
 
-        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.6-gke.0 --enable-kubernetes-alpha
+Create the application and inject the Istio sidecar proxies to the application Pods:
 
-        gcloud compute instances list
+        kubectl create -f <(istioctl kube-inject -f manifests/beer-app_details.yaml)
 
-Get the credentials for Kubectl:
+Check the status, get external ingress IP, and export IP as GATEWAY_URL=<IP:PORT>:
 
-        gcloud container clusters get-credentials $CLUSTER_NAME
-
-Create the application and dependencies in the GKE cluster:
-
-        kubectl create -f manifests/beer-app_details.yaml
-
-Check the status:
-
-        kubectl get deploy,po,svc -o wide
-
-Get the external IP:
-
-        kubectl get svc -l app=details-api
+        kubectl get ing,deploy,po,svc -o wide
 
 Launch browser to view the API and OpenAPI Spec:
 
-        http://{EXTERNAL-IP}:80/details
+        http://{GATEWAY_URL}/details
 
 reviews-api:
 Set your **CLUSTER_NAME** environment variable
 
         export CLUSTER_NAME=reviews-api
 
-Create a GKE multi-zone cluster with GKE alpha versions enabled:
+[Setup Kubernetes and Istio](#setup_kubernetes_and_istio)
 
-        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --additional-zones us-east4-b,us-east4-c --num-nodes=1 --cluster-version=1.9.6-gke.0 --enable-kubernetes-alpha
+Create the application and inject the Istio sidecar proxies to the application Pods:
 
-        gcloud compute instances list
+        kubectl create -f <(istioctl kube-inject -f manifests/beer-app_reviews.yaml)
 
-Get the credentials for Kubectl:
+Check the status, get external ingress IP, and export IP as GATEWAY_URL=<IP:PORT>:
 
-        gcloud container clusters get-credentials $CLUSTER_NAME
-
-Create the application and dependencies in the GKE cluster:
-
-        kubectl create -f manifests/beer-app_reviews.yaml
-
-Check the status:
-
-        kubectl get deploy,po,svc -o wide
-
-Get the external IP:
-
-        kubectl get svc -l app=reviews-api
+        kubectl get ing,deploy,po,svc -o wide
 
 Launch browser to view the API and OpenAPI Spec:
 
-        http://{EXTERNAL-IP}:80/reviews
+        http://{GATEWAY_URL}/reviews
 
-You can now add an A/CNAME DNS record to the EXTERNAL-IP in Cloud DNS. _Integration of Cloud DNS into kubectl ToDo_
+You can now add an A/CNAME DNS record to the GATEWAY_URL in Cloud DNS. _Integration of Cloud DNS into kubectl ToDo_
+
+
+## <a name="setup_kubernetes_and_istio">Setup Kubernetes and Istio</a>
+_CLUSTER_NAME should be already defined_
+
+Create a GKE cluster with GKE alpha versions enabled:
+
+        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --num-nodes=4 --cluster-version=1.10 --enable-kubernetes-alpha
+
+        gcloud compute instances list
+
+Enable cluster-admin-binding clusterrolebinding in the cluster:
+
+        kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
+
+Install Istio:
+
+        kubectl apply -f install/kubernetes/istio-auth.yaml
 
