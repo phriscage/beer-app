@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-show="!id_token || !type || !code">
+    <div v-show="!id_token && !type && !code">
       <div class="ui error message" v-if="error">
         <i v-on:click="onErrorClose()" class="close icon"></i>
         <div class="header">Something broke!</div>
@@ -65,20 +65,30 @@
       </div>
     </div>
     <div v-show="code">
-        <p>Verifying Authorization code...</p>
-        <div class="ui error message" v-if="error">
-          <i v-on:click="onErrorClose()" class="close icon"></i>
-          <div class="header">Something broke!</div>
-          <div id="error"><pre>{{ errorMessage }}</pre></div>
-       </div>
-    </div>
-    <div v-show="id_token && type">
-        <p>Verifying {{ type }} id_token...</p>
-        <div class="ui error message" v-if="error">
-          <i v-on:click="onErrorClose()" class="close icon"></i>
-          <div class="header">Something broke!</div>
-          <div id="error"><pre>{{ errorMessage }}</pre></div>
-       </div>
+      <div class="ui error message" v-if="error">
+        <i v-on:click="onErrorClose()" class="close icon"></i>
+        <div class="header">Something broke!</div>
+        <div id="error"><pre>{{ errorMessage }}</pre></div>
+      </div>
+      <div class="ui stacked segment">
+        <form id="code" class="ui large form">
+          <div class="ui clearing segment">
+            <p>Verify Authorization Code</p>
+            <div class="ui fluid large blue submit button" @click="verifyCode()">Continue</div>
+          </div>
+        </form>
+        <div class="ui clearing segment">
+          <div class="ui toggle checkbox custom">
+            <input id="rememberMe" v-model="data.rememberMe" type="checkbox">
+            <label for="rememberMe">Remember Me</label>
+          </div>
+          <br>
+          <div class="ui toggle checkbox custom">
+            <input id="accessTokenFormat" v-on:click="onAccessTokenFormatClick()" v-model.lazy="data.accessTokenFormat" true-value="jwt" false-value="opaque" type="checkbox">
+            <label for="accessTokenFormat">Access Token Format: <b>{{ data.accessTokenFormat }}</b></label>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -155,8 +165,27 @@ export default {
         }
         this.error = true
       })
-    } else if (this.code) {
+    } else {
+      console.log('Id Token URL fragment DNE')
+    }
+  },
+  methods: {
+    // parse url fragment by parameter key
+    getFragmentValue (key) {
+      let fragment = this.$route.hash.replace(/^#/, '')
+      let params = fragment.split('&')
+      if (params.length > 1) {
+        for (var i = 0; i < params.length; i++) {
+          let pair = params[i].split('=')
+          if (pair[0] === key) {
+            return pair[1]
+          }
+        }
+      }
+    },
+    verifyCode () {
       console.log('Validating Authorization Code ' + this.code)
+      var redirect = this.$auth.redirect()
       this.$auth.login({
         data: querystring.stringify({
           grant_type: 'authorization_code',
@@ -167,9 +196,7 @@ export default {
           token_format: this.$session.get('access_token_format')
         }),
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'X-Provider': this.type,
-          'Authorization': 'Bearer ' + this.access_token
+          'Content-Type': 'application/x-www-form-urlencoded'
         },
         rememberMe: this.data.rememberMe,
         redirect: {name: redirect ? redirect.from.name : 'account'},
@@ -190,23 +217,6 @@ export default {
         }
         this.error = true
       })
-    } else {
-      console.log('Id Token URL fragment DNE')
-    }
-  },
-  methods: {
-    // parse url fragment by parameter key
-    getFragmentValue (key) {
-      let fragment = this.$route.hash.replace(/^#/, '')
-      let params = fragment.split('&')
-      if (params.length > 1) {
-        for (var i = 0; i < params.length; i++) {
-          let pair = params[i].split('=')
-          if (pair[0] === key) {
-            return pair[1]
-          }
-        }
-      }
     },
     login () {
       // TO-DO
