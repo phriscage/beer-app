@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-show="!id_token || !type">
+    <div v-show="!id_token || !type || !code">
       <div class="ui error message" v-if="error">
         <i v-on:click="onErrorClose()" class="close icon"></i>
         <div class="header">Something broke!</div>
@@ -32,6 +32,11 @@
               </div>
             </div>
             <div class="ui fluid large blue submit button" @click="login()">Login</div>
+            </br>
+            <div class="ui toggle checkbox custom">
+              <input id="grantType" v-on:click="onGrantTypeClick()" v-model.lazy="data.grantType" true-value="authorization_code" false-value="password" type="checkbox">
+              <label for="grantType">Grant Type: <b>{{ data.grantType }}</b></label>
+            </div>
           </div>
         </form>
 
@@ -59,6 +64,14 @@
         </div>
       </div>
     </div>
+    <div v-show="code">
+        <p>Verifying Authorization code...</p>
+        <div class="ui error message" v-if="error">
+          <i v-on:click="onErrorClose()" class="close icon"></i>
+          <div class="header">Something broke!</div>
+          <div id="error"><pre>{{ errorMessage }}</pre></div>
+       </div>
+    </div>
     <div v-show="id_token && type">
         <p>Verifying {{ type }} id_token...</p>
         <div class="ui error message" v-if="error">
@@ -72,6 +85,7 @@
 
 <script>
 var querystring = require('querystring')
+var axios = require('axios')
 
 export default {
   data () {
@@ -84,6 +98,7 @@ export default {
       data: {
         test: false,
         rememberMe: false,
+        grantType: this.$session.get('grant_type') || 'password',
         accessTokenFormat: this.$session.get('access_token_format') || 'opaque',
         fetchUser: true
       },
@@ -140,6 +155,41 @@ export default {
         }
         this.error = true
       })
+    } else if (this.code) {
+      console.log('Validating Authorization Code ' + this.code)
+      this.$auth.login({
+        data: querystring.stringify({
+          grant_type: 'authorization_code',
+          code: this.code,
+          client_id: this.$shared.clientId,
+          client_secret: this.$shared.clientSecret,
+          redirect_uri: 'http://localhost:8080' + this.$route.path,
+          token_format: this.$session.get('access_token_format')
+        }),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-Provider': this.type,
+          'Authorization': 'Bearer ' + this.access_token
+        },
+        rememberMe: this.data.rememberMe,
+        redirect: {name: redirect ? redirect.from.name : 'account'},
+        fetchUser: this.data.fetchUser
+      })
+      .then(() => {
+        this.$auth.token('id_token', this.id_token)
+        console.log('success ' + this.context)
+        console.log('this.$auth.token(): ' + this.$auth.token())
+      }, (res) => {
+        console.log('error ' + this.context)
+        console.log(res)
+        if (res.response && res.response.status) {
+          this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
+               'Body: ' + JSON.stringify(res.response.data, null, 4)
+        } else {
+          this.errorMessage = res.toString()
+        }
+        this.error = true
+      })
     } else {
       console.log('Id Token URL fragment DNE')
     }
@@ -160,38 +210,68 @@ export default {
     },
     login () {
       // TO-DO
-      var redirect = this.$auth.redirect()
-      this.$auth.login({
-        data: querystring.stringify({
-          username: this.credentials.username,
-          password: this.credentials.password,
-          grant_type: 'password',
-          client_id: this.$shared.clientId,
-          token_format: this.$session.get('access_token_format')
-        }),
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'X-Provider': this.type
-        },
-        rememberMe: this.data.rememberMe,
-        redirect: {name: redirect ? redirect.from.name : 'account'},
-        fetchUser: this.data.fetchUser
-      })
-      .then(() => {
-        // this.$auth.token('id_token', '', 'remove')
-        console.log('success ' + this.context)
-        console.log('this.$auth.token(): ' + this.$auth.token())
-      }, (res) => {
-        console.log('error ' + this.context)
-        console.log(res)
-        if (res.response && res.response.status) {
-          this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
-               'Body: ' + JSON.stringify(res.response.data, null, 4)
-        } else {
-          this.errorMessage = res.toString()
-        }
-        this.error = true
-      })
+      let _this = this
+      var redirect = _this.$auth.redirect()
+      // Check the grantType for the login option
+      console.log('grant_type ' + _this.data.grantType)
+      if (_this.data.grantType === 'password') {
+        console.log('Resource Owner Password Grant Type')
+        _this.$auth.login({
+          data: querystring.stringify({
+            username: _this.credentials.username,
+            password: _this.credentials.password,
+            grant_type: _this.data.grantType,
+            client_id: _this.$shared.clientId,
+            client_secret: _this.$shared.clientSecret,
+            token_format: _this.data.accessTokenFormat
+          }),
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Provider': _this.type
+          },
+          rememberMe: _this.data.rememberMe,
+          redirect: {name: redirect ? redirect.from.name : 'account'},
+          fetchUser: _this.data.fetchUser
+        })
+        .then(() => {
+          // this.$auth.token('id_token', '', 'remove')
+          console.log('success ' + _this.context)
+          console.log('this.$auth.token(): ' + _this.$auth.token())
+        }, (res) => {
+          console.log('error ' + _this.context)
+          console.log(res)
+          if (res.response && res.response.status) {
+            _this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
+                 'Body: ' + JSON.stringify(res.response.data, null, 4)
+          } else {
+            _this.errorMessage = res.toString()
+          }
+          _this.error = true
+        })
+      } else {
+        console.log('Authorization Code Grant Type')
+        axios.post('/authorize',
+          querystring.stringify({
+            username: _this.credentials.username,
+            password: _this.credentials.password,
+            response_type: 'code',
+            redirect_uri: 'http://localhost:8080' + _this.$route.path,
+            client_id: _this.$shared.clientId
+          })
+        )
+        .then(function (response) {
+          console.log(response)
+          if (response.data && response.data.code) {
+            console.log('code: ' + response.data.code)
+            // _this.$router.push({name: 'login', params: {type: 'code'}})
+            _this.$router.push('/login?code=' + response.data.code)
+            _this.$router.go()
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+      }
     },
     social (type) {
       // set googleOauth2Data client_id
@@ -205,6 +285,13 @@ export default {
     onErrorClose: function () {
       this.error = !this.error
       console.log(this.error)
+    },
+    onGrantTypeClick: function () {
+      var grantType = 'password'
+      if (this.data.grantType === 'password') {
+        grantType = 'authorization_code'
+      }
+      this.$session.set('grant_type', grantType)
     },
     onAccessTokenFormatClick: function () {
       var accessTokenFormat = 'opaque'
