@@ -1,56 +1,70 @@
 <template>
   <div>
-    <div v-show="!id_token && !type && !code">
-      <div class="ui error message" v-if="error">
-        <i v-on:click="onErrorClose()" class="close icon"></i>
-        <div class="header">Something broke!</div>
-        <div id="error"><pre>{{ errorMessage }}</pre></div>
-      </div>
+    <div class="ui error message" v-if="error">
+      <i v-on:click="onErrorClose()" class="close icon"></i>
+      <div class="header">Something broke!</div>
+      <div id="error"><pre>{{ errorMessage }}</pre></div>
+    </div>
+    <div v-show="!id_token && !type">
+      <!-- Login and Verification Segment -->
       <div class="ui stacked segment">
-        <form id="login" class="ui large form">
-          <div class="ui clearing segment">
-            <p>Login via credentials</p>
-            <div class="field">
-              <div class="ui left icon input">
-                <i class="user icon"></i>
-                <input
-                  type="text"
-                  name="username"
-                  placeholder="Username"
-                  v-model="credentials.username"
-                >
-              </div>
+        <!-- Verify Authorization Code form -->
+        <div v-show="code">
+          <form id="code" class="ui large form">
+            <div class="ui clearing segment">
+              <p>Verify Authorization Code</p>
+              <div class="ui fluid large blue submit button" @click="verifyCode()">Continue</div>
             </div>
-            <div class="field">
-              <div class="ui left icon input">
-                <i class="lock icon"></i>
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Password" v-model="credentials.password"
-                >
-              </div>
-            </div>
-            <div class="ui fluid large blue submit button" @click="login()">Login</div>
-            </br>
-            <div class="ui toggle checkbox custom">
-              <input id="grantType" v-on:click="onGrantTypeClick()" v-model.lazy="data.grantType" true-value="authorization_code" false-value="password" type="checkbox">
-              <label for="grantType">Grant Type: <b>{{ data.grantType }}</b></label>
-            </div>
-          </div>
-        </form>
-
-        <div class="ui clearing segment">
-          <p>Login via @google credentials</p>
-          <button class="ui google plus button" v-on:click="social('google')">
-            <i class="google icon"></i>
-              Google
-          </button>
-          <!--<button class="ui facebook button" v-on:click="social('facebook')">
-            <i class="facebook icon"></i>
-              Facebook
-          </button>-->
+          </form>
         </div>
+        <!-- Login form -->
+        <div v-show="!code">
+          <form id="login" class="ui large form">
+            <div class="ui clearing segment">
+              <p>Login via credentials</p>
+              <div class="field">
+                <div class="ui left icon input">
+                  <i class="user icon"></i>
+                  <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    v-model="credentials.username"
+                  >
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui left icon input">
+                  <i class="lock icon"></i>
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Password" v-model="credentials.password"
+                  >
+                </div>
+              </div>
+              <div class="ui fluid large blue submit button" @click="login()">Login</div>
+              </br>
+              <div class="ui toggle checkbox custom">
+                <input id="grantType" v-on:click="onGrantTypeClick()" v-model.lazy="data.grantType" true-value="authorization_code" false-value="password" type="checkbox">
+                <label for="grantType">Grant Type: <b>{{ data.grantType }}</b></label>
+              </div>
+            </div>
+          </form>
+          <!-- 3rd party Identity Provider -->
+          <div class="ui clearing segment">
+            <p>Login via @google credentials</p>
+            <button class="ui google plus button" v-on:click="social('google')">
+              <i class="google icon"></i>
+                Google
+            </button>
+            <!--<button class="ui facebook button" v-on:click="social('facebook')">
+              <i class="facebook icon"></i>
+                Facebook
+            </button>-->
+          </div>
+        </div>
+        <!-- Additional Configurations -->
         <div class="ui clearing segment">
           <div class="ui toggle checkbox custom">
             <input id="rememberMe" v-model="data.rememberMe" type="checkbox">
@@ -64,31 +78,9 @@
         </div>
       </div>
     </div>
-    <div v-show="code">
-      <div class="ui error message" v-if="error">
-        <i v-on:click="onErrorClose()" class="close icon"></i>
-        <div class="header">Something broke!</div>
-        <div id="error"><pre>{{ errorMessage }}</pre></div>
-      </div>
-      <div class="ui stacked segment">
-        <form id="code" class="ui large form">
-          <div class="ui clearing segment">
-            <p>Verify Authorization Code</p>
-            <div class="ui fluid large blue submit button" @click="verifyCode()">Continue</div>
-          </div>
-        </form>
-        <div class="ui clearing segment">
-          <div class="ui toggle checkbox custom">
-            <input id="rememberMe" v-model="data.rememberMe" type="checkbox">
-            <label for="rememberMe">Remember Me</label>
-          </div>
-          <br>
-          <div class="ui toggle checkbox custom">
-            <input id="accessTokenFormat" v-on:click="onAccessTokenFormatClick()" v-model.lazy="data.accessTokenFormat" true-value="jwt" false-value="opaque" type="checkbox">
-            <label for="accessTokenFormat">Access Token Format: <b>{{ data.accessTokenFormat }}</b></label>
-          </div>
-        </div>
-      </div>
+    <!-- End Login and Verification Segment -->
+    <div v-show="id_token && type">
+      <p>Verifying {{ type }} id_token...</p>
     </div>
   </div>
 </template>
