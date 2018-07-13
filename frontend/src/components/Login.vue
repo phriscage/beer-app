@@ -11,9 +11,18 @@
         <!-- Verify Authorization Code form -->
         <div v-show="code">
           <form id="code" class="ui large form">
-            <div class="ui clearing segment">
-              <p>Verify Authorization Code</p>
-              <div class="ui fluid large blue submit button" @click="verifyCode()">Continue</div>
+            <div class="ui left aligned clearing segment">
+              <b>{{ client_name }}</b>
+              <div class="ui center aligned basic segment">
+                <p>This app would like to:</p>
+                <b>Scope placeholder</b>
+                <li v-for="scope in scopes">
+                  {{ item.message }}
+                </li>
+              </div>
+              <div class="ui fluid large green submit button" @click="verifyCode()">Accept</div>
+              </br>
+              <div class="ui fluid large yellow submit button" @click="cancelCode()">Cancel</div>
             </div>
           </form>
         </div>
@@ -106,6 +115,8 @@ export default {
       },
       code: this.$route.query.code,
       type: this.$route.params.type,
+      client_name: this.$route.query.client_name,
+      scopes: '',
       access_token: this.getFragmentValue('access_token'),
       id_token: this.getFragmentValue('id_token'),
       state: this.getFragmentValue('state'),
@@ -210,6 +221,12 @@ export default {
         this.error = true
       })
     },
+    cancelCode () {
+      let _this = this
+      console.log('Canceling Authorization Code')
+      _this.$router.push({'name': 'login'})
+      _this.$router.go()
+    },
     login () {
       // TO-DO
       let _this = this
@@ -258,15 +275,24 @@ export default {
             password: _this.credentials.password,
             response_type: 'code',
             redirect_uri: 'http://localhost:8080' + _this.$route.path,
+            scope: 'openid profile email',
             client_id: _this.$shared.clientId
           })
         )
         .then(function (response) {
           console.log(response)
           if (response.data && response.data.code) {
-            console.log('code: ' + response.data.code)
-            // _this.$router.push({name: 'login', params: {type: 'code'}})
-            _this.$router.push('/login?code=' + response.data.code)
+            var query = {
+              code: response.data.code,
+              client_id: response.data.client_id,
+              client_name: response.data.client_name,
+              scope: response.data.scope,
+              state: response.data.state
+            }
+            _this.client_name = response.data.client_name
+            _this.$router.push({name: 'login', query: query})
+            // _this.$router.push({name: 'login', query: {code: response.data.code}})
+            // _this.$router.push('/login?code=' + response.data.code)
             _this.$router.go()
           }
         })
