@@ -63,7 +63,7 @@
             </div>
           </form>
           <!-- 3rd party Identity Provider -->
-          <div class="ui clearing segment">
+          <div class="ui center aligned clearing segment">
             <p>Login via @google credentials</p>
             <button class="ui google plus button" v-on:click="social('google')">
               <i class="google icon"></i>
