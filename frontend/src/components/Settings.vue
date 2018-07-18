@@ -20,6 +20,23 @@
         </validate>
         <p/>
 
+         <validate auto-label class="field">
+         <label>Client Secret:</label>
+         <div class="ui left icon input">
+           <i class="lock icon"></i>
+            <input
+               type="text"
+               name="clientSecret"
+               required
+               v-model.lazy="model.clientSecret"
+            />
+           </div>
+          <field-messages name="clientSecret" show="$touched || $submitted" :class="fieldMessageClassName(formstate.clientSecret)">
+            <div slot="required">Client Secret is required for specific Grant Types</div>
+          </field-messages>
+        </validate>
+        <p/>
+
         <validate auto-label class="field">
         <label>Google Client ID:</label>
          <div class="ui left icon input">
@@ -92,6 +109,7 @@ export default {
         beersApiBaseUrl: this.$shared.beersApiBaseUrl,
         oauthApiBaseUrl: this.$shared.oauthApiBaseUrl,
         clientId: this.$shared.clientId,
+        clientSecret: this.$shared.clientSecret,
         googleClientId: this.$shared.googleClientId,
         success: false
       },
@@ -115,7 +133,7 @@ export default {
         return 'ui success message'
       }
       if ((field.$touched || field.$submitted) && field.$invalid) {
-        if (field.$name === 'googleClientId') {
+        if (['googleClientId', 'clientSecret'].includes(field.$name)) {
           return 'ui warning message'
         } else {
           return 'ui error message'
@@ -131,6 +149,7 @@ export default {
       // only update if something changed from original
       if (this.formstate.$dirty) {
         this.$shared.clientId = this.model.clientId
+        this.$shared.clientSecret = this.model.clientSecret
         this.$shared.googleClientId = this.model.googleClientId
         this.$shared.beersApiBaseUrl = this.model.beersApiBaseUrl
         this.$shared.oauthApiBaseUrl = this.model.oauthApiBaseUrl

@@ -19,6 +19,7 @@ const shared = {
   beersApiBaseUrl: sharedSession.beersApiBaseUrl || process.env.BEERS_API_BASE_URL,
   oauthApiBaseUrl: sharedSession.oauthApiBaseUrl || process.env.OAUTH_API_BASE_URL,
   clientId: sharedSession.clientId || process.env.CLIENT_ID,
+  clientSecret: sharedSession.clientSecret || process.env.CLIENT_SECRET,
   googleClientId: sharedSession.googleClientId || process.env.GOOGLE_CLIENT_ID
 }
 shared.install = function () {
@@ -72,6 +73,9 @@ Vue.use(VueSession, {persist: true})
 ) */
 Vue.use(VueAxios, axios)
 Vue.axios.defaults.baseURL = shared.oauthApiBaseUrl
+// Vue.axios.defaults.headers.common = {
+  // 'X-Requested-With': 'XMLHttpRequest'
+// }
 
 // Setup router for Vue-Auth
 Vue.router = router
