@@ -373,9 +373,6 @@ export default {
   text-align: left;
   width: 340px;
 }
-#error {
-  text-align: left;
-}
 .custom {
   float: left;
   margin: 5px 5px 5px 5px;

@@ -171,10 +171,6 @@ export default {
 }
 </script>
 <style>
-#error {
-  text-align: left;
-  width: 600px;
-}
 pre {
   white-space: pre-wrap; /* css-3 */
   white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
