@@ -5,20 +5,22 @@
       <div class="header">Something broke!</div>
       <div id="error"><pre>{{ errorMessage }}</pre></div>
     </div>
+    <div class="ui one column stackable center aligned page grid">
     <div v-show="!id_token && !type">
       <!-- Login and Verification Segment -->
-      <div class="ui stacked segment">
+      <div id="authentication" class="ui stacked segment">
         <!-- Verify Authorization Code form -->
         <div v-show="code">
           <form id="code" class="ui large form">
             <div class="ui left aligned clearing segment">
               <b>{{ client_name }}</b>
               <div class="ui center aligned basic segment">
-                <p>This app would like to:</p>
-                <b>Scope placeholder</b>
-                <li v-for="scope in scopes">
-                  {{ item.message }}
-                </li>
+                <p>This app would like to access:</p>
+                <div class="ui left aligned container">
+                  <li v-for="(description, scope) in scopeParsed">
+                        <b>{{ scope }}</b>: {{ description }}
+                  </li>
+                </div>
               </div>
               <div class="ui fluid large green submit button" @click="verifyCode()">Accept</div>
               </br>
@@ -92,11 +94,45 @@
       <p>Verifying {{ type }} id_token...</p>
     </div>
   </div>
+
+  </div>
 </template>
 
 <script>
 var querystring = require('querystring')
 var axios = require('axios')
+
+// OpenID Connect Basic Profile
+let scopeValues = {
+  // 'openid': 'Informs the Authorization Server that the Client is making an OpenID Connect request. If the openid scope value is not present, the behavior is entirely unspecified.',
+  'profile': 'This scope value requests access to the End-User\'s default profile Claims, which are: name, family_name, given_name, middle_name, nickname, preferred_username, profile, picture, website, gender, birthdate, zoneinfo, locale, and updated_at.',
+  'email': 'This scope value requests access to the email and email_verified Claims.',
+  'address': 'This scope value requests access to the address Claim.',
+  'phone': 'This scope value requests access to the phone_number and phone_number_verified Claims.',
+  'offline_access': 'This scope value requests that an OAuth 2.0 Refresh Token be issued that can be used to obtain an Access Token that grants access to the End-User\'s UserInfo Endpoint even when the End-User is not present (not logged in).'
+}
+
+ // generate a readable scope div
+function formatScopeRequested (scopeRequested) {
+  let scopes = {}
+  if (scopeRequested === undefined) {
+    return scopes
+  }
+  let items = scopeRequested.split(' ')
+  if (items.length > 6) {
+    let message = 'Additional custom scopes is not supported.'
+    console.log(message)
+    return { 'custom': message }
+  }
+  if (items.length > 1) {
+    for (var i = 0; i < items.length; i++) {
+      if (scopeValues[items[i]]) {
+        scopes[items[i]] = scopeValues[items[i]]
+      }
+    }
+  }
+  return scopes
+}
 
 export default {
   data () {
@@ -116,13 +152,13 @@ export default {
       code: this.$route.query.code,
       type: this.$route.params.type,
       client_name: this.$route.query.client_name,
-      scopes: '',
       access_token: this.getFragmentValue('access_token'),
       id_token: this.getFragmentValue('id_token'),
       state: this.getFragmentValue('state'),
       response_type: this.$route.params.type,
       error: false,
-      errorMessage: ''
+      errorMessage: '',
+      scopeParsed: formatScopeRequested(this.$route.query.scope)
     }
   },
   mounted () {
@@ -186,6 +222,7 @@ export default {
         }
       }
     },
+    // verify the authorization code
     verifyCode () {
       console.log('Validating Authorization Code ' + this.code)
       var redirect = this.$auth.redirect()
@@ -332,7 +369,7 @@ export default {
 }
 </script>
 <style>
-#login {
+#authentication {
   text-align: left;
   width: 340px;
 }
