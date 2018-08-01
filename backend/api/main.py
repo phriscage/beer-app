@@ -51,6 +51,8 @@ def create_app():
     app.register_blueprint(beers, url_prefix="/api/beers")
     from oauth.views import oauth
     app.register_blueprint(oauth, url_prefix="/api/oauth")
+    from graph_ql.views import graphql
+    app.register_blueprint(graphql, url_prefix="/api/graphql")
     return app
 
 

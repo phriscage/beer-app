@@ -6,11 +6,10 @@ import os
 import sys
 from http import HTTPStatus
 import functools
-import simplejson as json
 import logging
-import base64
 import socket
 from datetime import datetime
+import simplejson as json
 
 sys.path.insert(0, os.path.dirname(
     os.path.realpath(__file__)) + '/../../')
@@ -28,7 +27,7 @@ def get_ip_address():
     try:
         return socket.gethostbyname(socket.getfqdn())
     except socket.gaierror as error:
-        logger.warn(error)
+        logger.warning(error)
     return socket.gethostbyname("")
 
 
@@ -44,6 +43,7 @@ def http_status_response(enum_name):
 
 
 def rsetattr(obj, attr, val):
+    """ dynamically set obj attr """
     pre, _, post = attr.rpartition('.')
     return setattr(rgetattr(obj, pre) if pre else obj, post, val)
 
@@ -71,3 +71,4 @@ class PythonObjectEncoder(json.JSONEncoder):
             #return str(obj)
         if isinstance(obj, set):
             return list(obj)
+        return json.JSONEncoder.default(self, obj)
