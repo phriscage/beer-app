@@ -88,9 +88,9 @@ You can now add an A/CNAME DNS record to the GATEWAY_URL in Cloud DNS. _Integrat
 ## <a name="setup_kubernetes_and_istio">Setup Kubernetes and Istio</a>
 _CLUSTER_NAME should be already defined_
 
-Create a GKE cluster with GKE alpha versions enabled:
+Create a GKE cluster via *gcloud* or GCP *console*
 
-        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --num-nodes=4 --cluster-version=1.10 --enable-kubernetes-alpha
+        gcloud container clusters create $CLUSTER_NAME --zone=us-east4-a --num-nodes=4 --cluster-version=1.10 
 
         gcloud compute instances list
 
@@ -98,7 +98,8 @@ Enable cluster-admin-binding clusterrolebinding in the cluster:
 
         kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
 
-Install Istio:
+Install Istio CRM and mTLS:
 
-        kubectl apply -f install/kubernetes/istio-auth.yaml
+        kubectl apply -f install/kubernetes/helm/istio/templates/crds.yaml
+        kubectl apply -f install/kubernetes/istio-demo-auth.yaml
 

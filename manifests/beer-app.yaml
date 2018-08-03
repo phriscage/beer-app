@@ -46,7 +46,7 @@ spec:
         app: beer-api
     spec:
       containers:
-        - image: gcr.io/chrispage-dev/beer-api:0.4.0
+        - image: gcr.io/chrispage-dev/beer-api:0.5.0
           name: beer-api
           ports:
             - containerPort: 5000
@@ -304,18 +304,36 @@ data:
 ###########################################################################
 # Ingress resource (gateway)
 ##########################################################################
-apiVersion: extensions/v1beta1
-kind: Ingress
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
 metadata:
   name: gateway
-  annotations:
-    kubernetes.io/ingress.class: "istio"
 spec:
-  rules:
-  - http:
-      paths:
-      - path: /.*
-        backend:
-          serviceName: beer-api
-          servicePort: 5000
-
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: beer-app
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - gateway
+  http:
+  - match:
+    - uri:
+        regex: /.*
+    route:
+    - destination:
+        host: beer-api
+        port:
+          number: 5000
