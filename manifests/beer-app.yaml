@@ -307,7 +307,7 @@ data:
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: gateway
+  name: beer-api-gateway
 spec:
   selector:
     istio: ingressgateway # use istio default controller
@@ -322,12 +322,12 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: beer-app
+  name: beer-api
 spec:
   hosts:
   - "*"
   gateways:
-  - gateway
+  - beer-api-gateway
   http:
   - match:
     - uri:

@@ -30,7 +30,7 @@ Set your **CLUSTER_NAME** environment variable
 
 Create the application and inject the Istio sidecar proxies to the application Pods:
 
-        kubectl create -f <(istioctl kube-inject -f manifests/beer-app.yaml )
+        kubectl create -f <(istioctl kube-inject -f manifests/beer-app.yaml)
 
 Check the status, get external ingress IP, and export IP as GATEWAY_URL=<IP:PORT>:
 
@@ -98,8 +98,7 @@ Enable cluster-admin-binding clusterrolebinding in the cluster:
 
         kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
 
-Install Istio CRM and mTLS:
+Install Istio with mTLS:
 
-        kubectl apply -f install/kubernetes/helm/istio/templates/crds.yaml
         kubectl apply -f install/kubernetes/istio-demo-auth.yaml
 
