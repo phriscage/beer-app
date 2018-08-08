@@ -8,11 +8,13 @@ import sys
 # from datetime import datetime
 import logging
 # from urllib.parse import urlparse, unquote
+from http.client import HTTPConnection
 import requests
 
 sys.path.insert(0, os.path.dirname(
     os.path.realpath(__file__)) + '/../')
 
+HTTPConnection.debuglevel = 1
 logger = logging.getLogger(__name__)
 
 beer_details = {
