@@ -29,7 +29,7 @@ def index():
         # headers = {'content-type': 'application/json'}
         status, details = post_beer_details(headers, request.json)
     else:
-        status, details = get_beer_details(None, headers, request.query_string)
+        status, details = get_beer_details(None, request.headers, request.query_string)
     return jsonify(details), status
 
 @beers.route('/<string:beer_id>', methods=['GET', 'DELETE'])
@@ -40,13 +40,12 @@ def get_or_delete_beer_by_beer_id(beer_id):
     if request.method == 'DELETE':
         status, details = delete_beer_details(beer_id, headers, request.query_string)
     else:
-        status, details = get_beer_details(beer_id, headers, request.query_string)
+        status, details = get_beer_details(beer_id, request.headers, request.query_string)
     return jsonify(details), status
 
 @beers.route('/<string:beer_id>/reviews', methods=['GET'])
 def get_beer_reviews_by_beer_id(beer_id):
     """
     """
-    headers = {}
-    status, reviews = get_beer_reviews(beer_id, headers, request.query_string)
+    status, reviews = get_beer_reviews(beer_id, request.headers, request.query_string)
     return jsonify(reviews), status
