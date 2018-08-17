@@ -21,10 +21,11 @@ The initial examples, **Stand-alone** and **Hybrid**, focuses on running the Bee
 
 
 ## <a name="prerequisites"></a>Prerequisites:
-* [Google Cloud Platform](https://cloud.google.com/) project created
-* [Google Cloud Platform SDK](https://cloud.google.com/sdk/) installed and configured
 * [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/) cluster knowledge
 * [Istio](https://istio.io/) service mesh management knowledge
+
+* [Google Cloud Platform SDK](https://cloud.google.com/sdk/) installed and configured
+* [Apigee Istio Mixer](https://github.com/apigee/istio-mixer-adapter) installed
 
 * [Node](https://nodejs.org/en/) installed
 * [Npm](https://www.npmjs.com/) installed
