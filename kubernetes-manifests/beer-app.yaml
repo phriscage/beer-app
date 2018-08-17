@@ -18,11 +18,10 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: beer-api
   labels:
     app: beer-api
-  name: beer-api
 spec:
-  type: ClusterIP
   ports:
     - port: 5000
       name: http
@@ -33,25 +32,20 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: beer-api
-  labels:
-    app: beer-api
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: beer-api
   template:
     metadata:
       labels:
         app: beer-api
+        version: v1
     spec:
       containers:
-        - image: gcr.io/chrispage-dev/beer-api:0.6.0
-          name: beer-api
+        - name: beer-api
+          image: gcr.io/chrispage-dev/beer-api:0.6.2
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
-              name: beer-api
-
 ################################################################################
 # Reviews API service
 ################################################################################
@@ -59,13 +53,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: reviews-api
   labels:
     app: reviews-api
-  name: reviews-api
 spec:
-  type: ClusterIP
   ports:
     - port: 8080
+      name: http
   selector:
     app: reviews-api
 ---
@@ -73,29 +67,23 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: reviews-api
-  labels:
-    app: reviews-api
 spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: reviews-api
+  replicas: 2
   template:
     metadata:
       labels:
         app: reviews-api
+        version: v1
     spec:
       containers:
-        - image: gcr.io/chrispage-dev/beer-reviews-api:0.2.1
-          name: reviews-api
-          # imagePullPolicy: Always
+        - name: reviews-api
+          image: gcr.io/chrispage-dev/beer-reviews-api:0.2.1
+          imagePullPolicy: IfNotPresent
           env:
             - name: ELASTICSEARCH_DATABASE_URI
               value: http://reviews-db:9200
           ports:
             - containerPort: 8080
-              name: reviews-api
-
 ################################################################################
 # Reviews DB service
 ################################################################################
@@ -107,7 +95,6 @@ metadata:
   labels:
     app: reviews-db
 spec:
-  type: ClusterIP
   ports:
     - port: 9200
       name: rest
@@ -120,21 +107,17 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: reviews-db
-  labels:
-    app: reviews-db
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: reviews-db
   template:
     metadata:
       labels:
         app: reviews-db
+        version: v1
     spec:
       containers:
-        - image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
-          name: reviews-db
+        - name: reviews-db
+          image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
           env:
             - name: discovery.type
               value: single-node
@@ -151,13 +134,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: details-api
   labels:
     app: details-api
-  name: details-api
 spec:
-  type: ClusterIP
   ports:
     - port: 8080
+      name: http
   selector:
     app: details-api
 ---
@@ -165,27 +148,22 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: details-api
-  labels:
-    app: details-api
 spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: details-api
+  replicas: 2
   template:
     metadata:
       labels:
         app: details-api
+        version: v1
     spec:
       containers:
-        - image: gcr.io/chrispage-dev/beer-details-api:0.4.0
-          name: details-api
+        - name: details-api
+          image: gcr.io/chrispage-dev/beer-details-api:0.4.0
           env:
           - name: SQLALCHEMY_DATABASE_URI
             value: mysql://root:root@details-db/data
           ports:
             - containerPort: 8080
-              name: details-api
           resources:
             requests:
               cpu: 10m
@@ -201,9 +179,9 @@ metadata:
   labels:
     app: details-db
 spec:
-  type: ClusterIP
   ports:
     - port: 3306
+      name: mysql
   selector:
     app: details-db
 ---
@@ -211,27 +189,22 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: details-db
-  labels:
-    app: details-db
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: details-db
   template:
     metadata:
       labels:
         app: details-db
+        version: v1
     spec:
       containers:
-        - image: mysql:5.7.20
-          name: details-db
+        - name: details-db
+          image: mysql:5.7.20
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: root
           ports:
             - containerPort: 3306
-              name: details-db
           volumeMounts:
             - name: details-db-initdb
               mountPath: /docker-entrypoint-initdb.d
