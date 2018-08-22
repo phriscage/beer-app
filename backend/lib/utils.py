@@ -59,6 +59,26 @@ def rgetattr(obj, attr, default=sentinel):
     return functools.reduce(_getattr, [obj]+attr.split('.'))
 
 
+def get_forward_headers(request, whitelist=None):
+    """ set the appopriate forwarding headers for Istio service """
+    headers = {}
+    incoming_headers = [ 'x-request-id',
+                         'x-b3-traceid',
+                         'x-b3-spanid',
+                         'x-b3-parentspanid',
+                         'x-b3-sampled',
+                         'x-b3-flags',
+                         'x-ot-span-context'
+    ]
+    if whitelist and type(whitelist) is list:
+        incoming_headers += whitelist
+    for ihdr in incoming_headers:
+        val = request.headers.get(ihdr)
+        if val is not None:
+            headers[ihdr] = val
+    return headers
+
+
 class PythonObjectEncoder(json.JSONEncoder):
     """ custom json.JSONEncoder for requests """
 

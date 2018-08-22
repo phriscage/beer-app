@@ -12,139 +12,6 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 ################################################################################
-# Beer API service
-################################################################################
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: beer-api
-  name: beer-api
-spec:
-  type: ClusterIP
-  ports:
-    - port: 5000
-      name: http
-  selector:
-    app: beer-api
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: beer-api
-  labels:
-    app: beer-api
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: beer-api
-  template:
-    metadata:
-      labels:
-        app: beer-api
-    spec:
-      containers:
-        - image: gcr.io/chrispage-dev/beer-api:0.6.0
-          name: beer-api
-          ports:
-            - containerPort: 5000
-              name: beer-api
-
-################################################################################
-# Reviews API service
-################################################################################
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: reviews-api
-  name: reviews-api
-spec:
-  type: ClusterIP
-  ports:
-    - port: 8080
-  selector:
-    app: reviews-api
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: reviews-api
-  labels:
-    app: reviews-api
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: reviews-api
-  template:
-    metadata:
-      labels:
-        app: reviews-api
-    spec:
-      containers:
-        - image: gcr.io/chrispage-dev/beer-reviews-api:0.2.1
-          name: reviews-api
-          # imagePullPolicy: Always
-          env:
-            - name: ELASTICSEARCH_DATABASE_URI
-              value: http://reviews-db:9200
-          ports:
-            - containerPort: 8080
-              name: reviews-api
-
-################################################################################
-# Reviews DB service
-################################################################################
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: reviews-db
-  labels:
-    app: reviews-db
-spec:
-  type: ClusterIP
-  ports:
-    - port: 9200
-      name: rest
-    - port: 9300
-      name: nodes
-  selector:
-    app: reviews-db
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: reviews-db
-  labels:
-    app: reviews-db
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: reviews-db
-  template:
-    metadata:
-      labels:
-        app: reviews-db
-    spec:
-      containers:
-        - image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
-          name: reviews-db
-          env:
-            - name: discovery.type
-              value: single-node
-          ports:
-            - containerPort: 9200
-              name: rest
-            - containerPort: 9300
-              name: nodes
-
-################################################################################
 # Details API service
 ################################################################################
 ---
@@ -158,6 +25,7 @@ spec:
   type: ClusterIP
   ports:
     - port: 8080
+      name: http
   selector:
     app: details-api
 ---
@@ -186,9 +54,6 @@ spec:
           ports:
             - containerPort: 8080
               name: details-api
-          resources:
-            requests:
-              cpu: 10m
 
 ################################################################################
 # Details DB service
@@ -235,9 +100,6 @@ spec:
           volumeMounts:
             - name: details-db-initdb
               mountPath: /docker-entrypoint-initdb.d
-          resources:
-            requests:
-              cpu: 10m
       volumes:
         - name: details-db-initdb
           configMap:
@@ -307,7 +169,7 @@ data:
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: gateway
+  name: details-api-gateway
 spec:
   selector:
     istio: ingressgateway # use istio default controller
@@ -322,18 +184,18 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: beer-app
+  name: details-api
 spec:
   hosts:
   - "*"
   gateways:
-  - gateway
+  - details-api-gateway
   http:
   - match:
     - uri:
         regex: /.*
     route:
     - destination:
-        host: beer-api
+        host: details-api
         port:
-          number: 5000
+          number: 8080

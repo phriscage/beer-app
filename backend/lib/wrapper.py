@@ -36,12 +36,25 @@ def post_beer_details(headers, body):
         res = requests.post(url, headers=headers, json=body, timeout=3.0)
     except Exception as error:
         logger.warning(error)
-        res = None
+        res = str(error)
+        return 500, {'message': 'Sorry, [%s] is currently unavailable.' % url, 'error': res}
     if res.status_code in (201, 400):
         return res.status_code, res.json()
-    logger.debug(res)
+    data = {
+      'request': {
+        'url': url,
+        'headers': headers,
+        'params': params
+      },
+      'response': {
+        'headers': res.headers,
+        'status_code': res.status_code
+      }
+    }
+    logger.debug(data)
+    logger.debug(res.text)
     status = res.status_code if res is not None and res.status_code else 500
-    return status, {'error': 'Sorry, beer details are currently unavailable.'}
+    return status, {'message': 'Sorry, [%s] is currently unavailable.' % url}
 
 def get_beer_details(beer_id, headers, params=None):
     """ get the beer details from the service """
@@ -52,12 +65,25 @@ def get_beer_details(beer_id, headers, params=None):
         res = requests.get(url, headers=headers, params=params, timeout=3.0)
     except Exception as error:
         logger.warning(error)
-        res = None
+        res = str(error)
+        return 500, {'message': 'Sorry, [%s] is currently unavailable.' % url, 'error': res}
     if res and res.status_code == 200:
         return 200, res.json()
-    logger.debug(res)
+    data = {
+      'request': {
+        'url': url,
+        'headers': headers,
+        'params': params
+      },
+      'response': {
+        'headers': res.headers,
+        'status_code': res.status_code
+      }
+    }
+    logger.debug(data)
+    logger.debug(res.text)
     status = res.status_code if res is not None and res.status_code else 500
-    return status, {'error': 'Sorry, beer details are currently unavailable.'}
+    return status, {'message': 'Sorry, [%s] is currently unavailable.' % url}
 
 def get_beer_reviews(beer_id, headers, params=None):
     """ get the beer reviews from the service """
@@ -66,9 +92,22 @@ def get_beer_reviews(beer_id, headers, params=None):
         res = requests.get(url, headers=headers, params=params, timeout=3.0)
     except Exception as error:
         logger.warning(error)
-        res = None
+        res = str(error)
+        return 500, {'message': 'Sorry, [%s] is currently unavailable.' % url, 'error': res}
     if res and res.status_code == 200:
         return 200, res.json()
-    logger.debug(res)
+    data = {
+      'request': {
+        'url': url,
+        'headers': headers,
+        'params': params
+      },
+      'response': {
+        'headers': res.headers,
+        'status_code': res.status_code
+      }
+    }
+    logger.debug(data)
+    logger.debug(res.text)
     status = res.status_code if res is not None and res.status_code else 500
-    return status, {'error': 'Sorry, beer reviews are currently unavailable.'}
+    return status, {'message': 'Sorry, [%s] is currently unavailable.' % url}

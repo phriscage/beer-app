@@ -14,7 +14,7 @@ from flask import Blueprint, jsonify, request, abort
 sys.path.insert(0, os.path.dirname(
     os.path.realpath(__file__)) + '/../../')
 
-from lib.utils import http_status_response # noqa
+from lib.utils import http_status_response, get_forward_headers # noqa
 from lib.wrapper import post_beer_details, get_beer_details, get_beer_reviews # noqa
 
 logger = logging.getLogger(__name__)
@@ -24,28 +24,32 @@ beers = Blueprint('beers', __name__)
 def index():
     """
     """
-    headers = {}
+    whitelist_headers = ['x-api-key', 'authorization']
+    headers = get_forward_headers(request, whitelist_headers)
     if request.method == 'POST':
         # headers = {'content-type': 'application/json'}
         status, details = post_beer_details(headers, request.json)
     else:
-        status, details = get_beer_details(None, request.headers, request.query_string)
+        status, details = get_beer_details(None, headers, request.query_string)
     return jsonify(details), status
 
 @beers.route('/<string:beer_id>', methods=['GET', 'DELETE'])
 def get_or_delete_beer_by_beer_id(beer_id):
     """
     """
-    headers = {}
+    whitelist_headers = ['x-api-key', 'authorization']
+    headers = get_forward_headers(request, whitelist_headers)
     if request.method == 'DELETE':
         status, details = delete_beer_details(beer_id, headers, request.query_string)
     else:
-        status, details = get_beer_details(beer_id, request.headers, request.query_string)
+        status, details = get_beer_details(beer_id, headers, request.query_string)
     return jsonify(details), status
 
 @beers.route('/<string:beer_id>/reviews', methods=['GET'])
 def get_beer_reviews_by_beer_id(beer_id):
     """
     """
-    status, reviews = get_beer_reviews(beer_id, request.headers, request.query_string)
+    whitelist_headers = ['x-api-key', 'authorization']
+    headers = get_forward_headers(request, whitelist_headers)
+    status, reviews = get_beer_reviews(beer_id, headers, request.query_string)
     return jsonify(reviews), status
