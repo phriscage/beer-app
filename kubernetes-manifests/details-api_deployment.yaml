@@ -1,0 +1,26 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: details-api
+  labels:
+    app: details-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: details-api
+  template:
+    metadata:
+      labels:
+        app: details-api
+    spec:
+      containers:
+        - image: gcr.io/chrispage-dev/beer-details-api:0.4.0
+          name: details-api
+          env:
+          - name: SQLALCHEMY_DATABASE_URI
+            value: mysql://root:root@details-db/data
+          ports:
+            - containerPort: 8080
+              name: details-api

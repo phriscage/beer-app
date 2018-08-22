@@ -1,0 +1,28 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reviews-db
+  labels:
+    app: reviews-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviews-db
+  template:
+    metadata:
+      labels:
+        app: reviews-db
+    spec:
+      containers:
+        - image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
+          name: reviews-db
+          env:
+            - name: discovery.type
+              value: single-node
+          ports:
+            - containerPort: 9200
+              name: rest
+            - containerPort: 9300
+              name: nodes

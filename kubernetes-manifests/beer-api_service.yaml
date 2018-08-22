@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: beer-api-lb
+spec:
+  ports:
+    - port: 5000
+      name: http
+      targetPort: 5000
+  selector:
+    app: beer-api
+  type: LoadBalancer

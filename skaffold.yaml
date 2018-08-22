@@ -1,0 +1,18 @@
+apiVersion: skaffold/v1alpha2
+kind: Config
+build:
+  artifacts:
+  - imageName: gcr.io/chrispage-dev/beer-api
+    workspace: ./backend/
+deploy:
+  kubectl:
+    manifests:
+      - ./kubernetes-manifests/beer-api*.yaml
+profiles:
+  - name: test
+    deploy:
+      kubectl:
+        manifests:
+          - ./kubernetes-manifests/beer-api*.yaml
+          - ./kubernetes-manifests/details*.yaml
+          - ./kubernetes-manifests/reviews*.yaml
