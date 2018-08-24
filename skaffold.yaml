@@ -16,3 +16,10 @@ profiles:
           - ./kubernetes-manifests/beer-api*.yaml
           - ./kubernetes-manifests/details*.yaml
           - ./kubernetes-manifests/reviews*.yaml
+          - ./kubernetes-manifests/likes*.yaml
+  - name: test-likes
+    deploy:
+      kubectl:
+        manifests:
+          - ./kubernetes-manifests/beer-api*.yaml
+          - ./kubernetes-manifests/likes*.yaml
