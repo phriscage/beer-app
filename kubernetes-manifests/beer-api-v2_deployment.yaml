@@ -2,18 +2,18 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: likes-api
+  name: beer-api-v2
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: likes-api
-        version: v1
+        app: beer-api
+        version: v2
     spec:
       containers:
-        - name: likes-api
-          image: gcr.io/chrispage-dev/beer-likes-api:0.2.2
+        - name: beer-api
+          image: gcr.io/chrispage-dev/beer-api
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 10000
+            - containerPort: 5000

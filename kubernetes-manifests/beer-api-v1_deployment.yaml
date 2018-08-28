@@ -2,9 +2,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: beer-api
+  name: beer-api-v1
 spec:
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: beer-api
-          image: gcr.io/chrispage-dev/beer-api
+          image: gcr.io/chrispage-dev/beer-api:0.6.2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
