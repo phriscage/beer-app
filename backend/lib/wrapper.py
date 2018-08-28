@@ -11,6 +11,7 @@ import sys
 import logging
 # from urllib.parse import urlparse, unquote
 from http.client import HTTPConnection
+from http import HTTPStatus
 import requests
 import simplejson as json
 
@@ -130,7 +131,6 @@ def list_likes(query, stub):
     """ get the likes_summary object in json format """
     req = bl_pb2.LikesQuery(ref_type=bl_pb2.RefType(**query))
     res = stub.ListLikes(req)
-    logger.debug(res)
     like_summary = bl_pb2.LikesSummary()
     for item in res:
         ## There is an error with protobuf that cannot compare the classes
@@ -146,16 +146,16 @@ def list_likes(query, stub):
     data = json.loads(MessageToJson(like_summary))
     if not data:
         return {
-            'code': 404,
-            'description': 'The requested URL was not found on the server.  If you entered the URL manually please check your spelling and try again.',
-            'message': 'Not Found'
+            'code': HTTPStatus.NOT_FOUND.value,
+			'status': HTTPStatus.NOT_FOUND.phrase,
+            'description': HTTPStatus.NOT_FOUND.description
         }
     return {
-      'code': 200,
+      'code': HTTPStatus.OK.value,
       'data': data.get('likes', []),
       'total_count': data.get('total', None),
-      'description': 'Request fulfilled, document follows',
-      'status': 'Ok'
+      'status': HTTPStatus.OK.phrase,
+      'description': HTTPStatus.OK.description
     }
 
 
@@ -171,9 +171,9 @@ def get_beer_likes(beer_id, headers, params=None):
             stub = bl_pb2_grpc.BeerLikesStub(channel)
             res = list_likes(query, stub)
     except Exception as error:
-        logger.warning(error)
-        res = str(error)
-        return 500, {'message': 'Sorry, [%s] is currently unavailable.' % url, 'error': res}
+        logger.warning(error.debug_error_string())
+        res = str(error.code())
+        return 500, {'message': 'Sorry, [%s] is currently unavailable.' % conn, 'error': res}
     #if res and res.status_code == 200:
     if res and res.get('code', None) == 200:
         return 200, res
