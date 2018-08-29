@@ -1,0 +1,30 @@
+apiVersion: skaffold/v1alpha2
+kind: Config
+build:
+  artifacts:
+  - imageName: gcr.io/chrispage-dev/beer-api
+    workspace: ./backend/
+deploy:
+  kubectl:
+    manifests:
+      # - ./kubernetes-manifests/beer-api/*v1*.yaml
+      - ./kubernetes-manifests/beer-api/*v2*.yaml
+profiles:
+  - name: test
+    deploy:
+      kubectl:
+        manifests:
+          #- ./kubernetes-manifests/beer-api/*v1*.yaml
+          - ./kubernetes-manifests/beer-api/*v2*.yaml
+          - ./kubernetes-manifests/details-api/*.yaml
+          - ./kubernetes-manifests/details-db/*.yaml
+          - ./kubernetes-manifests/reviews-api/*.yaml
+          - ./kubernetes-manifests/reviews-db/*.yaml
+          - ./kubernetes-manifests/likes-api/*.yaml
+  - name: test-likes
+    deploy:
+      kubectl:
+        manifests:
+          #- ./kubernetes-manifests/beer-api/*v1*.yaml
+          - ./kubernetes-manifests/beer-api/*v2*.yaml
+          - ./kubernetes-manifests/likes-api/*.yaml

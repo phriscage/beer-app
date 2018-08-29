@@ -21,3 +21,7 @@ six==1.11.0
 typing==3.6.4
 urllib3==1.22
 Werkzeug==0.14.1
+grpcio==1.14.1
+protobuf==3.6.1
+googleapis-common-protos==1.5.3
+six==1.11.0

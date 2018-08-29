@@ -15,7 +15,8 @@ sys.path.insert(0, os.path.dirname(
     os.path.realpath(__file__)) + '/../../')
 
 from lib.utils import http_status_response, get_forward_headers # noqa
-from lib.wrapper import post_beer_details, get_beer_details, get_beer_reviews # noqa
+from lib.wrapper import post_beer_details, get_beer_details, get_beer_reviews, \
+    get_beer_likes # noqa
 
 logger = logging.getLogger(__name__)
 beers = Blueprint('beers', __name__)
@@ -53,3 +54,12 @@ def get_beer_reviews_by_beer_id(beer_id):
     headers = get_forward_headers(request, whitelist_headers)
     status, reviews = get_beer_reviews(beer_id, headers, request.query_string)
     return jsonify(reviews), status
+
+@beers.route('/<string:beer_id>/likes', methods=['GET'])
+def get_beer_likes_by_beer_id(beer_id):
+    """
+    """
+    whitelist_headers = ['x-api-key', 'authorization']
+    headers = get_forward_headers(request, whitelist_headers)
+    status, likes = get_beer_likes(beer_id, headers, request.query_string)
+    return jsonify(likes), status

@@ -1,0 +1,27 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reviews-api
+  labels:
+    app: reviews-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviews-api
+  template:
+    metadata:
+      labels:
+        app: reviews-api
+    spec:
+      containers:
+        - image: gcr.io/chrispage-dev/beer-reviews-api:0.2.1
+          name: reviews-api
+          # imagePullPolicy: Always
+          env:
+            - name: ELASTICSEARCH_DATABASE_URI
+              value: http://reviews-db:9200
+          ports:
+            - containerPort: 8080
+              name: reviews-api

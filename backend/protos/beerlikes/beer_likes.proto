@@ -1,0 +1,63 @@
+// Copyright 2018 Chris Page <phriscage@gmail.com>
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "phriscage.beerapp.beerlikes";
+option java_outer_classname = "BeerLikesProto";
+
+package beerlikes;
+
+// import "google/protobuf/timestamp.proto";
+
+// Interface exported by the server.
+service BeerLikes {
+  // A simple RPC.
+  //
+  // Obtains the like at a given RefType.
+  //
+  // A like with an empty id is returned if there's no like at the given
+  // reftype.
+  rpc GetLike(LikeQuery) returns (Like) {}
+
+  // Stream all the Likes at a given RefType
+  // position.
+  rpc ListLikes(LikesQuery) returns (stream Like) {}
+
+  // Batch fetch all the Likes and let the server do the calculations
+  rpc GetLikesSummary(LikesQuery) returns (LikesSummary) {}
+}
+
+// RefTypes are pointers to the Beer object for the coresponding like.
+// The Id of the RefType would be the respective Beer ID, Review ID, etc.
+message RefType {
+  string name = 1; // Do not want to restrict by name.
+  string id = 2; 
+}
+
+// Like are represented as a positive or negative action for a given RefType. 
+message Like {
+  RefType ref_type = 1; 
+  string id = 2; // Unique ID number for this Like
+  bool liked = 3; // True/False
+  // google.protobuf.Timestamp created_at = 4;
+}
+
+// LikeQuery on for a given RefType. 
+message LikeQuery {
+  string id = 1; // Unique ID number for this Like
+}
+
+// LikesQuery on for a given RefType. 
+message LikesQuery {
+  RefType ref_type = 1; 
+}
+
+// Collection of likes
+// If a like could not be found, the total count is 0
+message LikesSummary {
+  repeated Like likes = 1; 
+  int32 total = 2; // Total likes could be positive or negative
+  // google.protobuf.Timestamp elapsed_time = 3;
+  uint64 elapsed_time = 3; // Nanoseconds
+}
