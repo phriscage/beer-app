@@ -75,7 +75,6 @@ spec:
     metadata:
       labels:
         app: likes-api
-        version: v1
     spec:
       containers:
         - name: likes-api
