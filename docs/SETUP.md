@@ -1,9 +1,9 @@
 # Beer App - Setup
-This documentation provides details for how to setup the Beer App interface and API. You can choice either [SETUP-STAND-ALONE.md](SETUP-STAND-ALONE.md) or [Setup Backend - Hybrid](SETUP-HYBRID.md) for the front-end
+This documentation provides details for how to setup the Beer App interface and API. You can choice either [SETUP-STAND-ALONE.md](SETUP-STAND-ALONE.md) or [Setup Backend - Facade](SETUP-FACADE.md) for the front-end
 
 * [Setup Frontend](#setup_frontend)
 * [Setup Backend - Stand-Alone](SETUP-STAND-ALONE.md)
-* [Setup Backend - Hybrid](SETUP-HYBRID.md)
+* [Setup Backend - Facade](SETUP-FACADE.md)
 
 
 ## <a name="setup_frontend"></a>Setup Frontend:

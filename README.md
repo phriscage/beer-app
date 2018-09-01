@@ -1,34 +1,25 @@
 # Beer App
 This application provides information about Beers in a simple interface. The application is comprised of a lightweight, responsive browser interface, a Beer Data API, and corespeonding Beer microservices. The Beer API is exposed through an API Management proxy endpoint point that enforces AuthN/AuthZ, Security, Rate limting, etc. The Beer API is constructed from various Beer microservices (Details, Reviews, etc.) that run in a Kubernetes (K8s) cluster. Istio is installed in the K8s cluster to provide service mesh management by leveraging Envoy as a sidecar proxy. Istio initially provides routing, load balancing, and security (mTLS) for the cluster services.
 
-These are the initial deployment patterns:
+These are the API Management deployment patterns:
 
-* **Stand-alone** application environment: The Beer API and services reside in a K8s environment (private or public cloud) and is proxied directly from the API Management platform. This is the default example. 
+* **Stand-alone** environment: The Beer API and services reside in a K8s environment (private or public cloud) and are proxied directly from the API Management platform. This is the default example. 
 
 ![alt text](images/beer-app_architecture.png)
 
-* **Hybrid** private and/or public application environment: The Beer API services reside in separate or hybrid K8s environment(s) (private and public cloud) and the Beer API is orchestrated and proxied from the API Management platform.
+* **Facade** environment: The Beer API services reside in separate K8s environment(s) (private and public cloud) or namespaces and the Beer API is orchestrated and proxied from the API Management platform.
 
-![alt text](images/beer-app_architecture-hybrid.png)
+![alt text](images/beer-app_architecture-facade.png)
 
-The initial examples, **Stand-alone** and **Hybrid**, focuses on running the Beer App services in [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/). Additional examples will be provided for Minikube, Pivotal Cloud Foundry, etc. 
+The examples, **Stand-alone** and **Facade**, focus on running the Beer App services in [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/). Additional examples will be provided for Docker for Desktop, Minikube, Pivotal Cloud Foundry, etc. 
 
-* [Prerequisites](#prerequisites)
-* [Setup](SETUP.md)
-* [API Management](APIGEE.md)
-* [Development](DEVELOPMENT.md)
+There are a few [prerequisites](docs/PREREQUISITES.md) that need to be validated and/or installed before continuing to the setup. The [Setup](docs/SETUP.md) contains all the commands required to setup the environment to run the demo and labs.
+
+* [Prerequisites](docs/PREREQUISITES.md)
+* [Setup](docs/SETUP.md)
+* [API Management](docs/APIGEE.md)
+* [Development](docs/DEVELOPMENT.md)
 * [To-Do](#todo)
-
-
-## <a name="prerequisites"></a>Prerequisites:
-* [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/) cluster knowledge
-* [Istio](https://istio.io/) service mesh management knowledge
-
-* [Google Cloud Platform SDK](https://cloud.google.com/sdk/) installed and configured
-* [Apigee Istio Mixer](https://github.com/apigee/istio-mixer-adapter) installed
-
-* [Node](https://nodejs.org/en/) installed
-* [Npm](https://www.npmjs.com/) installed
 
 
 ## <a name="todo">To Do!</a>

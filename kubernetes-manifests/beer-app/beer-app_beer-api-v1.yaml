@@ -1,0 +1,262 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: beer-api
+  labels:
+    app: beer-api
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5000
+      name: http
+  selector:
+    app: beer-api
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: beer-api-v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: beer-api
+        version: v1
+    spec:
+      containers:
+        - name: beer-api
+          image: gcr.io/chrispage-dev/beer-api:0.6.2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reviews-api
+  labels:
+    app: reviews-api
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      name: http
+  selector:
+    app: reviews-api
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reviews-api
+  labels:
+    app: reviews-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviews-api
+  template:
+    metadata:
+      labels:
+        app: reviews-api
+    spec:
+      containers:
+        - image: gcr.io/chrispage-dev/beer-reviews-api:0.2.1
+          name: reviews-api
+          # imagePullPolicy: Always
+          env:
+            - name: ELASTICSEARCH_DATABASE_URI
+              value: http://reviews-db:9200
+          ports:
+            - containerPort: 8080
+              name: reviews-api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reviews-db
+  labels:
+    app: reviews-db
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9200
+      name: rest
+    - port: 9300
+      name: nodes
+  selector:
+    app: reviews-db
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reviews-db
+  labels:
+    app: reviews-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviews-db
+  template:
+    metadata:
+      labels:
+        app: reviews-db
+    spec:
+      containers:
+        - image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
+          name: reviews-db
+          env:
+            - name: discovery.type
+              value: single-node
+          ports:
+            - containerPort: 9200
+              name: rest
+            - containerPort: 9300
+              name: nodes
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: details-api
+  labels:
+    app: details-api
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      name: http
+  selector:
+    app: details-api
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: details-api
+  labels:
+    app: details-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: details-api
+  template:
+    metadata:
+      labels:
+        app: details-api
+    spec:
+      containers:
+        - image: gcr.io/chrispage-dev/beer-details-api:0.4.0
+          name: details-api
+          env:
+          - name: SQLALCHEMY_DATABASE_URI
+            value: mysql://root:root@details-db/data
+          ports:
+            - containerPort: 8080
+              name: details-api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: details-db
+  labels:
+    app: details-db
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3306
+  selector:
+    app: details-db
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: details-db
+  labels:
+    app: details-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: details-db
+  template:
+    metadata:
+      labels:
+        app: details-db
+    spec:
+      containers:
+        - image: mysql:5.7.20
+          name: details-db
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+          ports:
+            - containerPort: 3306
+              name: details-db
+          volumeMounts:
+            - name: details-db-initdb
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: details-db-initdb
+          configMap:
+            name: details-db-initdb-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: details-db-initdb-config
+data:
+  initdb.sql: |
+    CREATE DATABASE IF NOT EXISTS `data`;
+
+    CREATE TABLE IF NOT EXISTS `data`.`beers` (
+          `id` INTEGER(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+          `brewery` VARCHAR(255),
+          `style`    VARCHAR(255),
+          `price`    DECIMAL(13, 2),
+          `name` VARCHAR(255),
+          `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      );
+      INSERT INTO `data`.`beers`
+          (brewery, style, price, name)
+      VALUES
+          ('Dogfish Head', 'Strong Ale - American', 5.95, 'American Beauty'),
+          ('Dogfish Head', 'IPA - American', 6.95, '90 Minute IPA'),
+          ('Dogfish Head', 'Witbier', 5.95, 'Namaste'),
+          ('Carton Brewing Company', 'Other', 4.85, 'Boat Beer'),
+          ('Carton Brewing Company', 'IPA - Imperial / Double', 6.85, '077XX'),
+          ('Kane Brewing Company', 'IPA - American', 5.85, 'Head High'),
+          ('Tired Hands Brewing Company', 'IPA - American', 6.25, 'Alien Church'),
+          ('Tired Hands Brewing Company', 'Pale Ale - American', 5.99, 'HopHands'),
+          ('Maine Beer Company', 'Pale Ale - American', 5.50, 'Peeper Ale'),
+          ('Bell\'s Brewery', 'IPA - Imperial / Double', 6.50, 'Hopslam Ale (2017)'),
+          ('Bell\'s Brewery', 'IPA - American', 6.25, 'Two Hearted Ale'),
+          ('Fat Head\'s Brewery', 'IPA - Session / India Session Ale', 5.85, 'Sunshine Daydream Session IPA'),
+          ('Fat Head\'s Brewery', 'IPA - American', 5.85, 'Head Hunter IPA');
+
+    CREATE DATABASE IF NOT EXISTS `data`;
+
+    CREATE TABLE IF NOT EXISTS `data`.`beers` (
+        `id` INTEGER(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        `brewery` VARCHAR(255),
+        `style`    VARCHAR(255),
+        `price`    DECIMAL(13, 2),
+        `name`    VARCHAR(255),
+            `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+    INSERT INTO `data`.`beers`
+        (brewery, style, price, name)
+    VALUES
+        ('New Belgium Brewing', 'Red Ale - American Amber / Red', 4.50, 'Fat Tire'),
+        ('Lagunitas Brewing Company', 'Pale Wheat Ale - American', 6.50, 'Little Sumpin\' Sumpin\' Ale'),
+        ('Lagunitas Brewing Company', 'IPA - Imperical / Double', 6.90, 'Lagunitas Sucks'),
+        ('Lagunitas Brewing Company', 'Strong Ale - American', 7.50, 'Undercover Investigation Shut-Down Ale'),
+        ('Ballast Point Brewing Company', 'IPA - American', 6.95, 'Grapefruit Sculpin'),
+        ('Ballast Point Brewing Company', 'IPA - American', 6.95, 'Pineapple Sculpin'),
+        ('Russian River Brewing Company', 'IPA - Imperial / Double', 6.95, 'Pliny the Elder'),
+        ('Stone Brewing', 'IPA - Session / India Session Ale', 5.95, 'Stone Go To IPA'),
+        ('Firestone Walker Brewing Company', 'IPA - Session / India Session Ale', 5.95, 'Easy Jack');

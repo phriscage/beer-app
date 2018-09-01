@@ -10,9 +10,9 @@ Set your **CLUSTER_NAME** environment variable
 
 [Setup Kubernetes and Istio](SETUP-KUBERNETES-ISTIO.md)
 
-Create the application and inject the Istio sidecar proxies to the application Pods:
+Create the application and inject the Istio sidecar proxies to the application Pods. The [beer-app_all.yaml](kubernetes-manifests/beer-app/beer-app_all.yaml) configuration has all services and versions:
 
-        kubectl create -f <(istioctl kube-inject -f kubernetes-manifests/beer-app.yaml)
+        kubectl create -f <(istioctl kube-inject -f kubernetes-manifests/beer-app/beer-app_all.yaml)
 
 Check the status, get external ingress IP, and export IP as GATEWAY_URL=<IP:PORT>:
 

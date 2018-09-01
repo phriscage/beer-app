@@ -1,9 +1,9 @@
-# Beer App - Setup Hybrid
-This documentation provides details for how to setup the Hybrid.
+# Beer App - Setup Facade
+This documentation provides details for how to setup the Facade.
 
-* [Setup Backend - Hybrid](#setup_backend_hybrid)
+* [Setup Backend - Facade](#setup_backend_facade)
 
-## <a name="setup_backend_hybrid">Setup Backend - Hybrid</a>
+## <a name="setup_backend_facade">Setup Backend - Facade</a>
 details-api:
 Set your **CLUSTER_NAME** environment variable
 
