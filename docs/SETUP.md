@@ -4,6 +4,7 @@ This documentation provides details for how to setup the Beer App interface and 
 * [Setup Kubernetes and Istio](#setup_kubernetes_and_istio)
 * [Setup Backend](#setup_backend)
 * [Setup Frontend](#setup_frontend)
+* [Cleanup](#cleanup)
 
 
 ## <a name="setup_kubernetes_and_istio">Setup Kubernetes and Istio</a>
@@ -29,7 +30,10 @@ Install Istio with mTLS:
 
 
 ## <a name="setup_backend"></a>Setup Backend:
-Create the application and inject the Istio sidecar proxies to the application Pods. The [beer-app_all.yaml](kubernetes-manifests/beer-app/beer-app_all.yaml) configuration has all services and versions:
+Create the application and inject the Istio sidecar proxies to the application Pods. There are a few baseline applications that are defined in the [kubernetes-manifests/beer-app](kubernetes-manifests/beer-app) directory. Depending on your demo/lab, you will start with the appropriate one. If unsure, you can default to [beer-app_all.yaml](kubernetes-manifests/beer-app/beer-app_all.yaml)
+* [beer-app_all.yaml](kubernetes-manifests/beer-app/beer-app_all.yaml) configuration has all services and versions
+* [beer-app_beer-api-v1.yaml](kubernetes-manifests/beer-app/beer-app_beer-api-v1.yaml) configuration has beer-api-v1 without likes-api
+* [beer-app_beer-api-v2.yaml](kubernetes-manifests/beer-app/beer-app_beer-api-v2.yaml) configuration has beer-api-v1, beer-api-v2 with likes-api
 
         kubectl create -f <(istioctl kube-inject -f kubernetes-manifests/beer-app/beer-app_all.yaml)
 
@@ -66,3 +70,12 @@ Build and run the development environment as a Node instance and Docker applicat
 Launch browser to UI:
 
         http://localhost:8080
+
+
+## <a name="setup_frontend"></a>Setup Frontend:
+Let's cleanup everything for a fresh start
+
+        kubectl delete -f kubernetes-manifests/beer-app/beer-app_all.yaml
+        kubectl delete -f istio-manifests/beer-app/networking/mtls_default_policy.yaml
+        kubectl delete -f istio-manifests/beer-app/networking/beer-api_gateway.yaml
+
