@@ -72,7 +72,7 @@ Launch browser to UI:
         http://localhost:8080
 
 
-## <a name="setup_frontend"></a>Setup Frontend:
+## <a name="cleanup"></a>Cleanup:
 Let's cleanup everything for a fresh start
 
         kubectl delete -f kubernetes-manifests/beer-app/beer-app_all.yaml
