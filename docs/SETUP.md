@@ -24,7 +24,7 @@ Enable cluster-admin-binding clusterrolebinding in the cluster:
 
         kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
 
-Install Istio with mTLS:
+Install Istio with mTLS (between Istio components):
 
         kubectl apply -f install/kubernetes/istio-demo-auth.yaml
 
@@ -45,14 +45,18 @@ Create the Ingress Gateway for the application. You can verify with `kubectl get
 
         kubectl apply -f istio-manifests/beer-app/networking/beer-api_gateway.yaml
 
-Check the status, get external ingress IP, and export IP as GATEWAY_URL=<IP:PORT>:
+Check the status of the deployment and get external ingress IP:
 
         kubectl get gateway,virtualservice,deploy,po,svc -o wide
+        kubectl -n istio-system get service istio-ingressgateway
+
+Export the external ingress IP as GATEWAY_URL=<IP:PORT>:
+
         export GATEWAY_URL=`kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`
 
-Verify a 200 HTTP status code is returned when trying to access the openapi_spec:
+Verify an Ok 200 HTTP status code is returned when trying to access the service:
 
-        curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/openapi_spec
+        curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/api/beers
 
 You can now add an A/CNAME DNS record to the GATEWAY_URL in Cloud DNS. _Integration of Cloud DNS into kubectl ToDo_
 
