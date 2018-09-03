@@ -127,10 +127,10 @@ def get_beer_reviews(beer_id, headers, params=None):
     status = res.status_code if res is not None and res.status_code else 500
     return status, {'message': 'Sorry, [%s] is currently unavailable.' % url}
 
-def list_likes(query, stub):
+def list_likes(query, stub, metadata):
     """ get the likes_summary object in json format """
     req = bl_pb2.LikesQuery(ref_type=bl_pb2.RefType(**query))
-    res = stub.ListLikes(req)
+    res = stub.ListLikes(req, metadata=metadata)
     like_summary = bl_pb2.LikesSummary()
     for item in res:
         ## There is an error with protobuf that cannot compare the classes
@@ -166,10 +166,15 @@ def get_beer_likes(beer_id, headers, params=None):
         'id': str(beer_id),
         'name': 'beer'
     }
+    metadata = []
+    if headers.get('x-api-key', None):
+        metadata.append(('x-api-key', headers.get('x-api-key')))
+    if headers.get('authorization', None):
+        metadata.append(('authorization', headers.get('authorization')))
     try:
         with grpc.insecure_channel(conn) as channel:
             stub = bl_pb2_grpc.BeerLikesStub(channel)
-            res = list_likes(query, stub)
+            res = list_likes(query, stub, metadata)
     except Exception as error:
         logger.warning(error.debug_error_string())
         res = str(error.code())
