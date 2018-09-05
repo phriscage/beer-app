@@ -1,14 +1,15 @@
 # Beer App - Setup
 This documentation provides details for how to setup the Beer App interface and API. You will need to create a K8s cluster, install the application and start the front-end client
 
-* [Setup Kubernetes and Istio](#setup_kubernetes_and_istio)
+* [Setup Kubernetes](#setup_kubernetes)
+* [Setup Istio](#setup_istio)
 * [Setup Backend](#setup_backend)
 * [Setup Frontend](#setup_frontend)
 * [Cleanup](#cleanup)
 
 
-## <a name="setup_kubernetes_and_istio">Setup Kubernetes and Istio</a>
-These instructions to setup a k8s and Istio environment are via the  *gcloud* SDK CLI. You can also setup via the GCP *console*.
+## <a name="setup_kubernetes">Setup Kubernetes</a>
+These instructions to setup a k8s environment via the *gcloud* SDK CLI. You can also setup via the GCP *console*.
 
 Set your **CLUSTER_NAME** environment variable
 
@@ -24,7 +25,11 @@ Enable cluster-admin-binding clusterrolebinding in the cluster:
 
         kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
 
-Install Istio with mTLS (between Istio components):
+
+## <a name="setup_istio">Setup Istio</a>
+These instructions to setup Istio via the *gcloud* SDK CLI
+
+Install Istio with mTLS (between Istio components) and with Apigee Istio Mixer image:
 
         kubectl apply -f install/kubernetes/istio-demo-auth.yaml
 

@@ -1,22 +1,27 @@
 # Beer App
-This application provides information about Beers in a simple interface. The application is comprised of a lightweight, responsive browser interface, a Beer Data API, and corespeonding Beer microservices. The Beer API is exposed through an API Management proxy endpoint point that enforces AuthN/AuthZ, Security, Rate limting, etc. The Beer API is constructed from various Beer microservices (Details, Reviews, etc.) that run in a Kubernetes (K8s) cluster. Istio is installed in the K8s cluster to provide service mesh management by leveraging Envoy as a sidecar proxy. Istio initially provides routing, load balancing, and security (mTLS) for the cluster services.
+This application provides information about Beers in a simple interface. The application is comprised of a lightweight, responsive browser interface, a Beer Data API, and corespeonding Beer microservices. The Beer API is exposed through an API Management proxy endpoint point that enforces AuthN/AuthZ, Security, Rate limting, etc. The Beer API is constructed from various Beer microservices (Details, Reviews, etc.) that run in a Kubernetes (K8s) cluster. Istio is installed in the K8s cluster to provide service mesh management by leveraging Envoy as a sidecar proxy. Istio initially provides traffic management, observability, policy enforcement, and security (mTLS) for the cluster services. The Apigee Istio Mixer plugin provides additional security and governence with api key/token validation, quota enforcement, and analytics.
 
 These are the API Management deployment patterns:
 
-* **Stand-alone** environment: The Beer API and services reside in a K8s environment (private or public cloud) and are proxied directly from the API Management platform. This is the default example. 
+* **Edge Proxy** environment: The Beer API and services reside in a K8s environment (private or public cloud) and are proxied directly from the API Management Edge proxy. This is the default example. 
 
 ![alt text](images/beer-app_architecture.png)
 
-* **Facade** environment: The Beer API services reside in separate K8s environment(s) (private and public cloud) or namespaces and the Beer API is orchestrated and proxied from the API Management platform.
+* **Mesh Proxy** environment: The Beer API and services reside in a K8s environment (private or public cloud) and are proxied directly from the Istio/Envoy sidecar proxies. This is the Apigee Istio Mixer example. 
+
+![alt text](images/beer-app_architecture-mesh.png)
+
+* **Facade Proxy** environment: The Beer API services reside in separate K8s environment(s) (private and public cloud) or namespaces and the Beer API is orchestrated and proxied from the API Management platform.
 
 ![alt text](images/beer-app_architecture-facade.png)
 
-The examples, **Stand-alone** and **Facade**, focus on running the Beer App services in [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/). Additional examples will be provided for Docker for Desktop, Minikube, Pivotal Cloud Foundry, etc. 
+The examples focus on running the Beer App services in [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/). Additional examples will be provided for Docker for Desktop, Minikube, Pivotal Cloud Foundry, etc. 
 
 There are a few [prerequisites](docs/PREREQUISITES.md) that need to be validated and/or installed before continuing to the setup. The [Setup](docs/SETUP.md) contains all the commands required to setup the environment to run the demo and labs.
 
 * [Prerequisites](docs/PREREQUISITES.md)
 * [Setup](docs/SETUP.md)
+* [Labs!](labs/)
 * [API Management](docs/APIGEE.md)
 * [Development](docs/DEVELOPMENT.md)
 * [To-Do](#todo)
