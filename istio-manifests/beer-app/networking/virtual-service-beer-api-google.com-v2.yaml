@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: beer-api
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - beer-app-gateway
+  http:
+  - match:
+    - headers:
+        x-email:
+          regex: ".*@google.com"
+    route:
+    - destination:
+        host: beer-api
+        subset: v2
+  - route:
+    - destination:
+        host: beer-api
+        subset: v1
+---

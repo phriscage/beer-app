@@ -75,6 +75,7 @@ spec:
     metadata:
       labels:
         app: likes-api
+        version: v1
     spec:
       containers:
         - name: likes-api
@@ -105,13 +106,11 @@ metadata:
     app: reviews-api
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: reviews-api
   template:
     metadata:
       labels:
         app: reviews-api
+        version: v1
     spec:
       containers:
         - image: gcr.io/chrispage-dev/beer-reviews-api:0.2.1
@@ -148,9 +147,6 @@ metadata:
     app: reviews-db
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: reviews-db
   template:
     metadata:
       labels:
@@ -190,13 +186,11 @@ metadata:
     app: details-api
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: details-api
   template:
     metadata:
       labels:
         app: details-api
+        version: v1
     spec:
       containers:
         - image: gcr.io/chrispage-dev/beer-details-api:0.4.0
@@ -229,9 +223,6 @@ metadata:
     app: details-db
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: details-db
   template:
     metadata:
       labels:

@@ -13,7 +13,7 @@ Apply the Apigee configurations:
         kubectl apply -f istio-manifests/apigee/definitions.yaml
         kubectl apply -f istio-manifests/apigee/handler.yaml
 
-Enalbe the Apigee rule for *authorization* and *analytics* for all _inbound_ requests in the _default_ namespace:
+Enable the Apigee rule for *authorization* and *analytics* for all _inbound_ requests in the _default_ namespace:
 ```
   match: context.reporter.kind == "inbound" && destination.namespace == "default"
     && destination.service != "details-db" && destination.service != "reviews-db"
@@ -24,4 +24,5 @@ Verify an unauthorized 403 HTTP status code is returned when trying to access th
 
         curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/api/beers
 
-You have now enalbed Apigee *authorization*, *quota enforcement*, and *analytics* for all services in the mesh.
+You have now enalbed Apigee *authorization*, *quota enforcement*, and *analytics* for all services in the mesh. You can move onto the [labs](../labs) section to create clients and test out the integration
+
