@@ -53,7 +53,8 @@ export default {
       beersApiUrl: this.$shared.beersApiBaseUrl + '/beers',
       httpOptions: {
         headers: {
-          test: 123
+          test: 123,
+          'x-email': this.$auth.user().email
         }
       },
       error: false,
