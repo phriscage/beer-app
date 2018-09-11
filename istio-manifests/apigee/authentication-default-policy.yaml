@@ -6,18 +6,13 @@
 apiVersion: "authentication.istio.io/v1alpha1"
 kind: Policy
 metadata:
-  name: auth-spec
+  name: default
   namespace: default
 spec:
-  targets:
-  - name: beer-api
-  - name: details-api
-  - name: details-db
   peers:
   - mtls:   # uncomment if you're using mTLS between services (eg. istio-demo-auth.yaml)
   origins:
   - jwt:
-      #issuer: urn://chrispage-eval.apigee.net # this works with Mixer plugin but not apigee-istio executable
-      issuer: urn://chrispage-eval.apigee.net
+      issuer: urn://chrispage-eval.apigee.net ## apigee-istio token inspect fails
       jwks_uri: https://chrispage-eval-test.apigee.net/v3/oauth/certs
   principalBinding: USE_ORIGIN

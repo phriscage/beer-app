@@ -2,7 +2,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: beer-api-gateway
+  name: beer-app-gateway
 spec:
   selector:
     istio: ingressgateway # use istio default controller
@@ -22,13 +22,13 @@ spec:
   hosts:
   - "*"
   gateways:
-  - beer-api-gateway
+  - beer-app-gateway
   http:
   - match:
     - uri:
         regex: /.*
     route:
     - destination:
-        host: beer-api
+        host: beer-api-v2
         port:
           number: 5000

@@ -86,9 +86,6 @@ metadata:
     app: reviews-api
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: reviews-api
   template:
     metadata:
       labels:
@@ -129,9 +126,6 @@ metadata:
     app: reviews-db
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: reviews-db
   template:
     metadata:
       labels:
@@ -171,9 +165,6 @@ metadata:
     app: details-api
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: details-api
   template:
     metadata:
       labels:
@@ -210,9 +201,6 @@ metadata:
     app: details-db
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: details-db
   template:
     metadata:
       labels:

@@ -1,14 +1,15 @@
 # Beer App - Setup
 This documentation provides details for how to setup the Beer App interface and API. You will need to create a K8s cluster, install the application and start the front-end client
 
-* [Setup Kubernetes and Istio](#setup_kubernetes_and_istio)
+* [Setup Kubernetes](#setup_kubernetes)
+* [Setup Istio](#setup_istio)
 * [Setup Backend](#setup_backend)
 * [Setup Frontend](#setup_frontend)
 * [Cleanup](#cleanup)
 
 
-## <a name="setup_kubernetes_and_istio">Setup Kubernetes and Istio</a>
-These instructions to setup a k8s and Istio environment are via the  *gcloud* SDK CLI. You can also setup via the GCP *console*.
+## <a name="setup_kubernetes">Setup Kubernetes</a>
+These instructions to setup a k8s environment via the *gcloud* SDK CLI. You can also setup via the GCP *console*.
 
 Set your **CLUSTER_NAME** environment variable
 
@@ -24,7 +25,11 @@ Enable cluster-admin-binding clusterrolebinding in the cluster:
 
         kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
 
-Install Istio with mTLS (between Istio components):
+
+## <a name="setup_istio">Setup Istio</a>
+These instructions to setup Istio via the *gcloud* SDK CLI
+
+Install Istio with mTLS (between Istio components) and with Apigee Istio Mixer image:
 
         kubectl apply -f install/kubernetes/istio-demo-auth.yaml
 
@@ -43,7 +48,7 @@ Enable mTLS policy for the default namespace. You can verify with `kubectl get p
 
 Create the Ingress Gateway for the application. You can verify with `kubectl get gateway` and `kubectl get virtualservice`:
 
-        kubectl apply -f istio-manifests/beer-app/networking/beer-api_gateway.yaml
+        kubectl apply -f istio-manifests/beer-app/networking/beer-app_gateway.yaml
 
 Check the status of the deployment and get external ingress IP:
 
@@ -56,7 +61,7 @@ Export the external ingress IP as GATEWAY_URL=<IP:PORT>:
 
 Verify an Ok 200 HTTP status code is returned when trying to access the service:
 
-        curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/api/beers
+        curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/api/health
 
 You can now add an A/CNAME DNS record to the GATEWAY_URL in Cloud DNS. _Integration of Cloud DNS into kubectl ToDo_
 
