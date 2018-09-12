@@ -20,6 +20,12 @@ Create an application, add the above API product, and capture the consumer/clien
 
 Verify an Ok 200 HTTP status code is returned when trying to access the services with the *x-api-key* header:
 
-        curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/api/beers -H "X-api-key: ${CLIENT_KEY}"
+        curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/api/health -H "X-api-key: ${CLIENT_KEY}"
 
 Open the Apigee Edge analytics to view the errors and success for the service proxies.
+
+
+## <a name="next"></a>Next:
+
+        Try some of more [labs](labs)
+

@@ -46,6 +46,10 @@ Enable mTLS policy for the default namespace. You can verify with `kubectl get p
 
         kubectl apply -f istio-manifests/beer-app/networking/mtls_default_policy.yaml
 
+Apply the destination rules for all the services:
+
+        kubectl apply -f istio-manifests/beer-app/networking/destination-rule-all.yaml
+
 Create the Ingress Gateway for the application. You can verify with `kubectl get gateway` and `kubectl get virtualservice`:
 
         kubectl apply -f istio-manifests/beer-app/networking/beer-app_gateway.yaml
@@ -81,10 +85,16 @@ Launch browser to UI:
         http://localhost:8080
 
 
+## <a name="next"></a>Next:
+
+        * Try some of the [labs](../labs)
+        * [Setup the Mesh Proxy](SETUP-MESH-PROXY.md)
+
+
 ## <a name="cleanup"></a>Cleanup:
 Let's cleanup everything for a fresh start
 
-        kubectl delete -f kubernetes-manifests/beer-app/beer-app_all.yaml
+        kubectl delete -f istio-manifests/beer-app/networking/beer-app_gateway.yaml
+        kubectl delete -f istio-manifests/beer-app/networking/destination-rule-all.yaml
         kubectl delete -f istio-manifests/beer-app/networking/mtls_default_policy.yaml
-        kubectl delete -f istio-manifests/beer-app/networking/beer-api_gateway.yaml
-
+        kubectl delete -f kubernetes-manifests/beer-app/beer-app_all.yaml
