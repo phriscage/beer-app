@@ -54,7 +54,9 @@ export default {
       httpOptions: {
         headers: {
           test: 123,
-          'x-email': this.$auth.user().email
+          'x-email': this.$auth.user().email,
+          // This will be removed once JWT auth is fixed for OPTIONS in Istio
+          'x-api-key': this.$shared.clientId
         }
       },
       error: false,
