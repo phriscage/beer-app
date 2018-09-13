@@ -83,9 +83,9 @@ def get_beer_details(beer_id, headers, params=None):
         res = str(error)
         return 500, {'message': 'Sorry, [%s] is currently unavailable.' % url, 'error': res}
     if res and res.status_code == 200:
-        data = res.json()
+        res_json = res.json()
         if params.get('likes'):
-            beer_data = data.get('data', [])
+            beer_data = res_json.get('data', [])
             if type(beer_data) == dict:
                 beer_data = [beer_data]
             data = []
@@ -93,10 +93,13 @@ def get_beer_details(beer_id, headers, params=None):
                 status, likes = get_beer_likes(beer.get('id'), headers, None)
                 #if status and status == 200:
                     #beer.update({'likes': likes.get('total_count')})
-                beer.update({'likes': likes.get('data', [])})
+                #beer.update({'likes': likes.get('data', [])})
                 beer.update({'likes_total': likes.get('total_count', 0)})
                 data.append(beer)
-        return 200, data
+            if len(data) == 1:
+                data = data[0]
+            res_json['data'] = data
+        return 200, res_json
     data = {
       'request': {
         'url': url,
