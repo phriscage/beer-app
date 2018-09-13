@@ -21,6 +21,14 @@ profiles:
           - ./kubernetes-manifests/reviews-api/*.yaml
           - ./kubernetes-manifests/reviews-db/*.yaml
           - ./kubernetes-manifests/likes-api/*.yaml
+  - name: test-details
+    deploy:
+      kubectl:
+        manifests:
+          #- ./kubernetes-manifests/beer-api/*v1*.yaml
+          - ./kubernetes-manifests/beer-api/*v2*.yaml
+          - ./kubernetes-manifests/details-api/*.yaml
+          - ./kubernetes-manifests/details-db/*.yaml
   - name: test-likes
     deploy:
       kubectl:
