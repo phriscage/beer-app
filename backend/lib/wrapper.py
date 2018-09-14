@@ -113,6 +113,7 @@ def get_beer_details(beer_id, headers, params=None):
     }
     logger.debug(data)
     logger.debug(res.text)
+    status = res.status_code if res is not None and res.status_code else 500
     return status, {'message': 'Sorry, [%s] is currently unavailable.' % url}
 
 def get_beer_reviews(beer_id, headers, params=None):
