@@ -48,7 +48,8 @@ var likesColumn = {
   name: 'likes_total',
   title: 'Likes',
   titleClass: 'center aligned',
-  dataClass: 'center aligned'
+  dataClass: 'center aligned',
+  callback: 'likesIcon'
 }
 
 export default {
@@ -202,6 +203,18 @@ export default {
           return '<span class="ui brown label"><i class="large bar icon"></i>Lager</span>'
         default:
           return '<span class="ui brown label"><i class="large bar icon"></i>Other</span>'
+      }
+    },
+    likesIcon (value) {
+      switch (true) {
+        case (value === 0):
+          return ''
+        case (value >= 3):
+          return '<span class="ui red label"><i class="large heart icon"></i>' + value + '</span>'
+        case (value >= 2):
+          return '<span class="ui orange label"><i class="large heart icon"></i>' + value + '</span>'
+        case (value >= 1):
+          return '<span class="ui yellow label"><i class="large heart icon"></i>' + value + '</span>'
       }
     }
   }
