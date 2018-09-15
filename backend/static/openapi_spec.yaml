@@ -42,7 +42,6 @@ paths:
             type: string
             enum:
               - 'name:123'
-          collectionFormat: multi
         - name: brewery
           in: query
           description: '''brewery:value'' needs to be formatted for brewery filter'
@@ -52,7 +51,6 @@ paths:
             type: string
             enum:
               - 'brewery:123'
-          collectionFormat: multi
       responses:
         '200':
           description: successful operation

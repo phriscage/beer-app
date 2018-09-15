@@ -57,8 +57,7 @@
               "enum": [
                 "name:123"
               ]
-            },
-            "collectionFormat": "multi"
+            }
           },
           {
             "name": "brewery",
@@ -71,8 +70,7 @@
               "enum": [
                 "brewery:123"
               ]
-            },
-            "collectionFormat": "multi"
+            }
           }
         ],
         "responses": {
