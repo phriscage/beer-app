@@ -24,6 +24,7 @@
         :fields="fields"
         :append-params="moreParams"
         @vuetable:load-error="handleLoadError"
+        @vuetable:loaded="onTableLoaded"
       ></vuetable>
     </div>
   </div>
@@ -43,6 +44,14 @@ Vue.use(VueEvents)
 // Vue.component('my-detail-row', DetailRow)
 Vue.component('filter-bar', FilterBar)
 
+var likesColumn = {
+  name: 'likes_total',
+  title: 'Likes',
+  titleClass: 'center aligned',
+  dataClass: 'center aligned',
+  callback: 'likesIcon'
+}
+
 export default {
   components: {
     Vuetable,
@@ -50,15 +59,19 @@ export default {
   },
   data () {
     return {
-      beersApiUrl: this.$shared.beersApiBaseUrl + '/beers',
+      beersApiUrl: this.$shared.beersApiBaseUrl + '/beers?likes=true',
       httpOptions: {
         headers: {
-          test: 123
+          test: 123,
+          'x-email': this.$auth.user().email,
+          // This will be removed once JWT auth is fixed for OPTIONS in Istio
+          'x-api-key': this.$shared.clientId
         }
       },
       error: false,
       errorMessage: '',
       randomNumber: 0,
+      likesColumn: likesColumn,
       fields: [
         'brewery',
         {
@@ -98,7 +111,8 @@ export default {
           dataClass: 'center aligned',
           callback: 'priceLabel'
           // visible: false
-        }
+        },
+        likesColumn
       ],
       moreParams: {}
     }
@@ -129,18 +143,42 @@ export default {
     },
     // filter
     onFilterSet (filterText) {
-      console.log('filter-set', filterText)
-      var filter = filterText.split(':', 2)
-      // this.moreParams = {}
-      this.moreParams[filter[0]] = filter[1]
-      Vue.nextTick(() => this.$refs.vuetable.refresh())
+      console.log('filter-set')
+      if (filterText.indexOf(':')) {
+        var filter = filterText.split(':', 2)
+        this.moreParams = {}
+        this.moreParams[filter[0]] = filter[1]
+        if (this.$refs.vuetable) {
+          Vue.nextTick(() => this.$refs.vuetable.refresh())
+        }
+      }
     },
     onFilterReset () {
       console.log('filter-reset')
       this.moreParams = {}
-      Vue.nextTick(() => this.$refs.vuetable.refresh())
+      if (this.$refs.vuetable) {
+        Vue.nextTick(() => this.$refs.vuetable.refresh())
+      }
+    },
+    onTableLoaded () {
+      console.log('vuetable:loaded')
+      this.toggleColumn()
     },
     // table
+    // toggle the columns if the data is not visible
+    toggleColumn () {
+      if (this.$refs.vuetable.tableData && this.$refs.vuetable.tableData[0]) {
+        var firstRow = this.$refs.vuetable.tableData[0]
+        // TO-DO we can make this dynamic for all fields
+        console.log('likes_total' in firstRow)
+        if ('likes_total' in firstRow) {
+          this.likesColumn.visible = true
+        } else {
+          this.likesColumn.visible = false
+        }
+        this.$refs.vuetable.normalizeFields()
+      }
+    },
     allcap (value) {
       return value.toUpperCase()
     },
@@ -165,6 +203,18 @@ export default {
           return '<span class="ui brown label"><i class="large bar icon"></i>Lager</span>'
         default:
           return '<span class="ui brown label"><i class="large bar icon"></i>Other</span>'
+      }
+    },
+    likesIcon (value) {
+      switch (true) {
+        case (value === 0):
+          return ''
+        case (value >= 3):
+          return '<span class="ui red label"><i class="large heart icon"></i>' + value + '</span>'
+        case (value >= 2):
+          return '<span class="ui orange label"><i class="large heart icon"></i>' + value + '</span>'
+        case (value >= 1):
+          return '<span class="ui yellow label"><i class="large heart icon"></i>' + value + '</span>'
       }
     }
   }

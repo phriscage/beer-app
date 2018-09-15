@@ -31,7 +31,7 @@ def index():
         # headers = {'content-type': 'application/json'}
         status, details = post_beer_details(headers, request.json)
     else:
-        status, details = get_beer_details(None, headers, request.query_string)
+        status, details = get_beer_details(None, headers, request.args)
     return jsonify(details), status
 
 @beers.route('/<string:beer_id>', methods=['GET', 'DELETE'])
@@ -41,9 +41,9 @@ def get_or_delete_beer_by_beer_id(beer_id):
     whitelist_headers = ['x-api-key', 'authorization']
     headers = get_forward_headers(request, whitelist_headers)
     if request.method == 'DELETE':
-        status, details = delete_beer_details(beer_id, headers, request.query_string)
+        status, details = delete_beer_details(beer_id, headers, request.args)
     else:
-        status, details = get_beer_details(beer_id, headers, request.query_string)
+        status, details = get_beer_details(beer_id, headers, request.args)
     return jsonify(details), status
 
 @beers.route('/<string:beer_id>/reviews', methods=['GET'])
@@ -52,7 +52,7 @@ def get_beer_reviews_by_beer_id(beer_id):
     """
     whitelist_headers = ['x-api-key', 'authorization']
     headers = get_forward_headers(request, whitelist_headers)
-    status, reviews = get_beer_reviews(beer_id, headers, request.query_string)
+    status, reviews = get_beer_reviews(beer_id, headers, request.args)
     return jsonify(reviews), status
 
 @beers.route('/<string:beer_id>/likes', methods=['GET'])
@@ -61,5 +61,5 @@ def get_beer_likes_by_beer_id(beer_id):
     """
     whitelist_headers = ['x-api-key', 'authorization']
     headers = get_forward_headers(request, whitelist_headers)
-    status, likes = get_beer_likes(beer_id, headers, request.query_string)
+    status, likes = get_beer_likes(beer_id, headers, request.args)
     return jsonify(likes), status

@@ -6,13 +6,25 @@
 apiVersion: config.istio.io/v1alpha2
 kind: rule
 metadata:
-  name: apigee-rule
+  name: apigee-authorization-rule
   namespace: istio-system
 spec:
   match: context.reporter.kind == "inbound" && destination.namespace == "default"
-    && destination.service != "details-db" && destination.service != "reviews-db"
+   && destination.service != "details-db" && destination.service != "reviews-db"
+   && request.method != "OPTIONS"
   actions:
   - handler: apigee-handler.apigee.istio-system
     instances:
     - apigee.authorization
+---
+apiVersion: config.istio.io/v1alpha2
+kind: rule
+metadata:
+  name: apigee-analytics-rule
+  namespace: istio-system
+spec:
+  match: context.reporter.kind == "inbound" && destination.namespace == "default"
+  actions:
+  - handler: apigee-handler.apigee.istio-system
+    instances:
     - apigee.analytics
