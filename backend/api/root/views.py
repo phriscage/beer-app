@@ -28,9 +28,14 @@ root = Blueprint('root', __name__, static_folder='../../static')
 @root.route('/openapi_spec<string:extension>', methods=['GET'])
 def get_openapi_spec(extension=None):
     """ return the yaml openapi_spec in JSON or YAML """
+    file_name = 'openapi_spec.json'
+    if request.args.get('version', None) == 'v2':
+      file_name = 'openapi_spec.v2.json'
     if extension == '.yaml':
-        return root.send_static_file('openapi_spec.yaml')
-    return root.send_static_file('openapi_spec.json')
+       file_name = 'openapi_spec.yaml'
+       if request.args.get('version', None) == 'v2':
+            file_name = 'openapi_spec.v2.yaml'
+    return root.send_static_file(file_name)
 
 @root.route('/random', methods=['GET'])
 @cross_origin()
