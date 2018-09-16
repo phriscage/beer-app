@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: This is a sample Beer Service API
-  version: 1.0.0
+  version: 2.0.0
   title: Beer Service
   termsOfService: 'http://openapi.spec/terms/'
   contact:
@@ -19,6 +19,8 @@ tags:
       url: 'http://openapi.spec'
   - name: reviews
     description: All the reviews about your Beer
+  - name: likes
+    description: All the beer likes
 schemes:
   - http
   - https
@@ -66,27 +68,27 @@ paths:
     post:
       tags:
         - beers
-      summary: "Add a new beer to the store"
-      description: ""
-      operationId: "addBeer"
+      summary: Add a new beer to the store
+      description: ''
+      operationId: addBeer
       consumes:
-      - "application/json"
+        - application/json
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Beer object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Beer"
+        - in: body
+          name: body
+          description: Beer object that needs to be added to the store
+          required: true
+          schema:
+            $ref: '#/definitions/Beer'
       responses:
-        201:
+        '201':
           description: successful operation
           schema:
             $ref: '#/definitions/Beer'
-        405:
-          description: "Invalid input"
+        '405':
+          description: Invalid input
       security:
         - beer_auth:
             - 'write:beers'
@@ -149,36 +151,63 @@ paths:
     post:
       tags:
         - reviews
-      summary: "Add a new review to the ber"
-      description: ""
-      operationId: "addBeerReview"
+      summary: Add a new review to the ber
+      description: ''
+      operationId: addBeerReview
       consumes:
-      - "application/json"
+        - application/json
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: beerId
-        in: path
-        description: ID of beer to list reviews
-        required: true
-        type: integer
-        format: int64
-      - in: "body"
-        name: "body"
-        description: "Beer object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/BeerReview"
+        - name: beerId
+          in: path
+          description: ID of beer to list reviews
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: body
+          description: Beer object that needs to be added to the store
+          required: true
+          schema:
+            $ref: '#/definitions/BeerReview'
       responses:
-        201:
+        '201':
           description: successful operation
           schema:
             $ref: '#/definitions/BeerReview'
-        405:
-          description: "Invalid input"
+        '405':
+          description: Invalid input
       security:
         - beer_auth:
             - 'write:beers'
+            - 'read:beers'
+  '/beers/{beerId}/likes':
+    get:
+      tags:
+        - likes
+      summary: Return list of beer likes
+      description: ''
+      operationId: getBeerLikes
+      produces:
+        - application/json
+      parameters:
+        - name: beerId
+          in: path
+          description: ID of beer to list likes
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/BeerLike'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Beer like not found
+      security:
+        - beer_auth:
             - 'read:beers'
 securityDefinitions:
   beer_auth:
@@ -212,6 +241,14 @@ definitions:
         type: string
         format: date-time
         example: '2018-02-27T00:54:00Z'
+      updated_at:
+        type: string
+        format: date-time
+        example: '2018-02-28T00:55:01Z'
+      likes_total:
+        type: integer
+        format: int64
+        default: 0
   BeerReview:
     type: object
     properties:
@@ -226,6 +263,16 @@ definitions:
         type: string
         format: date-time
         example: '2018-02-27T00:54:00Z'
+  BeerLike:
+    type: object
+    properties:
+      id:
+        type: string
+        example: '3e8f9d58-4148-4809-9392-63e90fbc8280'
+      liked:
+        type: boolean
+      refType:
+        type: object
   ApiResponse:
     type: object
     properties:
