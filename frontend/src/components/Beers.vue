@@ -62,10 +62,7 @@ export default {
       beersApiUrl: this.$shared.beersApiBaseUrl + '/beers?likes=true',
       httpOptions: {
         headers: {
-          test: 123,
-          'x-email': this.$auth.user().email,
-          // This will be removed once JWT auth is fixed for OPTIONS in Istio
-          'x-api-key': this.$shared.clientId
+          test: 123
         }
       },
       error: false,
@@ -124,6 +121,16 @@ export default {
   methods: {
     // getBeerData
     getBeerData (apiUrl, httpOptions) {
+      let _this = this
+      if (_this.$auth.user().email) {
+        httpOptions['headers'] = {...httpOptions['headers'],
+          ...{
+            'x-email': _this.$auth.user().email,
+            // This will be removed once JWT auth is fixed for OPTIONS in Istio
+            'x-api-key': _this.$shared.clientId
+          }
+        }
+      }
       return axios.get(apiUrl, httpOptions)
     },
     // handle errors
