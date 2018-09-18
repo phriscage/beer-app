@@ -96,7 +96,7 @@ def get_beer_details(beer_id, headers, params=None):
                 #beer.update({'likes': likes.get('data', [])})
                 beer.update({'likes_total': likes.get('total_count', 0)})
                 data.append(beer)
-            if len(data) == 1:
+            if len(data) == 1 and type(res_json.get('data', [])) == dict:
                 data = data[0]
             res_json['data'] = data
         return 200, res_json
