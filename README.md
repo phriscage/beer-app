@@ -28,5 +28,5 @@ There are a few [prerequisites](docs/PREREQUISITES.md) that need to be validated
 
 
 ## <a name="todo">To Do!</a>
-* Frontend has not been containerized and ported to K8s yet. Manual installation required for now...
+* ~~Frontend has not been containerized and ported to K8s yet. Manual installation required for now...~~ updated
 * Add Cloud DNS A/CNAME record creation in app 

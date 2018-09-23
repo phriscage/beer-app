@@ -9,7 +9,7 @@
          </div>
       </div>
     </div>
-    </br>
+    <br>
     <div class="container">
     <vue-form id="new_beer" class="ui warning error success form" :state="formstate" @submit.prevent="onSubmit">
       <div class="ui clearing segment">
@@ -151,15 +151,15 @@ export default {
             style: _this.model.style
           }
         })
-        .then(function (response) {
-          console.log(response)
-          _this.model.success = true
-          _this.formstate._reset()
-        })
-        .catch(function (error) {
-          console.log(error)
-          _this.handleLoadError(error)
-        })
+          .then(function (response) {
+            console.log(response)
+            _this.model.success = true
+            _this.formstate._reset()
+          })
+          .catch(function (error) {
+            console.log(error)
+            _this.handleLoadError(error)
+          })
       }
     },
     onSuccessClose: function () {
