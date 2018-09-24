@@ -3,7 +3,7 @@ This documentation provides details for how to setup the Beer App interface and 
 
 * [Setup Kubernetes](#setup_kubernetes)
 * [Setup Istio](#setup_istio)
-* [Setup Backend](#setup_backend)
+* [Setup App](#setup_app)
 * [Setup Frontend](#setup_frontend)
 * [Cleanup](#cleanup)
 
@@ -34,11 +34,9 @@ Install Istio with mTLS (between Istio components) and with Apigee Istio Mixer i
         kubectl apply -f install/kubernetes/istio-demo-auth.yaml
 
 
-## <a name="setup_backend"></a>Setup Backend:
+## <a name="setup_app"></a>Setup App:
 Create the application and inject the Istio sidecar proxies to the application Pods. There are a few baseline applications that are defined in the [kubernetes-manifests/beer-app](kubernetes-manifests/beer-app) directory. Depending on your demo/lab, you will start with the appropriate one. If unsure, you can default to [beer-app_all.yaml](kubernetes-manifests/beer-app/beer-app_all.yaml)
 * [beer-app_all.yaml](kubernetes-manifests/beer-app/beer-app_all.yaml) configuration has all services and versions
-* [beer-app_beer-api-v1.yaml](kubernetes-manifests/beer-app/beer-app_beer-api-v1.yaml) configuration has beer-api-v1 without likes-api
-* [beer-app_beer-api-v2.yaml](kubernetes-manifests/beer-app/beer-app_beer-api-v2.yaml) configuration has beer-api-v1, beer-api-v2 with likes-api
 
         kubectl create -f <(istioctl kube-inject -f kubernetes-manifests/beer-app/beer-app_all.yaml)
 
@@ -50,9 +48,10 @@ Apply the destination rules for all the services:
 
         kubectl apply -f istio-manifests/beer-app/networking/destination-rule-all.yaml
 
-Create the Ingress Gateway for the application. You can verify with `kubectl get gateway` and `kubectl get virtualservice`:
+Create the Ingress Gateway for the application which includes both the Beer API and Beer App Frontend. You can verify with `kubectl get gateway` and `kubectl get virtualservice`:
 
         kubectl apply -f istio-manifests/beer-app/networking/beer-app_gateway.yaml
+        kubectl apply -f istio-manifests/beer-app/networking/beer-app-frontend_gateway.yaml
 
 Check the status of the deployment and get external ingress IP:
 
@@ -63,38 +62,37 @@ Export the external ingress IP as GATEWAY_URL=<IP:PORT>:
 
         export GATEWAY_URL=`kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`
 
-Verify an Ok 200 HTTP status code is returned when trying to access the service:
+Verify an Ok 200 HTTP status code is returned when trying to access the Beer API service:
 
         curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/api/health
 
-You can now add an A/CNAME DNS record to the GATEWAY_URL in Cloud DNS. _Integration of Cloud DNS into kubectl ToDo_
-
 
 ## <a name="setup_frontend"></a>Setup Frontend:
-Install the Node packages via NPM (This will be added to a Docker development image in the future)
+Launch a modern browser with the http://${GATEWAY_URL} URL and the Beer App Frontend will load:
+> You can now add an A/CNAME DNS record to the GATEWAY_URL in Cloud DNS. _Integration of Cloud DNS into kubectl ToDo_
 
-        cd frontend
-        npm install
+![alt text](../images/beer-app-frontend_landing.png)
 
-Build and run the development environment as a Node instance and Docker application locally. You can specify configuration variables if needed via command line.I.E. `CLIENT_ID=1234 npm run dev`. Make changes accordingly.
+Click on the settings tab and add the http://${GATEWAY_URL}/api or http://CNAME/api in the *Beers API Base UURL* field, and click *Save*
 
-        npm run dev
+![alt text](../images/beer-app-frontend_beers-api-base_url.png)
 
-Launch browser to UI:
+Navigate to the *Beers* tab and you will see a list of beers:
 
-        http://localhost:8080
+![alt text](../images/beer-app-frontend_beers.png)
 
 
 ## <a name="next"></a>Next:
 
-        * Try some of the [labs](../labs)
-        * [Setup the Mesh Proxy](SETUP-MESH-PROXY.md)
+* Try some of the [labs](../labs)
+* [Setup the Mesh Proxy](SETUP-MESH-PROXY.md)
 
 
 ## <a name="cleanup"></a>Cleanup:
 Let's cleanup everything for a fresh start
 
         kubectl delete -f istio-manifests/beer-app/networking/beer-app_gateway.yaml
+        kubectl delete -f istio-manifests/beer-app/networking/beer-app-frontend_gateway.yaml
         kubectl delete -f istio-manifests/beer-app/networking/destination-rule-all.yaml
         kubectl delete -f istio-manifests/beer-app/networking/mtls_default_policy.yaml
         kubectl delete -f kubernetes-manifests/beer-app/beer-app_all.yaml
