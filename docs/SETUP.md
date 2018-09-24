@@ -73,7 +73,7 @@ Launch a modern browser with the http://${GATEWAY_URL} URL and the Beer App Fron
 
 ![alt text](../images/beer-app-frontend_landing.png)
 
-Click on the settings tab and add the http://${GATEWAY_URL}/api or http://CNAME/api in the *Beers API Base UURL* field, and click *Save*
+Click on the settings tab and add the http://${GATEWAY_URL}/api or http://CNAME/api in the *Beers API Base URL* field, and click *Save*
 
 ![alt text](../images/beer-app-frontend_beers-api-base_url.png)
 
@@ -84,8 +84,8 @@ Navigate to the *Beers* tab and you will see a list of beers:
 
 ## <a name="next"></a>Next:
 
-* Try some of the [labs](../labs)
 * [Setup the Mesh Proxy](SETUP-MESH-PROXY.md)
+* Try some of the [labs](../labs)
 
 
 ## <a name="cleanup"></a>Cleanup:

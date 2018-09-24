@@ -12,7 +12,6 @@ spec:
       name: http
   selector:
     app: beer-app-frontend
-    version: v1
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
