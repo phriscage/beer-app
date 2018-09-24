@@ -1,0 +1,22 @@
+---
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRole
+metadata:
+  name: request-options-all
+  namespace: default
+spec:
+  rules:
+  - services: ["*"]
+    methods: ["OPTIONS"]
+---
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRoleBinding
+metadata:
+  name: request-options-all
+  namespace: default
+spec:
+  subjects:
+  - user: "*"
+  roleRef:
+    kind: ServiceRole
+    name: "request-options-all"

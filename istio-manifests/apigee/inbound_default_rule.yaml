@@ -11,6 +11,7 @@ metadata:
 spec:
   match: context.reporter.kind == "inbound" && destination.namespace == "default"
    && destination.service != "details-db" && destination.service != "reviews-db"
+   && destination.service != "beer-app-frontend"
    && request.method != "OPTIONS"
   actions:
   - handler: apigee-handler.apigee.istio-system

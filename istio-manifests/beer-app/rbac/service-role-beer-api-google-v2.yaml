@@ -1,0 +1,29 @@
+---
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRole
+metadata:
+  name: beer-api-v2
+  namespace: default
+spec:
+  rules:
+  - services: ["*"]
+    methods: ["*"]
+  - services: ["beer-api.default.svc.cluster.local"]
+    methods: ["*"]
+    constraints:
+    - key: destination.labels[version]
+      values: ["v2"]
+---
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRoleBinding
+metadata:
+  name: beer-api-v2-google-email
+  namespace: default
+spec:
+  subjects:
+  - user: "*"
+    properties:
+      request.auth.claims[email]: "*@google.com"
+  roleRef:
+    kind: ServiceRole
+    name: "beer-api-v2"
