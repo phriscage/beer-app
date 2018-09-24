@@ -25,6 +25,7 @@ Enable the Apigee rule for *authorization* and *analytics* for all _inbound_ req
         kubectl apply -f istio-manifests/apigee/inbound_default_rule.yaml
 
 Verify an unauthorized 403 HTTP status code is returned when trying to access the services:
+> It can take up to 2m for the policies to be enforced
 
         curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/api/health
 
@@ -32,6 +33,7 @@ You should still be able to launch the Beer App Frontend in a modern browser sin
 
 Navigate to the *Beers* tab and you will not see a list of beers. You should see a *403* error:
 
+![alt text](../images/beer-app-frontend_beers-403.png)
 
 You have now enalbed Apigee *authorization*, *quota enforcement*, and *analytics* for all services in the mesh. You can move onto the [labs](../labs) section to create clients and test out the integration
 

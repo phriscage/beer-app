@@ -10,6 +10,6 @@ spec:
   customer_base: https://chrispage-eval-test.apigee.net/istio-auth
   org_name: chrispage-eval
   env_name: test
-  key: 0e2cde246f101dd3e3e1350636bd28bd25665878dbf926a4cb5cbaed40f3d719
-  secret: 2fcf2a6d1bbe80d36606d3729758923d1bd1b01e185f95ab77ea641f9d04c179
+  key: dd98dc66facb9ab5c938a2399292646b518fbf6a4298319c3fbd7550d54a4e75
+  secret: e06bcf2c6f765d1353e521285ad9f998926995a2dd1f2288bff60d02d9857687
   api_key_claim: client_id
