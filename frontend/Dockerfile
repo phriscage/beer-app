@@ -31,6 +31,8 @@ RUN npm run build
 
 ### STAGE 2: Production Environment ###
 FROM nginx:1.15-alpine
+COPY config/nginx.conf /etc/nginx/nginx.conf
+COPY config/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-env /app/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

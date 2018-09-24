@@ -8,7 +8,10 @@ spec:
   gateways:
   - beer-app-frontend-gateway
   http:
-  - route:
+  - match:
+    - uri:
+        regex: /.*
+    route:
     - destination:
         host: beer-app-frontend
         subset: v1
@@ -23,7 +26,12 @@ spec:
   gateways:
   - beer-app-gateway
   http:
-  - route:
+  - match:
+    - uri:
+        regex: /openapi_spec*
+    - uri:
+        prefix: /api
+    route:
     - destination:
         host: beer-api
         subset: v1
