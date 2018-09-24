@@ -75,7 +75,7 @@ Launch a modern browser with the http://${GATEWAY_URL} URL and the Beer App Fron
 
 Click on the settings tab and add the http://${GATEWAY_URL}/api or http://CNAME/api in the *Beers API Base URL* field, and click *Save*
 
-![alt text](../images/beer-app-frontend_beers-api-base_url.png)
+![alt text](../images/beer-app-frontend_settings_beers-api-base_url.png)
 
 Navigate to the *Beers* tab and you will see a list of beers:
 

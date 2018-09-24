@@ -12,9 +12,6 @@ This documentation provides prerequisites for what is required before installing
 * [Google Cloud Platform SDK](https://cloud.google.com/sdk/) installed and configured
 * [Apigee Istio Mixer](https://github.com/apigee/istio-mixer-adapter) installed
 
-* [Node](https://nodejs.org/en/) installed
-* [Npm](https://www.npmjs.com/) installed
-
 
 ## <a name="prerequisites_for_development"></a>Prerequisites for Development:
  * [Skaffold](https://github.com/GoogleContainerTools/skaffold) installed and configured
