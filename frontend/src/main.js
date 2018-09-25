@@ -74,7 +74,7 @@ Vue.use(VueSession, {persist: true})
 Vue.use(VueAxios, axios)
 Vue.axios.defaults.baseURL = shared.oauthApiBaseUrl
 // Vue.axios.defaults.headers.common = {
-  // 'X-Requested-With': 'XMLHttpRequest'
+// 'X-Requested-With': 'XMLHttpRequest'
 // }
 
 // Setup router for Vue-Auth
@@ -108,13 +108,13 @@ var vueOptions = {
       client_id: shared.googleClientId
     }
     // params: {
-      // redirect_uri: function () {
-        // return this.options.getUrl() + '/login'
-      // }
+    // redirect_uri: function () {
+    // return this.options.getUrl() + '/login'
+    // }
     // }
   }
   // refreshPerform: () => {
-    // console.log('refreshPerform')
+  // console.log('refreshPerform')
   // },
 }
 Vue.use(require('@websanova/vue-auth'), vueOptions)
@@ -139,8 +139,8 @@ new Vue({
 }).$mount('#app')
 
 // new Vue({
-  // el: '#app',
-  // template: '<App/>',
-  // router,
-  // components: { App }
+// el: '#app',
+// template: '<App/>',
+// router,
+// components: { App }
 // }).$mount('#app')

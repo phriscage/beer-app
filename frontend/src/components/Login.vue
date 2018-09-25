@@ -17,13 +17,13 @@
               <div class="ui center aligned basic segment">
                 <p>This app would like to access:</p>
                 <div class="ui left aligned container">
-                  <li v-for="(description, scope) in scopeParsed">
+                  <li v-for="(description, scope) in scopeParsed" :key="description">
                         <b>{{ scope }}</b>: {{ description }}
                   </li>
                 </div>
               </div>
               <div class="ui fluid large green submit button" @click="verifyCode()">Accept</div>
-              </br>
+              <br>
               <div class="ui fluid large yellow submit button" @click="cancelCode()">Cancel</div>
             </div>
           </form>
@@ -55,7 +55,7 @@
                 </div>
               </div>
               <div class="ui fluid large blue submit button" @click="login()">Login</div>
-              </br>
+              <br>
               <div class="ui toggle checkbox custom">
                 <input id="grantType" v-on:click="onGrantTypeClick()" v-model.lazy="data.grantType" true-value="authorization_code" false-value="password" type="checkbox">
                 <label for="grantType">Grant Type: <b>{{ data.grantType }}</b></label>
@@ -112,7 +112,7 @@ let scopeValues = {
   'offline_access': 'This scope value requests that an OAuth 2.0 Refresh Token be issued that can be used to obtain an Access Token that grants access to the End-User\'s UserInfo Endpoint even when the End-User is not present (not logged in).'
 }
 
- // generate a readable scope div
+// generate a readable scope div
 function formatScopeRequested (scopeRequested) {
   let scopes = {}
   if (scopeRequested === undefined) {
@@ -189,21 +189,21 @@ export default {
         redirect: {name: redirect ? redirect.from.name : 'account'},
         fetchUser: this.data.fetchUser
       })
-      .then(() => {
-        this.$auth.token('id_token', this.id_token)
-        console.log('success ' + this.context)
-        console.log('this.$auth.token(): ' + this.$auth.token())
-      }, (res) => {
-        console.log('error ' + this.context)
-        console.log(res)
-        if (res.response && res.response.status) {
-          this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
-               'Body: ' + JSON.stringify(res.response.data, null, 4)
-        } else {
-          this.errorMessage = res.toString()
-        }
-        this.error = true
-      })
+        .then(() => {
+          this.$auth.token('id_token', this.id_token)
+          console.log('success ' + this.context)
+          console.log('this.$auth.token(): ' + this.$auth.token())
+        }, (res) => {
+          console.log('error ' + this.context)
+          console.log(res)
+          if (res.response && res.response.status) {
+            this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
+                 'Body: ' + JSON.stringify(res.response.data, null, 4)
+          } else {
+            this.errorMessage = res.toString()
+          }
+          this.error = true
+        })
     } else {
       console.log('Id Token URL fragment DNE')
     }
@@ -242,21 +242,21 @@ export default {
         redirect: {name: redirect ? redirect.from.name : 'account'},
         fetchUser: this.data.fetchUser
       })
-      .then(() => {
-        this.$auth.token('id_token', this.id_token)
-        console.log('success ' + this.context)
-        console.log('this.$auth.token(): ' + this.$auth.token())
-      }, (res) => {
-        console.log('error ' + this.context)
-        console.log(res)
-        if (res.response && res.response.status) {
-          this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
-               'Body: ' + JSON.stringify(res.response.data, null, 4)
-        } else {
-          this.errorMessage = res.toString()
-        }
-        this.error = true
-      })
+        .then(() => {
+          this.$auth.token('id_token', this.id_token)
+          console.log('success ' + this.context)
+          console.log('this.$auth.token(): ' + this.$auth.token())
+        }, (res) => {
+          console.log('error ' + this.context)
+          console.log(res)
+          if (res.response && res.response.status) {
+            this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
+                 'Body: ' + JSON.stringify(res.response.data, null, 4)
+          } else {
+            this.errorMessage = res.toString()
+          }
+          this.error = true
+        })
     },
     cancelCode () {
       let _this = this
@@ -289,21 +289,21 @@ export default {
           redirect: {name: redirect ? redirect.from.name : 'account'},
           fetchUser: _this.data.fetchUser
         })
-        .then(() => {
-          // this.$auth.token('id_token', '', 'remove')
-          console.log('success ' + _this.context)
-          console.log('this.$auth.token(): ' + _this.$auth.token())
-        }, (res) => {
-          console.log('error ' + _this.context)
-          console.log(res)
-          if (res.response && res.response.status) {
-            _this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
-                 'Body: ' + JSON.stringify(res.response.data, null, 4)
-          } else {
-            _this.errorMessage = res.toString()
-          }
-          _this.error = true
-        })
+          .then(() => {
+            // this.$auth.token('id_token', '', 'remove')
+            console.log('success ' + _this.context)
+            console.log('this.$auth.token(): ' + _this.$auth.token())
+          }, (res) => {
+            console.log('error ' + _this.context)
+            console.log(res)
+            if (res.response && res.response.status) {
+              _this.errorMessage = 'HTTP Status: ' + res.response.status + '\n' +
+                   'Body: ' + JSON.stringify(res.response.data, null, 4)
+            } else {
+              _this.errorMessage = res.toString()
+            }
+            _this.error = true
+          })
       } else {
         console.log('Authorization Code Grant Type')
         axios.post('/authorize',
@@ -316,26 +316,26 @@ export default {
             client_id: _this.$shared.clientId
           })
         )
-        .then(function (response) {
-          console.log(response)
-          if (response.data && response.data.code) {
-            var query = {
-              code: response.data.code,
-              client_id: response.data.client_id,
-              client_name: response.data.client_name,
-              scope: response.data.scope,
-              state: response.data.state
+          .then(function (response) {
+            console.log(response)
+            if (response.data && response.data.code) {
+              var query = {
+                code: response.data.code,
+                client_id: response.data.client_id,
+                client_name: response.data.client_name,
+                scope: response.data.scope,
+                state: response.data.state
+              }
+              _this.client_name = response.data.client_name
+              _this.$router.push({name: 'login', query: query})
+              // _this.$router.push({name: 'login', query: {code: response.data.code}})
+              // _this.$router.push('/login?code=' + response.data.code)
+              _this.$router.go()
             }
-            _this.client_name = response.data.client_name
-            _this.$router.push({name: 'login', query: query})
-            // _this.$router.push({name: 'login', query: {code: response.data.code}})
-            // _this.$router.push('/login?code=' + response.data.code)
-            _this.$router.go()
-          }
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
       }
     },
     social (type) {

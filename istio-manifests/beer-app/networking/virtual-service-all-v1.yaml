@@ -1,6 +1,24 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
+  name: beer-app-frontend
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - beer-app-frontend-gateway
+  http:
+  - match:
+    - uri:
+        regex: /.*
+    route:
+    - destination:
+        host: beer-app-frontend
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
   name: beer-api
 spec:
   hosts:
@@ -8,7 +26,12 @@ spec:
   gateways:
   - beer-app-gateway
   http:
-  - route:
+  - match:
+    - uri:
+        regex: /openapi_spec*
+    - uri:
+        prefix: /api
+    route:
     - destination:
         host: beer-api
         subset: v1

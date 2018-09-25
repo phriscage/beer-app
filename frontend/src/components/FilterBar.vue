@@ -20,29 +20,28 @@
       <div class='one wide column'></div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        filterText: ''
-      }
+export default {
+  data () {
+    return {
+      filterText: ''
+    }
+  },
+  methods: {
+    doFilter () {
+      console.log('doFilter:', this.filterText)
+      this.$events.fire('filter-set', this.filterText)
     },
-    methods: {
-      doFilter () {
-        console.log('doFilter:', this.filterText)
-        this.$events.fire('filter-set', this.filterText)
-      },
-      resetFilter () {
-        this.filterText = ''
-        console.log('resetFilter')
-        this.$events.fire('filter-reset')
-      },
-      newBeer () {
-        console.log('newBeer')
-      }
+    resetFilter () {
+      this.filterText = ''
+      console.log('resetFilter')
+      this.$events.fire('filter-reset')
+    },
+    newBeer () {
+      console.log('newBeer')
     }
   }
+}
 </script>

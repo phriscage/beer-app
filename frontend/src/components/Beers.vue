@@ -13,7 +13,7 @@
        </div>
       </div>
     </div>
-    </br>
+    <br>
     <div class="ui container">
       <filter-bar></filter-bar>
       <vuetable ref="vuetable"
@@ -86,8 +86,8 @@ export default {
           callback: 'formatDate|YYYY-MM-DD'
         },
         // {
-          // name: 'address.line1',
-          // title: 'Address 1'
+        // name: 'address.line1',
+        // title: 'Address 1'
         // },
         {
           name: 'style',
@@ -198,9 +198,6 @@ export default {
       return '<span class="ui green label"><i class="large dollar icon"></i>' + value + '</span>'
     },
     styleLabel (value) {
-      // return /IPA/.test(value) === true
-        // ? '<span class="ui orange label"><i class="large bar icon"></i>IPA</span>'
-        // : '<span class="ui brown label"><i class="large bar icon"></i>Lager</span>'
       switch (true) {
         case /ipa/i.test(value):
           return '<span class="ui orange label"><i class="large bar icon"></i>IPA</span>'

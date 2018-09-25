@@ -10,7 +10,8 @@ metadata:
   namespace: istio-system
 spec:
   match: context.reporter.kind == "inbound" && destination.namespace == "default"
-   && destination.service != "details-db" && destination.service != "reviews-db"
+   && destination.service.name != "details-db" && destination.service.name != "reviews-db"
+   && destination.service.name != "beer-app-frontend"
    && request.method != "OPTIONS"
   actions:
   - handler: apigee-handler.apigee.istio-system

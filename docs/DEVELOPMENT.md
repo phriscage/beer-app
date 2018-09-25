@@ -40,28 +40,28 @@ Beer API Development with all service dependencies
 
 
 ## <a name="setup_frontend"></a>Setup Frontend:
-Install the Node packages via NPM (This will be added to a Docker development image in the future)
+Create the application with [Skaffold](https://github.com/GoogleContainerTools/skaffold)
 
-        cd frontend
-        npm install
+Beer APP Frontend development
 
-Build and run the development environment as a Node instance and Docker application locally. You can specify configuration variables if needed via command line.I.E. `CLIENT_ID=1234 npm run dev`. Make changes accordingly.
-
-        npm run dev
-
-Launch browser to UI:
-
-        http://localhost:8080
+        skaffold -f skaffold-frontend.yaml dev
 
 
 ## <a name="deployment"></a>Deployment:
 Deploy the application with [Skaffold](https://github.com/GoogleContainerTools/skaffold). 
 
-export a TAG environment variable and run the `skaffold run -t <TAG>` command
+export a TAG environment variable and run the `skaffold run -t <TAG>` command.
+> The TAG may vary between *beer-api* and *beer-app-frontend* development/deployment
 
         export TAG=dev
 
+Beer API deployment
+
         skaffold run -t $TAG
+
+Beer APP Frontend deployment
+
+        skaffold -f skaffold-frontend.yaml run -t $TAG
 
 
 ## To-Do

@@ -1,17 +1,17 @@
 <template>
   <div class="ui container">
     <p>Account</p>
-    </hr>
+    <br>
     <p><a v-on:click="fetch()" href="javascript:void(0);">Test fetch user</a></p>
     <p><a v-on:click="refresh()" href="javascript:void(0);">Test refresh token</a></p>
     <div class="ui form">
       <div class="field">
-        <label>Access Token | <a target="_blank" v-bind:href="'https://jwt.io/?value='+ $auth.token()">jwt.io</a></label>
-        <textarea rows="6">{{ $auth.token() }}</textarea>
+        <label>Access Token | <a target="_blank" v-bind:href="'https://jwt.io/?value='+ token">jwt.io</a></label>
+        <textarea rows="6" v-model=token></textarea>
       </div>
       <div class="field">
-        <label>ID Token | <a target="_blank" v-bind:href="'https://jwt.io/?value='+ $auth.token('id_token')">jwt.io</a></label>
-        <textarea rows="6">{{ $auth.token('id_token') }}</textarea>
+        <label>ID Token | <a target="_blank" v-bind:href="'https://jwt.io/?value='+ id_token">jwt.io</a></label>
+        <textarea rows="6" v-model=id_token></textarea>
      </div>
     </div>
   </div>
@@ -22,7 +22,9 @@
 export default {
   data () {
     return {
-      context: 'account context'
+      context: 'account context',
+      token: this.$auth.token(),
+      id_token: this.$auth.token('id_token')
     }
   },
   methods: {
