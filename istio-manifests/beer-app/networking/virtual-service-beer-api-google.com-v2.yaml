@@ -13,6 +13,8 @@ spec:
         x-email:
           regex: ".*@google.com"
       uri:
+        regex: /openapi_spec*
+      uri:
         prefix: /api
     route:
     - destination:
