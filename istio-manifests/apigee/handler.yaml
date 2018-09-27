@@ -7,9 +7,9 @@ metadata:
   namespace: istio-system
 spec:
   apigee_base: https://istioservices.apigee.net/edgemicro
-  customer_base: https://chrispage-eval-test.apigee.net/istio-auth
-  org_name: chrispage-eval
+  customer_base: https://amer-demo14-test.apigee.net/istio-auth
+  org_name: amer-demo14
   env_name: test
-  key: dd98dc66facb9ab5c938a2399292646b518fbf6a4298319c3fbd7550d54a4e75
-  secret: e06bcf2c6f765d1353e521285ad9f998926995a2dd1f2288bff60d02d9857687
+  key: 94fd7b7acadd60a5bb8fae6d2203daed858494e94c3952135755edfb83175d4c
+  secret: 222389b18ff851664a12896cccc0cce89d38821dcfcde0d2a2d61db9b57e1d9d
   api_key_claim: client_id
