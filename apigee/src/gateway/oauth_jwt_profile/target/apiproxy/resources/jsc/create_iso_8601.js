@@ -1,0 +1,1 @@
+context.setVariable("custom.iso8601Timestamp", new Date().toISOString());

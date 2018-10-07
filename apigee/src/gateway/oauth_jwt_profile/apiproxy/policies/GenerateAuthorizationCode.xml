@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OAuthV2 async="false" continueOnError="false" enabled="true" name="GenerateAuthorizationCode">
+    <DisplayName>GenerateAuthorizationCode</DisplayName>
+    <Operation>GenerateAuthorizationCode</Operation>
+    <Attributes>
+        <Attribute name="email" ref="request.formparam.username" display="true"/>
+        <Attribute name="username" ref="request.formparam.username" display="true"/>
+    </Attributes>
+    <ExternalAuthorization>false</ExternalAuthorization>
+    <ResponseType>request.formparam.response_type</ResponseType>
+    <ClientId>request.formparam.client_id</ClientId>
+    <RedirectUri>request.formparam.redirect_uri</RedirectUri>
+    <Scope>request.formparam.scope</Scope>
+    <GenerateResponse enabled="false"/>
+</OAuthV2>

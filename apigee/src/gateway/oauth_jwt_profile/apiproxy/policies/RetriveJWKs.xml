@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ServiceCallout async="false" continueOnError="false" enabled="true" name="RetriveJWKs">
+    <DisplayName>RetriveJWKs</DisplayName>
+    <Properties/>
+    <Request>
+        <Set>
+            <Headers>
+                <Header name="Accept">application/json</Header>
+            </Headers>
+            <Verb>GET</Verb>
+            <Path>{sc_urlPath}</Path>
+        </Set>
+        <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    </Request>
+    <Response>jwksResponse</Response>
+    <HTTPTargetConnection>
+        <Properties/>
+        <URL>http://default.com</URL>
+        <!--<URL>https://www.googleapis.com/oauth2/v3/certs</URL>-->
+    </HTTPTargetConnection>
+</ServiceCallout>

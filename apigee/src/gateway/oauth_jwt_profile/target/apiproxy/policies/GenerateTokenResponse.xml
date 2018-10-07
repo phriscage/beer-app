@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="GenerateTokenResponse">
+    <DisplayName>GenerateTokenResponse</DisplayName>
+    <Properties/>
+    <Add>
+        <Headers>
+            <Header name="X-OAuth-Access-Token">{access_token}</Header>
+        </Headers>
+    </Add>
+    <Set>
+        <Payload contentType="application/json; charset=utf-8">
+        {
+            "organization.name": "{organization.name}",
+            "environment.name": "{environment.name}",
+            "apiproxy.name": "{apiproxy.name}",
+            "apiproxy.revision": "{apiproxy.revision}",
+            "client_id": "{apigee.client_id}",
+            "app_name": "{apigee.developer.app.name}",
+            "current_time": "{custom.iso8601Timestamp}"
+
+        }
+    </Payload>
+    </Set>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" transport="http" type="response"/>
+</AssignMessage>

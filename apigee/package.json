@@ -1,0 +1,15 @@
+{
+  "name": "beer_app",
+  "version": "1.0.0",
+  "description": "Beer App",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chris Page",
+  "license": "ISC",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "edge-launchpad": "^2.0.2"
+  }
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="JWKSRequest">
+    <DisplayName>JWKSRequest</DisplayName>
+    <Properties/>
+    <Set>
+        <Headers>
+            <Header name="Accept">application/json</Header>
+        </Headers>
+        <Verb>GET</Verb>
+    </Set>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="true" transport="http" type="request">jwksRequest</AssignTo>
+</AssignMessage>

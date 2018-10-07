@@ -1,0 +1,106 @@
+resources:
+- name: beer-app-project
+  type: solutions.api
+  properties:
+    inputs:
+    - name: org
+      prompt: Edge Org name
+    - name: username
+      prompt: Edge Username
+    - name: password
+      prompt: Edge Password
+      hidden: true
+    - name: env
+      prompt: Edge Org Environment
+    configurations:
+    - env : dev
+      edge_host: https://api.enterprise.apigee.com
+      host: '{{ org }}-{{ env }}.apigee.net'
+    - env: test
+      edge_host: https://api.enterprise.apigee.com
+      host: '{{ org }}-{{ env }}.apigee.net'
+    - env : prod
+      edge_host: https://api.enterprise.apigee.com
+      host: '{{ org }}-{{ env }}.apigee.net'
+    edgeOrg:
+    script: gulpfile.js
+    basePath: .
+    subResources:
+    - name: oauth_kvms
+      type: kvm
+      items:
+      - name: oauth_core
+        payload: '{
+          "name" : "oauth_jwt_profile.core", 
+          "entry" : [ 
+          {
+            "name" : "openid.google.jwks_uri",
+            "value" : "https://www.googleapis.com/oauth2/v3/certs"
+           },
+          {
+            "name" : "implicit.expires_in",
+            "value" : "7200000"
+           },
+          {
+            "name" : "client.expires_in",
+            "value" : "3600000"
+           },
+          {
+            "name" : "code.expires_in",
+            "value" : "3600000"
+           },
+          {
+            "name" : "password.expires_in",
+            "value" : "3600000"
+           }
+          ]
+         }'
+      - name: oauth_keys
+        payload: '{
+          "name" : "oauth_jwt_profile.keys", 
+          "encrypted": "true",
+          "entry" : [ 
+          {
+            "name" : "certificate1_kid",
+            "value" : "1"
+          },
+          {
+            "name" : "secret",
+            "value" : "secret"
+           },
+          {
+            "name" : "certificate1",
+            "value" : "-----BEGIN CERTIFICATE----- MIICYTCCAcoCCQDZXflLEZY84TANBgkqhkiG9w0BAQsFADB1MQswCQYDVQQGEwJV UzERMA8GA1UECAwITmV3IFlvcmsxFjAUBgNVBAcMDU5ldyBZb3JrIENpdHkxEzAR BgNVBAoMCkdvb2dsZSBMTEMxDzANBgNVBAsMBkFwaWdlZTEVMBMGA1UEAwwMKi5h cGlnZWUubmV0MB4XDTE4MDkwNTE4NDQ0NloXDTE5MDkwNTE4NDQ0NlowdTELMAkG A1UEBhMCVVMxETAPBgNVBAgMCE5ldyBZb3JrMRYwFAYDVQQHDA1OZXcgWW9yayBD aXR5MRMwEQYDVQQKDApHb29nbGUgTExDMQ8wDQYDVQQLDAZBcGlnZWUxFTATBgNV BAMMDCouYXBpZ2VlLm5ldDCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAwV9b 3Ww6d0qOwo9QfgUkpNi0atud1uTP+noVfsmHrMmzFrshH1eevAMlkJL+U7isOMLj 4/L0vZsidDy4k/h8VgU/UWM7qMJeM1ukAv4C62NMKVzjm8uxzJBM5MbXlPAs2wP7 leqxqhUeZE0hpVauoPWlXETF39emkBpK3r7QkvcCAwEAATANBgkqhkiG9w0BAQsF AAOBgQB8rEmlaUGDku7JTG1U+orOQ3vd/xIV4wzcfvbEXNIOcHx5MqPHMP+dYZFh IjYsOQHUnky3RUBUZEK/BCsNl19ndoMnn6OFS7EGrHmSHQdeIVX/WgYz90v/jXSy 4EYH9fy+gMIuDs1XRvpZ0nxK/GNnpzMYXuKn69StALqXsnyWzQ== -----END CERTIFICATE-----"
+           },
+          {
+            "name" : "private_key",
+            "value" : "-----BEGIN PRIVATE KEY----- MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAMFfW91sOndKjsKP UH4FJKTYtGrbndbkz/p6FX7Jh6zJsxa7IR9XnrwDJZCS/lO4rDjC4+Py9L2bInQ8 uJP4fFYFP1FjO6jCXjNbpAL+AutjTClc45vLscyQTOTG15TwLNsD+5XqsaoVHmRN IaVWrqD1pVxExd/XppAaSt6+0JL3AgMBAAECgYBytDkO+DMaLezO9ioeBrj829rx hAJ1xValUqPLiInlceO8uRXlvJjZF9jBkKAyU1o9dUWvIqAQlKR0ZMxsYbqGVd0t 108AaJ/7oHLUQViOtULzRug/pEE+QXyo6NzWJgUIUqnXODkbsHQSYNReeLuUlLB7 qpX6B+xdvHEDHsl2mQJBAP4d+m3RnNLQHPbYFQnmV2P239gfEWjjzRzSaG2oGiLO Aj/MjwIoz+tf+DR6ui6rmsfbZEX479F6ja91c+1DZ7sCQQDCzihCfRK6QiN7d2q4 7M1UVKh1YZgc4InXTd/6qb2Y0b/y3XutRan0pGzJ1Cgv9bafBWybEeTSxZDKcir5 7Zf1AkEAv1JWv+P3TIk/pWGexWtVFIBEm/UYKH6KaU7JLPZJZzbvXpVmflu33yDM QMa98nFlAV/eqQf5lx/MGPQ3KcV8DQJBAJNb7Xp2MD9zHnIcID/o6V2ceJ3qiG13 sO2MPBzaX9CFAgVOY2rsIqcr5hs6gHffEBj0unYHMCf8SQ3LFRVgFC0CQQCDOBno WrtemBeA3wu2RUHR/RELGcvWLOszhzsC5fDlOtoLDoEO7PyDqfhd1eyUKFj0yljT noaqEgfQmBnE65Pm -----END PRIVATE KEY-----"
+           }
+          ]
+         }'
+    - name: oauth_proxies
+      type: proxy
+      items:
+      - name: oauth_jwt_profile
+    - name: beer_app_products
+      type: product
+      items:
+      - name: beer-app-sandbox
+        payload: '{
+          "approvalType": "auto", 
+          "displayName": "Beer App - Sandbox",
+          "name": "beer_app_sandbox",
+          "apiResources": ["/"],
+          "environments": ["test"],
+          "proxies": [
+                "oauth-jwt-profile"
+          ],
+          "scopes": [
+                "address", 
+                "email", 
+                "offline_access", 
+                "openid", 
+                "phone", 
+                "profile"
+          ] 
+        }'

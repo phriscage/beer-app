@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OAuthV2 async="false" continueOnError="false" enabled="true" name="GenerateAccessTokenImplicitJWT">
+    <DisplayName>GenerateAccessTokenImplicitJWT</DisplayName>
+    <Operation>GenerateAccessTokenImplicitGrant</Operation>
+    <ExpiresIn ref="oauth.implicit.expires_in">4000000</ExpiresIn>
+    <SupportedGrantTypes/>
+    <StoreToken>true</StoreToken>
+    <ExternalAccessToken>jwt_signed</ExternalAccessToken>
+    <ExternalAuthorization>true</ExternalAuthorization>
+    <ResponseType>request.formparam.response_type</ResponseType>
+    <ResponseType>request.queryparam.response_type</ResponseType>
+    <ClientId>request.formparam.client_id</ClientId>
+    <ClientId>request.queryparam.client_id</ClientId>
+    <GenerateResponse enabled="true"/>
+</OAuthV2>

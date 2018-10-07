@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OAuthV2 async="false" continueOnError="false" enabled="true" name="GenerateAccessTokenImplicit">
+    <DisplayName>GenerateAccessTokenImplicit</DisplayName>
+    <Operation>GenerateAccessTokenImplicitGrant</Operation>
+    <ExpiresIn ref="oauth.implicit.expires_in">4000000</ExpiresIn>
+    <SupportedGrantTypes/>
+    <!--<StoreToken>true</StoreToken>-->
+    <!--<ExternalAccessToken>messageid</ExternalAccessToken>-->
+    <!--<ExternalAuthorization>true</ExternalAuthorization>-->
+    <RedirectUri>request.formparam.redirect_uri</RedirectUri>
+    <ResponseType>request.formparam.response_type</ResponseType>
+    <ClientId>request.formparam.client_id</ClientId>
+    <GenerateResponse enabled="true"/>
+</OAuthV2>

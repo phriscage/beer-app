@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="SampleUserResponse">
+    <DisplayName>SampleUserResponse</DisplayName>
+    <Properties/>
+    <Set>
+        <Headers>
+            <Header name="X-Apigee-MessageId">{messageid}</Header>
+        </Headers>
+        <Payload contentType="application/json">
+{
+  "code": 200, 
+  "data": {
+    "created_at": "{custom.iso8601Timestamp}", 
+    "email": "{accesstoken.email}", 
+    "id": "{accesstoken.subject}", 
+    "role": "{accesstoken.audience}", 
+    "updated_at": "{custom.iso8601Timestamp}", 
+    "username": "{accesstoken.email}"
+  }, 
+  "description": "Request fulfilled, document follows", 
+  "message": "Success", 
+  "status": "OK"
+}
+</Payload>
+        <StatusCode>200</StatusCode>
+        <ReasonPhrase>OK</ReasonPhrase>
+    </Set>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>

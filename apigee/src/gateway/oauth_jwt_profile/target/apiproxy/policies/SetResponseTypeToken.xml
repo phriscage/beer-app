@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="SetResponseTypeToken">
+    <DisplayName>SetResponseTypeToken</DisplayName>
+    <Set>
+        <QueryParams>
+            <QueryParam name="response_type">token</QueryParam>
+        </QueryParams>
+        <FormParams>
+            <FormParam name="response_type">token</FormParam>
+        </FormParams>
+    </Set>
+    <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>

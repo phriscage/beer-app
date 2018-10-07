@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OAuthV2 async="false" continueOnError="false" enabled="true" name="GenerateAccessTokenClientJWTExternalAuth">
+    <DisplayName>GenerateAccessTokenClientJWTExternalAuth</DisplayName>
+    <Operation>GenerateAccessToken</Operation>
+    <ExpiresIn ref="oauth.client.expires_in">3600000</ExpiresIn>
+    <SupportedGrantTypes>
+        <!-- This part is very important: most real OAuth 2.0 apps will want to use other
+         grant types. In this case it is important to NOT include the "client_credentials"
+         type because it allows a client to get access to a token with no user authentication -->
+        <GrantType>client_credentials</GrantType>
+    </SupportedGrantTypes>
+    <StoreToken>true</StoreToken>
+    <ExternalAccessToken>jwt_signed</ExternalAccessToken>
+    <ExternalAuthorization>true</ExternalAuthorization>
+    <Attributes>
+        <Attribute name="email" ref="request.formparam.username" display="true"/>
+        <Attribute name="username" ref="request.formparam.username" display="true"/>
+    </Attributes>
+    <ResponseType>request.formparam.response_type</ResponseType>
+    <ResponseType>request.queryparam.response_type</ResponseType>
+    <ClientId>apigee.client_id</ClientId>
+    <GenerateResponse enabled="true"/>
+</OAuthV2>
