@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<GenerateJWT async="false" continueOnError="false" enabled="true" name="GenerateJWTBearerJWT">
+    <DisplayName>GenerateJWTBearerJWT</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <AdditionalClaims>
+        <Claim name="client_id" ref="apigee.client_id" type="string"></Claim>
+        <Claim name="access_token" ref="apigee.access_token" type="string"></Claim>
+        <Claim array="true" name="api_product_list" ref="apiProductList" type="string"></Claim>
+        <Claim name="application_name" ref="apigee.developer.app.name" type="string"></Claim>
+        <Claim name="developer_email" ref="apigee.developer.email" type="string"></Claim>
+        <Claim array="true" name="scopes" ref="scope" type="string"></Claim>
+        <Claim name="username" ref="request.formparam.username" type="string"></Claim>
+        <Claim name="email" ref="jwt.VerifyJWTBearer.claim.email" type="string"></Claim>
+    </AdditionalClaims>
+    <AdditionalHeaders/>
+    <Algorithm>RS256</Algorithm>
+    <Audience ref="jwt.VerifyJWTBearer.claim.audience"></Audience>
+    <ExpiresIn>2h</ExpiresIn>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <Issuer>urn://chrispage-eval.apigee.net</Issuer>
+    <NotBefore ref="nbf"></NotBefore>
+    <OutputVariable>jwt_signed</OutputVariable>
+    <PrivateKey>
+        <Value ref="private.privateKey"></Value>
+        <Id ref="private.certificate1_kid"></Id>
+    </PrivateKey>
+    <Subject ref="jwt.VerifyJWTBearer.claim.subject"></Subject>
+</GenerateJWT>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<VerifyJWT async="false" continueOnError="false" enabled="true" name="VerifyJWT">
+    <DisplayName>VerifyJWT</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <AdditionalClaims/>
+    <AdditionalHeaders/>
+    <Algorithm>RS256</Algorithm>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <PublicKey>
+        <Value ref="private.certificate1"></Value>
+    </PublicKey>
+    <Source>access_token</Source>
+</VerifyJWT>

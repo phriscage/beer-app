@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OAuthV2 async="false" continueOnError="false" enabled="true" name="GenerateAccessTokenClientJWTExternalAuth">
+    <DisplayName>GenerateAccessTokenClientJWTExternalAuth</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <ClientId>apigee.client_id</ClientId>
+    <Attributes>
+        <Attribute display="true" name="email" ref="request.formparam.username"></Attribute>
+        <Attribute display="true" name="username" ref="request.formparam.username"></Attribute>
+    </Attributes>
+    <ExpiresIn ref="oauth.client.expires_in">3600000</ExpiresIn>
+    <ExternalAccessToken>jwt_signed</ExternalAccessToken>
+    <ExternalAuthorization>true</ExternalAuthorization>
+    <Operation>GenerateAccessToken</Operation>
+    <GenerateResponse enabled="true">
+        <Format>FORM_PARAM</Format>
+    </GenerateResponse>
+    <ResponseType>request.queryparam.response_type</ResponseType>
+    <ReuseRefreshToken>false</ReuseRefreshToken>
+    <StoreToken>true</StoreToken>
+    <SupportedGrantTypes>
+        <GrantType>client_credentials</GrantType>
+    </SupportedGrantTypes>
+    <Tokens/>
+</OAuthV2>

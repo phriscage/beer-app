@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OAuthV2 async="false" continueOnError="false" enabled="true" name="GenerateAccessTokenImplicit">
+    <DisplayName>GenerateAccessTokenImplicit</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <ClientId>request.formparam.client_id</ClientId>
+    <Attributes/>
+    <ExpiresIn ref="oauth.implicit.expires_in">4000000</ExpiresIn>
+    <ExternalAuthorization>false</ExternalAuthorization>
+    <Operation>GenerateAccessTokenImplicitGrant</Operation>
+    <RedirectUri>request.formparam.redirect_uri</RedirectUri>
+    <GenerateResponse enabled="true">
+        <Format>FORM_PARAM</Format>
+    </GenerateResponse>
+    <ResponseType>request.formparam.response_type</ResponseType>
+    <ReuseRefreshToken>false</ReuseRefreshToken>
+    <SupportedGrantTypes/>
+    <Tokens/>
+</OAuthV2>

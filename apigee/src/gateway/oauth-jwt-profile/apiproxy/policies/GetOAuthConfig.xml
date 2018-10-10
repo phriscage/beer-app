@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<KeyValueMapOperations encrypted="false" mapIdentifier="oauth-jwt-profile.core" async="false" continueOnError="false" enabled="true" name="GetOAuthConfig">
+    <DisplayName>GetOAuthConfig</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <ExclusiveCache>false</ExclusiveCache>
+    <ExpiryTimeInSecs>300</ExpiryTimeInSecs>
+    <InitialEntries/>
+    <Get assignTo="oauth.implicit.expires_in" index="1">
+        <Key>
+            <Parameter>implicit.expires_in</Parameter>
+        </Key>
+    </Get>
+    <Get assignTo="oauth.client.expires_in" index="1">
+        <Key>
+            <Parameter>client.expires_in</Parameter>
+        </Key>
+    </Get>
+    <Get assignTo="oauth.authorization.expires_in" index="1">
+        <Key>
+            <Parameter>authorization.expires_in</Parameter>
+        </Key>
+    </Get>
+    <Get assignTo="oauth.password.expires_in" index="1">
+        <Key>
+            <Parameter>password.expires_in</Parameter>
+        </Key>
+    </Get>
+    <Get assignTo="oauth.openid.google.jwks_uri" index="1">
+        <Key>
+            <Parameter>openid.google.jwks_uri</Parameter>
+        </Key>
+    </Get>
+    <Scope>environment</Scope>
+</KeyValueMapOperations>

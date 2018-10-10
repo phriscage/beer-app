@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OAuthV2 async="false" continueOnError="false" enabled="true" name="GenerateAccessTokenJWTBearer">
+    <DisplayName>GenerateAccessTokenJWTBearer</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <ClientId>request.queryparam.client_id</ClientId>
+    <Attributes>
+        <Attribute display="true" name="email" ref="jwt.VerifyJWTBearer.claim.email"></Attribute>
+        <Attribute display="true" name="subject" ref="jwt.VerifyJWTBearer.claim.subject"></Attribute>
+        <Attribute display="true" name="audience" ref="jwt.VerifyJWTBearer.claim.audience"></Attribute>
+        <Attribute display="false" name="payload" ref="jwt.VerifyJWTBearer.payload-json"></Attribute>
+    </Attributes>
+    <ExpiresIn ref="oauth.client.expires_in">3600000</ExpiresIn>
+    <ExternalAuthorization>true</ExternalAuthorization>
+    <Operation>GenerateAccessToken</Operation>
+    <GenerateResponse enabled="true">
+        <Format>FORM_PARAM</Format>
+    </GenerateResponse>
+    <ResponseType>request.queryparam.response_type</ResponseType>
+    <ReuseRefreshToken>false</ReuseRefreshToken>
+    <SupportedGrantTypes>
+        <GrantType>client_credentials</GrantType>
+    </SupportedGrantTypes>
+    <Tokens/>
+</OAuthV2>

@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+    <DefaultFaultRule name="DefaultFaultRule">
+        <Step>
+            <FaultRules/>
+            <Name>AddCORS</Name>
+        </Step>
+        <AlwaysEnforce>true</AlwaysEnforce>
+    </DefaultFaultRule>
+    <Description></Description>
+    <FaultRules/>
+    <Flows>
+        <Flow name="/authorize (code)">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateAuthorizationCode</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateAuthorizationCodeResponse</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/authorize") and (request.verb = "POST")</Condition>
+        </Flow>
+        <Flow name="/token">
+            <Description></Description>
+            <Request/>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/token") and (request.verb = "DELETE")</Condition>
+        </Flow>
+        <Flow name="/token">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>RefreshAccessToken</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/token") and (request.verb = "PUT")</Condition>
+        </Flow>
+        <Flow name="/token (code:jwt)">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>VerifyAPIKey</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>SetJWTVariables</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GetJWTSecret</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateJWT</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateAccessTokenCodeJWT</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>
+                (proxy.pathsuffix MatchesPath "/token") 
+            and (request.verb = "POST") 
+            and (request.formparam.grant_type == "authorization_code")
+            and (request.formparam.token_format == "jwt")
+            </Condition>
+        </Flow>
+        <Flow name="/token (code)">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateAccessTokenCode</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>
+                (proxy.pathsuffix MatchesPath "/token") 
+            and (request.verb = "POST") 
+            and (request.formparam.grant_type == "authorization_code")
+            </Condition>
+        </Flow>
+        <Flow name="/token (client:jwt)">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateAccessTokenClientFalse</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>SetProxyHostVariable</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>SetJWTVariables</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GetJWTSecret</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateJWT</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateAccessTokenClientJWT</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>
+                (proxy.pathsuffix MatchesPath "/token") 
+            and (request.verb = "POST") 
+            and (request.formparam.grant_type == "client_credentials") 
+            and (request.formparam.token_format == "jwt")
+            </Condition>
+        </Flow>
+        <Flow name="/token (client)">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateAccessTokenClient</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>
+                (proxy.pathsuffix MatchesPath "/token") 
+            and (request.verb = "POST") 
+            and (request.formparam.grant_type == "client_credentials") 
+            </Condition>
+        </Flow>
+        <Flow name="/token (implicit:jwt)">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>SetJWTVariables</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GetJWTSecret</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>SetResponseTypeToken</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateJWT</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateAccessTokenImplicitJWT</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>
+                (proxy.pathsuffix MatchesPath "/token") 
+            and (request.verb = "POST") 
+            and (request.formparam.grant_type == "implicit") 
+            and (request.formparam.token_format == "jwt")
+            </Condition>
+        </Flow>
+        <Flow name="/token (implicit)">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateAccessTokenImplicit</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>
+                (proxy.pathsuffix MatchesPath "/token") 
+            and (request.verb = "POST") 
+            and (request.formparam.grant_type == "implicit") 
+            </Condition>
+        </Flow>
+        <Flow name="/token (jwt-bearer:jwt)">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>VerifyAPIKey</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>DynamicTargetUrl</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>RetriveJWKs</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>VerifyJWTBearer</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>SetJWTVariables</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GetJWTSecret</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateJWTBearerJWT</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>ReplaceGrantTypeClient</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateAccessTokenJWTBearerJWT</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>
+                (proxy.pathsuffix MatchesPath "/token") 
+            and (request.verb = "POST") 
+            and (request.formparam.grant_type == "urn:ietf:params:oauth:grant-type:jwt-bearer") 
+            and (request.formparam.token_format == "jwt")
+            </Condition>
+        </Flow>
+        <Flow name="/token (jwt-bearer)">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>VerifyAPIKey</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>DynamicTargetUrl</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>RetriveJWKs</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>VerifyJWTBearer</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>ReplaceGrantTypeClient</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateAccessTokenJWTBearer</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>
+                (proxy.pathsuffix MatchesPath "/token") 
+            and (request.verb = "POST") 
+            and (request.formparam.grant_type == "urn:ietf:params:oauth:grant-type:jwt-bearer") 
+            </Condition>
+        </Flow>
+        <Flow name="/token (password:jwt)">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <Condition>request.formparam.client_id != null</Condition>
+                    <FaultRules/>
+                    <Name>VerifyAPIKey</Name>
+                </Step>
+                <Step>
+                    <Condition>request.formparam.client_id != null</Condition>
+                    <FaultRules/>
+                    <Name>ReplaceGrantTypeClient</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>SetJWTVariables</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GetJWTSecret</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateJWT</Name>
+                </Step>
+                <Step>
+                    <Condition>request.formparam.client_id != null</Condition>
+                    <FaultRules/>
+                    <Name>GenerateAccessTokenClientJWTExternalAuth</Name>
+                </Step>
+                <Step>
+                    <Condition>request.formparam.client_id == null</Condition>
+                    <FaultRules/>
+                    <Name>GenerateAccessTokenClientJWT</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>
+                (proxy.pathsuffix MatchesPath "/token") 
+            and (request.verb = "POST") 
+            and (request.formparam.grant_type == "password") 
+            and (request.formparam.token_format == "jwt")
+            </Condition>
+        </Flow>
+        <Flow name="/token (password)">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <Condition>request.formparam.client_id != null</Condition>
+                    <FaultRules/>
+                    <Name>VerifyAPIKey</Name>
+                </Step>
+                <Step>
+                    <Condition>request.formparam.client_id != null</Condition>
+                    <FaultRules/>
+                    <Name>ReplaceGrantTypeClient</Name>
+                </Step>
+                <Step>
+                    <Condition>request.formparam.client_id != null</Condition>
+                    <FaultRules/>
+                    <Name>GenerateAccessTokenClientExternalAuth</Name>
+                </Step>
+                <Step>
+                    <Condition>request.formparam.client_id == null</Condition>
+                    <FaultRules/>
+                    <Name>GenerateAccessTokenPassword</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>
+                (proxy.pathsuffix MatchesPath "/token") 
+            and (request.verb = "POST") 
+            and (request.formparam.grant_type == "password") 
+            </Condition>
+        </Flow>
+        <Flow name="/token (saml-bearer:jwt)">
+            <Description></Description>
+            <Request/>
+            <Response/>
+            <Condition>
+                (proxy.pathsuffix MatchesPath "/token") 
+            and (request.verb = "POST") 
+            and (request.formparam.grant_type == "urn:ietf:params:oauth:grant-type:saml2-bearer") 
+            and (request.formparam.token_format == "jwt")
+            </Condition>
+        </Flow>
+        <Flow name="/token (saml-bearer)">
+            <Description></Description>
+            <Request/>
+            <Response/>
+            <Condition>
+                (proxy.pathsuffix MatchesPath "/token") 
+            and (request.verb = "POST") 
+            and (request.formparam.grant_type == "urn:ietf:params:oauth:grant-type:saml2-bearer") 
+            </Condition>
+        </Flow>
+        <Flow name="/token/introspect">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>VerifyOAuthToken</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>RemoveHeaderAuthorization</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateTokenResponse</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/token/introspect") and (request.verb = "GET")</Condition>
+        </Flow>
+        <Flow name="/token/introspect/jwt">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>GetPublicKeys</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>VerifyOAuthToken</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>RemoveHeaderAuthorization</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>VerifyJWT</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateTokenResponseJWT</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/token/introspect/jwt") and (request.verb = "GET")</Condition>
+        </Flow>
+        <Flow name="/certs">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>GetPublicKeys</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateJWKs</Name>
+                </Step>
+            </Request>
+            <Response>
+                <Step>
+                    <FaultRules/>
+                    <Name>SendJWKMessage</Name>
+                </Step>
+            </Response>
+            <Condition>(proxy.pathsuffix MatchesPath "/certs") and (request.verb = "GET")</Condition>
+        </Flow>
+        <Flow name="/user">
+            <Description></Description>
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>VerifyOAuthToken</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>SampleUserResponse</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/user") and (request.verb = "GET")</Condition>
+        </Flow>
+    </Flows>
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response/>
+    </PostFlow>
+    <PreFlow name="PreFlow">
+        <Request>
+            <Step>
+                <FaultRules/>
+                <Name>CreateISO8601</Name>
+            </Step>
+            <Step>
+                <FaultRules/>
+                <Name>GetOAuthConfig</Name>
+            </Step>
+        </Request>
+        <Response>
+            <Step>
+                <Condition>request.verb = "OPTIONS"</Condition>
+                <FaultRules/>
+                <Name>AddCORS</Name>
+            </Step>
+            <Step>
+                <FaultRules/>
+                <Name>AddAuthorizationHeaderResponse</Name>
+            </Step>
+        </Response>
+    </PreFlow>
+    <HTTPProxyConnection>
+        <BasePath>/v3/oauth</BasePath>
+        <Properties/>
+        <VirtualHost>secure</VirtualHost>
+    </HTTPProxyConnection>
+    <RouteRule name="NoRoute"/>
+</ProxyEndpoint>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="SetResponseTypeToken">
+    <DisplayName>SetResponseTypeToken</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <Set>
+        <QueryParams>
+            <QueryParam name="response_type">token</QueryParam>
+        </QueryParams>
+        <FormParams>
+            <FormParam name="response_type">token</FormParam>
+        </FormParams>
+    </Set>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <AssignTo type="request" transport="http" createNew="false"></AssignTo>
+</AssignMessage>

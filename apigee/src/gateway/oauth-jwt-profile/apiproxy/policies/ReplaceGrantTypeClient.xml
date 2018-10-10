@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="ReplaceGrantTypeClient">
+    <DisplayName>ReplaceGrantTypeClient</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <Set>
+        <QueryParams>
+            <QueryParam name="grant_type">client_credentials</QueryParam>
+        </QueryParams>
+        <FormParams>
+            <FormParam name="grant_type">client_credentials</FormParam>
+        </FormParams>
+    </Set>
+    <AssignVariable>
+        <Name>oauth_external_authorization_status</Name>
+        <Value>true</Value>
+    </AssignVariable>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <AssignTo type="request" transport="http" createNew="false"></AssignTo>
+</AssignMessage>

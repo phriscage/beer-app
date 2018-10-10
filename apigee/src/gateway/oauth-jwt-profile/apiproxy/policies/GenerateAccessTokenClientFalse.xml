@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OAuthV2 async="false" continueOnError="false" enabled="true" name="GenerateAccessTokenClientFalse">
+    <DisplayName>GenerateAccessTokenClientFalse</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <Attributes/>
+    <ExpiresIn ref="oauth.client.expires_in">3600000</ExpiresIn>
+    <ExternalAuthorization>false</ExternalAuthorization>
+    <GrantType>request.formparam.grant_type</GrantType>
+    <Operation>GenerateAccessToken</Operation>
+    <GenerateResponse enabled="false">
+        <Format>FORM_PARAM</Format>
+    </GenerateResponse>
+    <ReuseRefreshToken>false</ReuseRefreshToken>
+    <SupportedGrantTypes>
+        <GrantType>client_credentials</GrantType>
+    </SupportedGrantTypes>
+    <Tokens/>
+</OAuthV2>

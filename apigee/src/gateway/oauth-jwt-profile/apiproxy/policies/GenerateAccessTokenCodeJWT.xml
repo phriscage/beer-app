@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OAuthV2 async="false" continueOnError="false" enabled="true" name="GenerateAccessTokenCodeJWT">
+    <DisplayName>GenerateAccessTokenCodeJWT</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <ClientId>request.formparam.client_id</ClientId>
+    <Code>request.formparam.code</Code>
+    <Attributes/>
+    <ExpiresIn ref="oauth.code.expires_in">3600000</ExpiresIn>
+    <ExternalAccessToken>jwt_signed</ExternalAccessToken>
+    <ExternalAuthorization>false</ExternalAuthorization>
+    <Operation>GenerateAccessToken</Operation>
+    <RedirectUri>request.formparam.redirect_uri</RedirectUri>
+    <GenerateResponse enabled="true">
+        <Format>FORM_PARAM</Format>
+    </GenerateResponse>
+    <ReuseRefreshToken>false</ReuseRefreshToken>
+    <StoreToken>true</StoreToken>
+    <SupportedGrantTypes>
+        <GrantType>authorization_code</GrantType>
+    </SupportedGrantTypes>
+    <Tokens/>
+</OAuthV2>

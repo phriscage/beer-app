@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<VerifyJWT async="false" continueOnError="false" enabled="true" name="VerifyJWTBearer">
+    <DisplayName>VerifyJWTBearer</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <AdditionalClaims/>
+    <AdditionalHeaders/>
+    <Algorithm>RS256</Algorithm>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <PublicKey>
+        <JWKS ref="jwksResponse.content"></JWKS>
+    </PublicKey>
+    <Source>request.formparam.assertion</Source>
+</VerifyJWT>
