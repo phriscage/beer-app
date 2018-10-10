@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="GenerateTokenResponseJWT">
+    <DisplayName>GenerateTokenResponseJWT</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <Add>
+        <Headers>
+            <Header name="X-OAuth-Access-Token">{access_token}</Header>
+        </Headers>
+    </Add>
+    <Set>
+        <Payload contentType="application/json; charset=utf-8">
+        {
+            "organization.name": "{organization.name}",
+            "environment.name": "{environment.name}",
+            "apiproxy.name": "{apiproxy.name}",
+            "apiproxy.revision": "{apiproxy.revision}",
+            "jwt": {
+                "header": {jwt.VerifyJWT.header-json},
+                "payload": {jwt.VerifyJWT.payload-json},
+                "is_expired": "{jwt.VerifyJWT.is_expired}",
+                "seconds_remaining": "{jwt.VerifyJWT.seconds_remaining}"
+            },
+            "current_time": "{custom.iso8601Timestamp}"
+
+        }
+    </Payload>
+    </Set>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo type="response" transport="http" createNew="false"></AssignTo>
+</AssignMessage>

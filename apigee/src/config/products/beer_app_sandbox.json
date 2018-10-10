@@ -1,0 +1,32 @@
+{
+    "approvalType": "auto",
+    "attributes":[
+        {
+            "name":"access",
+            "value":"public"
+        },
+        {
+            "name":"istio-services",
+            "value":" beer-api.default.svc.cluster.local,details-api.default.svc.cluster.local,reviews-api.default.svc.cluster.local,likes-api.default.svc.cluster.local"
+        }
+    ],
+   "displayName": "Beer App - Sandbox",
+   "name": "beer_app_sandbox",
+   "apiResources": ["/"],
+   "environments": ["test"],
+   "proxies": [
+      "oauth-jwt-profile",
+      "istio-auth"
+    ],
+    "quota": "10",
+    "quotaInterval": "1",
+    "quotaTimeUnit": "minute",
+    "scopes": [
+        "address",
+        "email",
+        "offline_access",
+        "openid",
+        "phone",
+        "profile"
+    ]
+}

@@ -85,6 +85,7 @@ Navigate to the *Beers* tab and you will see a list of beers:
 ## <a name="next"></a>Next:
 
 * [Setup the Mesh Proxy](SETUP-MESH-PROXY.md)
+* [Setup Apigee](SETUP-APIGEE.md)
 * Try some of the [labs](../labs)
 
 

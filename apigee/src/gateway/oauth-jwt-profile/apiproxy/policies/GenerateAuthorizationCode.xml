@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OAuthV2 async="false" continueOnError="false" enabled="true" name="GenerateAuthorizationCode">
+    <DisplayName>GenerateAuthorizationCode</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <ClientId>request.formparam.client_id</ClientId>
+    <Attributes>
+        <Attribute display="true" name="email" ref="request.formparam.username"></Attribute>
+        <Attribute display="true" name="username" ref="request.formparam.username"></Attribute>
+    </Attributes>
+    <ExternalAuthorization>false</ExternalAuthorization>
+    <Operation>GenerateAuthorizationCode</Operation>
+    <RedirectUri>request.formparam.redirect_uri</RedirectUri>
+    <GenerateResponse enabled="false">
+        <Format>FORM_PARAM</Format>
+    </GenerateResponse>
+    <ResponseType>request.formparam.response_type</ResponseType>
+    <ReuseRefreshToken>false</ReuseRefreshToken>
+    <Scope>request.formparam.scope</Scope>
+    <SupportedGrantTypes/>
+    <Tokens/>
+</OAuthV2>

@@ -22,7 +22,6 @@ There are a few [prerequisites](docs/PREREQUISITES.md) that need to be validated
 * [Prerequisites](docs/PREREQUISITES.md)
 * [Setup](docs/SETUP.md)
 * [Labs!](labs/)
-* [API Management](docs/APIGEE.md)
 * [Development](docs/DEVELOPMENT.md)
 * [To-Do](#todo)
 

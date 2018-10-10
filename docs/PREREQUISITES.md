@@ -10,7 +10,8 @@ This documentation provides prerequisites for what is required before installing
 * [Istio](https://istio.io/) service mesh management knowledge
 
 * [Google Cloud Platform SDK](https://cloud.google.com/sdk/) installed and configured
-* [Apigee Istio Mixer](https://github.com/apigee/istio-mixer-adapter) installed
+* [Apigee](https://apigee.com) organization provisioned and available
+* [Apigee Istio Mixer](https://github.com/apigee/istio-mixer-adapter) installed and configured
 
 
 ## <a name="prerequisites_for_development"></a>Prerequisites for Development:

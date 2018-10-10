@@ -40,6 +40,7 @@ You have now enalbed Apigee *authorization*, *quota enforcement*, and *analytics
 
 ## <a name="next"></a>Next:
 
+* [Setup Apigee](SETUP-APIGEE.md)
 * Try some of the [labs](../labs)
 
 
