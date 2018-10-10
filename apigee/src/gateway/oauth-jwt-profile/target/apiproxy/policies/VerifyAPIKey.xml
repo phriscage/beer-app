@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<VerifyAPIKey async="false" continueOnError="false" name="VerifyAPIKey" enabled="true">
-    <DisplayName>VerifyAPIKey</DisplayName>
-    <Properties/>
-    <APIKey ref="request.formparam.client_id"/>
-</VerifyAPIKey>
