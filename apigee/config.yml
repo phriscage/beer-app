@@ -31,8 +31,8 @@ resources:
       items:
       - name: oauth_core
         payload: '{
-          "name" : "oauth_jwt_profile.core", 
-          "entry" : [ 
+          "name" : "oauth-jwt-profile.core",
+          "entry" : [
           {
             "name" : "openid.google.jwks_uri",
             "value" : "https://www.googleapis.com/oauth2/v3/certs"
@@ -57,9 +57,9 @@ resources:
          }'
       - name: oauth_keys
         payload: '{
-          "name" : "oauth_jwt_profile.keys", 
+          "name" : "oauth-jwt-profile.keys",
           "encrypted": "true",
-          "entry" : [ 
+          "entry" : [
           {
             "name" : "certificate1_kid",
             "value" : "1"
@@ -81,26 +81,75 @@ resources:
     - name: oauth_proxies
       type: proxy
       items:
-      - name: oauth_jwt_profile
+      - name: oauth-jwt-profile
     - name: beer_app_products
       type: product
       items:
       - name: beer-app-sandbox
         payload: '{
-          "approvalType": "auto", 
-          "displayName": "Beer App - Sandbox",
-          "name": "beer_app_sandbox",
-          "apiResources": ["/"],
-          "environments": ["test"],
-          "proxies": [
-                "oauth-jwt-profile"
-          ],
-          "scopes": [
-                "address", 
-                "email", 
-                "offline_access", 
-                "openid", 
-                "phone", 
-                "profile"
-          ] 
-        }'
+    "approvalType": "auto",
+    "attributes":[
+        {
+            "name":"access",
+            "value":"public"
+        },
+        {
+            "name":"istio-services",
+            "value":" beer-api.default.svc.cluster.local,details-api.default.svc.cluster.local,reviews-api.default.svc.cluster.local,likes-api.default.svc.cluster.local"
+        }
+    ],
+   "displayName": "Beer App - Sandbox",
+   "name": "beer-app-sandbox",
+   "description": "Beer App Sandbox Product with strict 10r/m quota for the Beer App service mesh",
+   "apiResources": ["/"],
+   "environments": ["test"],
+   "proxies": [
+      "oauth-jwt-profile",
+      "istio-auth"
+    ],
+    "quota": "10",
+    "quotaInterval": "1",
+    "quotaTimeUnit": "minute",
+    "scopes": [
+        "address",
+        "email",
+        "offline_access",
+        "openid",
+        "phone",
+        "profile"
+    ]
+}'
+      - name: beer-app-gold
+        payload: '{
+    "approvalType": "auto",
+    "attributes":[
+        {
+            "name":"access",
+            "value":"private"
+        },
+        {
+            "name":"istio-services",
+            "value":" beer-api.default.svc.cluster.local,details-api.default.svc.cluster.local,reviews-api.default.svc.cluster.local,likes-api.default.svc.cluster.local"
+        }
+    ],
+   "displayName": "Beer App - Gold",
+   "name": "beer-app-gold",
+   "description": "Beer App Gold Product with generous 1000r/m quota for the Beer App service mesh",
+   "apiResources": ["/"],
+   "environments": ["test"],
+   "proxies": [
+      "oauth-jwt-profile",
+      "istio-auth"
+    ],
+    "quota": "1000",
+    "quotaInterval": "1",
+    "quotaTimeUnit": "minute",
+    "scopes": [
+        "address",
+        "email",
+        "offline_access",
+        "openid",
+        "phone",
+        "profile"
+    ]
+}'
