@@ -6,6 +6,7 @@ Please verify that you have read and completed the follow documents before conti
 [prerequisites](../docs/PREREQUISITES.md)
 [Setup](../docs/SETUP.md)
 [Setup Mesh Proxy](../docs/SETUP-MESH-PROXY.md)
+[Setup Apigee](../docs/SETUP-APIGEE.md)
 [Mesh JWT validation](Mesh-JWT-validation.md)
 
 

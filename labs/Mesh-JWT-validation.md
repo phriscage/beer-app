@@ -1,7 +1,12 @@
 # Beer App Labs - Mesh JWT validation
 This documentation provides details for Running the Mesh JWT validation lab.
 
-Please verify that you have read and completed the [prerequisites](../docs/PREREQUISITES.md), [Setup](../docs/SETUP.md), and [Setup Mesh Proxy](../docs/SETUP-MESH-PROXY.md) documents before continuing the Lab exercises.
+Please verify that you have read and completed the follow documents before continuing the Lab exercises:
+
+[prerequisites](../docs/PREREQUISITES.md)
+[Setup](../docs/SETUP.md)
+[Setup Mesh Proxy](../docs/SETUP-MESH-PROXY.md)
+[Setup Apigee](../docs/SETUP-APIGEE.md)
 
 
 The Istio Auth Policy for Apigee JWT *authorization* enables JWT validation. Change the  *issuer* and *jwks_url* in the [Policy](istio-manifests/apigee/authentication-default-policy.yaml). This Policy will be applied to all the services in the *default* namepsace

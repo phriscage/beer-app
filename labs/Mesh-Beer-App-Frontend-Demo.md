@@ -6,6 +6,7 @@ Please verify that you have read and completed the follow documents before conti
 [prerequisites](../docs/PREREQUISITES.md)
 [Setup](../docs/SETUP.md)
 [Setup Mesh Proxy](../docs/SETUP-MESH-PROXY.md)
+[Setup Apigee](../docs/SETUP-APIGEE.md)
 
 
 Enable all the Beer App services to route to *v1* via the [virtual-service-all-v1.yaml](istio-manifests/beer-app/networking/virtual-service-all-v1.yaml) file. This changes all VirtualService destinations to be *v1*. _Note_ Beer App VirtualService needs to bind to the Ingress Gateway.
