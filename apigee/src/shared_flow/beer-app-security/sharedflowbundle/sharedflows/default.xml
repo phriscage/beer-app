@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SharedFlow name="default">
+    <Step>
+        <Name>VerifyOAuth2AccessToken</Name>
+        <Condition>request.verb != "OPTIONS"</Condition>
+    </Step>
+    <Step>
+        <Name>RemoveAuthorizationHeader</Name>
+    </Step>
+    <Step>
+        <Name>JSONThreatProtection</Name>
+    </Step>
+    <Step>
+        <Name>SQLCodeProtection</Name>
+    </Step>
+    <Step>
+        <Name>SpikeArrest</Name>
+    </Step>
+</SharedFlow>

@@ -82,6 +82,14 @@ resources:
       type: proxy
       items:
       - name: oauth-jwt-profile
+    - name: beer_app_shared_flows
+      type: sharedFlow
+      items:
+      - name: beer-app-security
+    - name: beer_app_proxies
+      type: proxy
+      items:
+      - name: beer-app-backend
     - name: beer_app_products
       type: product
       items:
@@ -104,6 +112,7 @@ resources:
    "apiResources": ["/"],
    "environments": ["test"],
    "proxies": [
+      "beer-app-backend",
       "oauth-jwt-profile",
       "istio-auth"
     ],
@@ -138,6 +147,7 @@ resources:
    "apiResources": ["/"],
    "environments": ["test"],
    "proxies": [
+      "beer-app-backend",
       "oauth-jwt-profile",
       "istio-auth"
     ],

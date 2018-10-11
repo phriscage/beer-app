@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<APIProxy revision="1" name="beer-app-backend">
+    <Basepaths>/v1/beer-app</Basepaths>
+    <ConfigurationVersion majorVersion="4" minorVersion="0"/>
+    <CreatedAt>1539278748919</CreatedAt>
+    <CreatedBy>defaultUser</CreatedBy>
+    <Description>This is a straight-through reverse proxy to the Beers service in GCP</Description>
+    <DisplayName>beer-app-backend</DisplayName>
+    <LastModifiedAt>1539278795256</LastModifiedAt>
+    <LastModifiedBy>defaultUser</LastModifiedBy>
+    <ManifestVersion>SHA-512:6fc29678166c67c58f0f1df4fcd16b1d27f0846e612185d07c09a591cd45231f3a5380f5f138a2bbe804b2be52b7352aa35b2291c6d4a9144d0fa2d2916c80cc</ManifestVersion>
+    <Policies>
+        <Policy>AddCORS</Policy>
+        <Policy>SecurityFlowCallout</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources/>
+    <Spec></Spec>
+    <TargetServers/>
+    <TargetEndpoints>
+        <TargetEndpoint>default</TargetEndpoint>
+    </TargetEndpoints>
+</APIProxy>

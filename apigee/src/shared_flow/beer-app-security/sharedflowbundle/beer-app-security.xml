@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SharedFlowBundle revision="1" name="beer-app-security">
+    <ConfigurationVersion majorVersion="4" minorVersion="0"/>
+    <CreatedAt>1539278681952</CreatedAt>
+    <CreatedBy>defaultUser</CreatedBy>
+    <Description>Security policy logic for all API proxies</Description>
+    <DisplayName>GlobalSecurity-v3</DisplayName>
+    <LastModifiedAt>1539278681952</LastModifiedAt>
+    <LastModifiedBy>defaultUser</LastModifiedBy>
+    <ManifestVersion>SHA-512:a0547da5f2f3ae0f1d96f343e3be22c2f96295ce6cf922e29f39b116aca7c21329983b6afee9c0d0c90739244a80399c76618d3c46114ef65a8dbb700c7b07fb</ManifestVersion>
+    <Policies>
+        <Policy>AddCORS</Policy>
+        <Policy>JSONThreatProtection</Policy>
+        <Policy>RemoveAuthorizationHeader</Policy>
+        <Policy>SQLCodeProtection</Policy>
+        <Policy>SpikeArrest</Policy>
+        <Policy>VerifyOAuth2AccessToken</Policy>
+    </Policies>
+    <Resources/>
+    <Spec></Spec>
+    <subType>SharedFlow</subType>
+    <SharedFlows>
+        <SharedFlow>default</SharedFlow>
+    </SharedFlows>
+</SharedFlowBundle>

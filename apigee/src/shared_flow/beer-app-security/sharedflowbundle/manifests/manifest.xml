@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Manifest name="manifest">
+    <Policies>
+        <VersionInfo resourceName="AddCORS" version="SHA-512:eeb9801d4efd158b44d34ab87f91f2fdfa7271eac13e7a11402c6cc2a4443e5f86aac27019dcb016f9c249b3c118b3c39b5ec2d721ab26a94648a7d8f3746231"/>
+        <VersionInfo resourceName="JSONThreatProtection" version="SHA-512:56c709acd1fd7a1c1d58f635ac1c5e1ca4da69634892e013923b1de326a5d4762ac3f4e3548068a0bf35f78aeaca95353146a603dd6e101c08ddbcf218c701d0"/>
+        <VersionInfo resourceName="RemoveAuthorizationHeader" version="SHA-512:c0414daf4d0b52c5ed5bfd7aa1c2a172ba600dce8db0b376c42367fb6be26694d6dd68d477a133eca68a0e2766cdb3a0bfc72f607736b94610a69204625bf079"/>
+        <VersionInfo resourceName="SQLCodeProtection" version="SHA-512:0733693ce7737b28e0692e33a39825aa79fce87f978f4f539e32bc4db9dfbddfef8c09dcdb39c46b08f89cee30582be9d6368a60c07e9a3f0c75119d0bf067cc"/>
+        <VersionInfo resourceName="SpikeArrest" version="SHA-512:f29e6c706a9e8161067ea1dccd7733a845b8f7500d20a9c25490df3eaa7b1d062b9f6fc05df085a07795e36dabf6a409ed38fcb224b3de3dc39b74ea8daa4073"/>
+        <VersionInfo resourceName="VerifyOAuth2AccessToken" version="SHA-512:45d9b25a23e26319592330e41fe208b58f3cf87c8a6bd5d7403f259a783e60a7ab9f69c3fb8819ea7f604da0ce95cac1722a5bc6155ede120947d0f1b61121c3"/>
+    </Policies>
+    <ProxyEndpoints/>
+    <Resources/>
+    <SharedFlows>
+        <VersionInfo resourceName="default" version="SHA-512:b3ac064676706f79e416630d4b8d2b93c0ff5bf599a188b1bff726b12183c966475e86b02e504797bf19c712922386b801dcff7741b00afc3e99913b2d0fb359"/>
+    </SharedFlows>
+    <TargetEndpoints/>
+</Manifest>

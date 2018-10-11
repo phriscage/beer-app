@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<FlowCallout async="false" continueOnError="false" enabled="true" name="SecurityFlowCallout">
+    <DisplayName>SecurityFlowCallout</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <SharedFlowBundle>beer-app-security</SharedFlowBundle>
+</FlowCallout>
