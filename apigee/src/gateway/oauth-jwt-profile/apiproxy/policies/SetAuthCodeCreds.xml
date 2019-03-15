@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<KeyValueMapOperations async="false" continueOnError="false" enabled="true" name="SetAuthCodeCreds" mapIdentifier="authcode">
+    <DisplayName>SetAuthCodeCreds</DisplayName>
+    <Properties/>
+    <ExclusiveCache>false</ExclusiveCache>
+    <ExpiryTimeInSecs>300</ExpiryTimeInSecs>
+    <Put override="true">
+        <Key>
+            <Parameter ref="oauthv2authcode.GenerateAuthorizationCode.code"/>
+        </Key>
+        <Value ref="credentials.username"/>
+        <Value ref="credentials.password"/>
+    </Put>
+    <Scope>environment</Scope>
+</KeyValueMapOperations>
