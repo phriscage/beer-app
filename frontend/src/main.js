@@ -106,12 +106,21 @@ var vueOptions = {
     url: 'https://accounts.google.com/o/oauth2/auth',
     params: {
       client_id: shared.googleClientId
-    }
+    },
+    response_type: 'token id_token'
     // params: {
     // redirect_uri: function () {
     // return this.options.getUrl() + '/login'
     // }
     // }
+  },
+  apigeeOauth2Data: {
+    url: shared.oauthApiBaseUrl + '/authorize',
+    params: {
+      client_id: shared.clientId
+    },
+    response_type: 'code',
+    scope: 'openid email profile'
   }
   // refreshPerform: () => {
   // console.log('refreshPerform')
