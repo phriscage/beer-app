@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ServiceCallout async="false" continueOnError="false" enabled="true" name="SamlValidation">
+    <DisplayName>SamlValidation</DisplayName>
+    <Properties/>
+    <Request clearPayload="true" variable="myRequest">
+        <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+        <Set>
+            <FormParams>
+                <FormParam name="assertionXml">{assertion}</FormParam>
+            </FormParams>
+            <Headers>
+                <Header name="Content-Type">application/x-www-form-urlencoded</Header>
+            </Headers>
+        </Set>
+    </Request>
+    <Response>calloutResponse</Response>
+    <LocalTargetConnection>
+        <APIProxy>oauth-saml-validation</APIProxy>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </LocalTargetConnection>
+</ServiceCallout>

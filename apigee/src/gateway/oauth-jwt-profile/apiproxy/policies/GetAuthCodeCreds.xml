@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<KeyValueMapOperations async="false" continueOnError="false" enabled="true" name="GetAuthCodeCreds" mapIdentifier="authcode">
+    <DisplayName>GetAuthCodeCreds</DisplayName>
+    <Properties/>
+    <ExclusiveCache>false</ExclusiveCache>
+    <ExpiryTimeInSecs>300</ExpiryTimeInSecs>
+    <Get assignTo="credentials.username" index="1">
+        <Key>
+            <Parameter ref="request.formparam.code"/>
+        </Key>
+    </Get>
+    <Get assignTo="credentials.password" index="2">
+        <Key>
+            <Parameter ref="request.formparam.code"/>
+        </Key>
+    </Get>
+    <Scope>environment</Scope>
+</KeyValueMapOperations>

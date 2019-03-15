@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<APIProxy revision="7" name="oauth-jwt-profile">
+<APIProxy revision="5" name="oauth-jwt-profile">
     <Basepaths>/v2/oauth</Basepaths>
-    <Basepaths>/v3/oauth</Basepaths>
+    <Basepaths></Basepaths>
+    <Basepaths></Basepaths>
     <ConfigurationVersion majorVersion="4" minorVersion="0"/>
-    <CreatedAt>1537875802650</CreatedAt>
+    <CreatedAt>1547145900959</CreatedAt>
     <CreatedBy>defaultUser</CreatedBy>
     <Description>An API proxy that provides all OAuth 2.0 Grant flows</Description>
     <DisplayName>oauth-jwt-profile</DisplayName>
-    <LastModifiedAt>1539179181255</LastModifiedAt>
+    <LastModifiedAt>1548363154121</LastModifiedAt>
     <LastModifiedBy>defaultUser</LastModifiedBy>
-    <ManifestVersion>SHA-512:d9815c61be8b402019122ed706aa9c50d8978c18ab6c2e77c5c78684f4a254dee7df7ef9a14ce0c72a1fde0aa183e4c6d94d037538c3c19de529cb9e1f5125a6</ManifestVersion>
+    <ManifestVersion>SHA-512:157e8a7fd9b58836436c22f4865060b322cf5beb2780fa85daae00beb628d1142a44c55081ee8aa9a16ff123b42840dc36a9a71d9f2633a797fd9c0c850e8c6a</ManifestVersion>
     <Policies>
         <Policy>AddAuthorizationHeaderResponse</Policy>
         <Policy>AddCORS</Policy>
+        <Policy>AssignWsResult</Policy>
+        <Policy>AuthorizationDelegationValidation</Policy>
+        <Policy>AuthorizationParameterValidation</Policy>
         <Policy>CreateISO8601</Policy>
         <Policy>DecodeJWT</Policy>
+        <Policy>DecodeWSFedParams</Policy>
         <Policy>DynamicTargetUrl</Policy>
+        <Policy>ExtractCredentials</Policy>
+        <Policy>ExtractXmldata</Policy>
         <Policy>GenerateAccessTokenClient</Policy>
         <Policy>GenerateAccessTokenClientExternalAuth</Policy>
         <Policy>GenerateAccessTokenClientFalse</Policy>
@@ -31,27 +38,41 @@
         <Policy>GenerateAccessTokenPassword</Policy>
         <Policy>GenerateAccessTokenPasswordJWT</Policy>
         <Policy>GenerateAuthorizationCode</Policy>
+        <Policy>GenerateAuthorizationCodeQueryParam</Policy>
+        <Policy>GenerateAuthorizationCodeQueryParamResponse</Policy>
         <Policy>GenerateAuthorizationCodeResponse</Policy>
         <Policy>GenerateJWKs</Policy>
         <Policy>GenerateJWT</Policy>
         <Policy>GenerateJWTBearerJWT</Policy>
+        <Policy>GenerateRedirect</Policy>
         <Policy>GenerateTokenResponse</Policy>
         <Policy>GenerateTokenResponseJWT</Policy>
+        <Policy>GetAuthCodeCreds</Policy>
         <Policy>GetJWTSecret</Policy>
         <Policy>GetOAuthConfig</Policy>
+        <Policy>GetOAuthIdPConfig</Policy>
         <Policy>GetPublicKeys</Policy>
         <Policy>JWKSRequest</Policy>
+        <Policy>NotFound</Policy>
+        <Policy>ParseParams</Policy>
+        <Policy>RaiseDelegationValidationFault</Policy>
+        <Policy>RaiseParameterValidationFault</Policy>
         <Policy>RefreshAccessToken</Policy>
         <Policy>RemoveHeaderAuthorization</Policy>
         <Policy>ReplaceGrantTypeClient</Policy>
         <Policy>ReplaceGrantTypePassword</Policy>
         <Policy>RetriveJWKs</Policy>
+        <Policy>SamlValidation</Policy>
+        <Policy>SamlValidationStatus</Policy>
         <Policy>SampleUserResponse</Policy>
         <Policy>SendJWKMessage</Policy>
+        <Policy>SetAuthCodeCreds</Policy>
+        <Policy>SetAuthCodeWSFedAttributes</Policy>
         <Policy>SetJWTVariables</Policy>
         <Policy>SetProxyHostVariable</Policy>
         <Policy>SetResponseTypeToken</Policy>
         <Policy>VerifyAPIKey</Policy>
+        <Policy>VerifyAPIKeyUrl</Policy>
         <Policy>VerifyJWT</Policy>
         <Policy>VerifyJWTBearer</Policy>
         <Policy>VerifyOAuthToken</Policy>
@@ -60,7 +81,10 @@
         <ProxyEndpoint>default</ProxyEndpoint>
     </ProxyEndpoints>
     <Resources>
+        <Resource>jsc://authorization-delegation-validation.js</Resource>
+        <Resource>jsc://authorization-parameter-validation.js</Resource>
         <Resource>jsc://create_iso_8601.js</Resource>
+        <Resource>jsc://decode-ws-fed-params.js</Resource>
         <Resource>jsc://dynamic-target-url.js</Resource>
         <Resource>jsc://generate-jwk.js</Resource>
         <Resource>jsc://jsrsasign-all-min.js</Resource>
