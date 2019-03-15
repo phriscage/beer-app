@@ -64,10 +64,14 @@
           </form>
           <!-- 3rd party Identity Provider -->
           <div class="ui center aligned clearing segment">
-            <p>Login via @google credentials</p>
+            <p>Login via 3rd-party federated credentials</p>
             <button class="ui google plus button" v-on:click="social('google')">
               <i class="google icon"></i>
                 Google
+            </button>
+            <button class="ui orange button" v-on:click="social('apigee')">
+              <i class="users icon"></i>
+                Apigee
             </button>
             <!--<button class="ui facebook button" v-on:click="social('facebook')">
               <i class="facebook icon"></i>
@@ -346,9 +350,7 @@ export default {
       }
     },
     social (type) {
-      var params = {
-        client_id: this.$shared.googleClientId
-      }
+      var params = {}
       // can't set prompt to None if no cookie session exists
       if (this.data.promptType !== 'none') {
         params['prompt'] = this.data.promptType
@@ -356,7 +358,6 @@ export default {
       this.$auth.oauth2({
         provider: type || this.type,
         rememberMe: this.data.rememberMe,
-        response_type: 'token id_token',
         params: params
       })
     },
