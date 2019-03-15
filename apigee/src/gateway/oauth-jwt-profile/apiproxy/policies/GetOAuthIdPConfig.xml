@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<KeyValueMapOperations async="false" continueOnError="false" enabled="true" name="GetOAuthIdPConfig" mapIdentifier="oauth-jwt-profile.idp">
+    <DisplayName>GetOAuthIdPConfig</DisplayName>
+    <Properties/>
+    <ExclusiveCache>false</ExclusiveCache>
+    <ExpiryTimeInSecs>300</ExpiryTimeInSecs>
+    <Get assignTo="ims.type" index="1">
+        <Key>
+            <Parameter>ims.type</Parameter>
+        </Key>
+    </Get>
+    <Get assignTo="ims.authorization_url" index="1">
+        <Key>
+            <Parameter>ims.authorization_url</Parameter>
+        </Key>
+    </Get>
+    <Get assignTo="ims.wa" index="1">
+        <Key>
+            <Parameter>ims.wa</Parameter>
+        </Key>
+    </Get>
+    <Get assignTo="ims.wtrealm" index="1">
+        <Key>
+            <Parameter>ims.wtrealm</Parameter>
+        </Key>
+    </Get>
+    <Get assignTo="ims.wreply" index="1">
+        <Key>
+            <Parameter>ims.wreply</Parameter>
+        </Key>
+    </Get>
+    <Scope>environment</Scope>
+</KeyValueMapOperations>

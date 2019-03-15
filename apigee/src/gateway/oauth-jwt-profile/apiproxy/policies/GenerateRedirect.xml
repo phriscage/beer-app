@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="GenerateRedirect">
+    <DisplayName>GenerateRedirect</DisplayName>
+    <Properties/>
+    <Set>
+        <Headers>
+            <Header name="Location">{redirectUrl}</Header>
+        </Headers>
+        <StatusCode>302</StatusCode>
+        <Payload contentType="text/html">
+           Redirecting to {redirectUrl}
+        </Payload>
+    </Set>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" transport="http" type="response"/>
+</AssignMessage>
