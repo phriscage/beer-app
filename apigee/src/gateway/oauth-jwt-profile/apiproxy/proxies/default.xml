@@ -7,15 +7,52 @@
         </Step>
         <AlwaysEnforce>true</AlwaysEnforce>
     </DefaultFaultRule>
-    <Description></Description>
+    <Description/>
     <FaultRules/>
     <Flows>
-        <Flow name="/authorize (code)">
-            <Description></Description>
+        <Flow name="/authorize">
+            <Description/>
             <Request>
+                <Step>
+                    <Name>AuthorizationParameterValidation</Name>
+                </Step>
+                <Step>
+                    <Name>RaiseParameterValidationFault</Name>
+                    <Condition>(parameterValidation.fault != null)</Condition>
+                </Step>
+                <Step>
+                    <Name>VerifyAPIKeyUrl</Name>
+                </Step>
+                <Step>
+                    <Name>GetOAuthIdPConfig</Name>
+                </Step>
+                <Step>
+                    <Name>AuthorizationDelegationValidation</Name>
+                </Step>
+                <Step>
+                    <Name>RaiseDelegationValidationFault</Name>
+                    <Condition>(delegationValidation.fault != null)</Condition>
+                </Step>
+            </Request>
+            <Response>
+                <Step>
+                    <Name>GenerateRedirect</Name>
+                </Step>
+            </Response>
+            <Condition>(proxy.pathsuffix MatchesPath "/authorize") and (request.verb = "GET")</Condition>
+        </Flow>
+        <Flow name="/authorize (code)">
+            <Description/>
+            <Request>
+                <Step>
+                    <Name>ExtractCredentials</Name>
+                </Step>
                 <Step>
                     <FaultRules/>
                     <Name>GenerateAuthorizationCode</Name>
+                </Step>
+                <Step>
+                    <Name>SetAuthCodeCreds</Name>
                 </Step>
                 <Step>
                     <FaultRules/>
@@ -25,14 +62,48 @@
             <Response/>
             <Condition>(proxy.pathsuffix MatchesPath "/authorize") and (request.verb = "POST")</Condition>
         </Flow>
+        <Flow name="/authorize (ws-fed)">
+            <Description/>
+            <Request>
+                <Step>
+                    <Name>ParseParams</Name>
+                </Step>
+                <Step>
+                    <Name>AssignWsResult</Name>
+                </Step>
+                <Step>
+                    <Name>ExtractXmldata</Name>
+                </Step>
+                <Step>
+                    <Name>DecodeWSFedParams</Name>
+                </Step>
+                <Step>
+                    <Name>SamlValidation</Name>
+                </Step>
+                <Step>
+                    <Name>SamlValidationStatus</Name>
+                </Step>
+                <Step>
+                    <Name>GenerateAuthorizationCodeQueryParam</Name>
+                </Step>
+                <Step>
+                    <Name>SetAuthCodeWSFedAttributes</Name>
+                </Step>
+                <Step>
+                    <Name>GenerateAuthorizationCodeQueryParamResponse</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/authorize/ws-fed") and (request.verb = "POST")</Condition>
+        </Flow>
         <Flow name="/token">
-            <Description></Description>
+            <Description/>
             <Request/>
             <Response/>
             <Condition>(proxy.pathsuffix MatchesPath "/token") and (request.verb = "DELETE")</Condition>
         </Flow>
         <Flow name="/token">
-            <Description></Description>
+            <Description/>
             <Request>
                 <Step>
                     <FaultRules/>
@@ -43,7 +114,7 @@
             <Condition>(proxy.pathsuffix MatchesPath "/token") and (request.verb = "PUT")</Condition>
         </Flow>
         <Flow name="/token (code:jwt)">
-            <Description></Description>
+            <Description/>
             <Request>
                 <Step>
                     <FaultRules/>
@@ -58,6 +129,9 @@
                     <Name>GetJWTSecret</Name>
                 </Step>
                 <Step>
+                    <Name>GetAuthCodeCreds</Name>
+                </Step>
+                <Step>
                     <FaultRules/>
                     <Name>GenerateJWT</Name>
                 </Step>
@@ -68,15 +142,18 @@
             </Request>
             <Response/>
             <Condition>
-                (proxy.pathsuffix MatchesPath "/token") 
-            and (request.verb = "POST") 
+                (proxy.pathsuffix MatchesPath "/token")
+            and (request.verb = "POST")
             and (request.formparam.grant_type == "authorization_code")
             and (request.formparam.token_format == "jwt")
             </Condition>
         </Flow>
         <Flow name="/token (code)">
-            <Description></Description>
+            <Description/>
             <Request>
+                <Step>
+                    <Name>GetAuthCodeCreds</Name>
+                </Step>
                 <Step>
                     <FaultRules/>
                     <Name>GenerateAccessTokenCode</Name>
@@ -84,13 +161,13 @@
             </Request>
             <Response/>
             <Condition>
-                (proxy.pathsuffix MatchesPath "/token") 
-            and (request.verb = "POST") 
+                (proxy.pathsuffix MatchesPath "/token")
+            and (request.verb = "POST")
             and (request.formparam.grant_type == "authorization_code")
             </Condition>
         </Flow>
         <Flow name="/token (client:jwt)">
-            <Description></Description>
+            <Description/>
             <Request>
                 <Step>
                     <FaultRules/>
@@ -119,14 +196,14 @@
             </Request>
             <Response/>
             <Condition>
-                (proxy.pathsuffix MatchesPath "/token") 
-            and (request.verb = "POST") 
-            and (request.formparam.grant_type == "client_credentials") 
+                (proxy.pathsuffix MatchesPath "/token")
+            and (request.verb = "POST")
+            and (request.formparam.grant_type == "client_credentials")
             and (request.formparam.token_format == "jwt")
             </Condition>
         </Flow>
         <Flow name="/token (client)">
-            <Description></Description>
+            <Description/>
             <Request>
                 <Step>
                     <FaultRules/>
@@ -135,13 +212,13 @@
             </Request>
             <Response/>
             <Condition>
-                (proxy.pathsuffix MatchesPath "/token") 
-            and (request.verb = "POST") 
-            and (request.formparam.grant_type == "client_credentials") 
+                (proxy.pathsuffix MatchesPath "/token")
+            and (request.verb = "POST")
+            and (request.formparam.grant_type == "client_credentials")
             </Condition>
         </Flow>
         <Flow name="/token (implicit:jwt)">
-            <Description></Description>
+            <Description/>
             <Request>
                 <Step>
                     <FaultRules/>
@@ -166,14 +243,14 @@
             </Request>
             <Response/>
             <Condition>
-                (proxy.pathsuffix MatchesPath "/token") 
-            and (request.verb = "POST") 
-            and (request.formparam.grant_type == "implicit") 
+                (proxy.pathsuffix MatchesPath "/token")
+            and (request.verb = "POST")
+            and (request.formparam.grant_type == "implicit")
             and (request.formparam.token_format == "jwt")
             </Condition>
         </Flow>
         <Flow name="/token (implicit)">
-            <Description></Description>
+            <Description/>
             <Request>
                 <Step>
                     <FaultRules/>
@@ -182,13 +259,13 @@
             </Request>
             <Response/>
             <Condition>
-                (proxy.pathsuffix MatchesPath "/token") 
-            and (request.verb = "POST") 
-            and (request.formparam.grant_type == "implicit") 
+                (proxy.pathsuffix MatchesPath "/token")
+            and (request.verb = "POST")
+            and (request.formparam.grant_type == "implicit")
             </Condition>
         </Flow>
         <Flow name="/token (jwt-bearer:jwt)">
-            <Description></Description>
+            <Description/>
             <Request>
                 <Step>
                     <FaultRules/>
@@ -229,14 +306,14 @@
             </Request>
             <Response/>
             <Condition>
-                (proxy.pathsuffix MatchesPath "/token") 
-            and (request.verb = "POST") 
-            and (request.formparam.grant_type == "urn:ietf:params:oauth:grant-type:jwt-bearer") 
+                (proxy.pathsuffix MatchesPath "/token")
+            and (request.verb = "POST")
+            and (request.formparam.grant_type == "urn:ietf:params:oauth:grant-type:jwt-bearer")
             and (request.formparam.token_format == "jwt")
             </Condition>
         </Flow>
         <Flow name="/token (jwt-bearer)">
-            <Description></Description>
+            <Description/>
             <Request>
                 <Step>
                     <FaultRules/>
@@ -265,13 +342,13 @@
             </Request>
             <Response/>
             <Condition>
-                (proxy.pathsuffix MatchesPath "/token") 
-            and (request.verb = "POST") 
-            and (request.formparam.grant_type == "urn:ietf:params:oauth:grant-type:jwt-bearer") 
+                (proxy.pathsuffix MatchesPath "/token")
+            and (request.verb = "POST")
+            and (request.formparam.grant_type == "urn:ietf:params:oauth:grant-type:jwt-bearer")
             </Condition>
         </Flow>
         <Flow name="/token (password:jwt)">
-            <Description></Description>
+            <Description/>
             <Request>
                 <Step>
                     <Condition>request.formparam.client_id != null</Condition>
@@ -308,14 +385,14 @@
             </Request>
             <Response/>
             <Condition>
-                (proxy.pathsuffix MatchesPath "/token") 
-            and (request.verb = "POST") 
-            and (request.formparam.grant_type == "password") 
+                (proxy.pathsuffix MatchesPath "/token")
+            and (request.verb = "POST")
+            and (request.formparam.grant_type == "password")
             and (request.formparam.token_format == "jwt")
             </Condition>
         </Flow>
         <Flow name="/token (password)">
-            <Description></Description>
+            <Description/>
             <Request>
                 <Step>
                     <Condition>request.formparam.client_id != null</Condition>
@@ -340,34 +417,34 @@
             </Request>
             <Response/>
             <Condition>
-                (proxy.pathsuffix MatchesPath "/token") 
-            and (request.verb = "POST") 
-            and (request.formparam.grant_type == "password") 
+                (proxy.pathsuffix MatchesPath "/token")
+            and (request.verb = "POST")
+            and (request.formparam.grant_type == "password")
             </Condition>
         </Flow>
         <Flow name="/token (saml-bearer:jwt)">
-            <Description></Description>
+            <Description/>
             <Request/>
             <Response/>
             <Condition>
-                (proxy.pathsuffix MatchesPath "/token") 
-            and (request.verb = "POST") 
-            and (request.formparam.grant_type == "urn:ietf:params:oauth:grant-type:saml2-bearer") 
+                (proxy.pathsuffix MatchesPath "/token")
+            and (request.verb = "POST")
+            and (request.formparam.grant_type == "urn:ietf:params:oauth:grant-type:saml2-bearer")
             and (request.formparam.token_format == "jwt")
             </Condition>
         </Flow>
         <Flow name="/token (saml-bearer)">
-            <Description></Description>
+            <Description/>
             <Request/>
             <Response/>
             <Condition>
-                (proxy.pathsuffix MatchesPath "/token") 
-            and (request.verb = "POST") 
-            and (request.formparam.grant_type == "urn:ietf:params:oauth:grant-type:saml2-bearer") 
+                (proxy.pathsuffix MatchesPath "/token")
+            and (request.verb = "POST")
+            and (request.formparam.grant_type == "urn:ietf:params:oauth:grant-type:saml2-bearer")
             </Condition>
         </Flow>
         <Flow name="/token/introspect">
-            <Description></Description>
+            <Description/>
             <Request>
                 <Step>
                     <FaultRules/>
@@ -386,7 +463,7 @@
             <Condition>(proxy.pathsuffix MatchesPath "/token/introspect") and (request.verb = "GET")</Condition>
         </Flow>
         <Flow name="/token/introspect/jwt">
-            <Description></Description>
+            <Description/>
             <Request>
                 <Step>
                     <FaultRules/>
@@ -413,7 +490,7 @@
             <Condition>(proxy.pathsuffix MatchesPath "/token/introspect/jwt") and (request.verb = "GET")</Condition>
         </Flow>
         <Flow name="/certs">
-            <Description></Description>
+            <Description/>
             <Request>
                 <Step>
                     <FaultRules/>
@@ -433,7 +510,7 @@
             <Condition>(proxy.pathsuffix MatchesPath "/certs") and (request.verb = "GET")</Condition>
         </Flow>
         <Flow name="/user">
-            <Description></Description>
+            <Description/>
             <Request>
                 <Step>
                     <FaultRules/>
@@ -446,6 +523,35 @@
             </Request>
             <Response/>
             <Condition>(proxy.pathsuffix MatchesPath "/user") and (request.verb = "GET")</Condition>
+        </Flow>
+        <Flow name="/.well-known/jwks.json">
+            <Request>
+                <Step>
+                    <FaultRules/>
+                    <Name>GetPublicKeys</Name>
+                </Step>
+                <Step>
+                    <FaultRules/>
+                    <Name>GenerateJWKs</Name>
+                </Step>
+            </Request>
+            <Response>
+                <Step>
+                    <FaultRules/>
+                    <Name>SendJWKMessage</Name>
+                </Step>
+            </Response>
+            <Condition>(proxy.pathsuffix MatchesPath "/.well-known/jwks.json") and (request.verb = "GET")</Condition>
+        </Flow>
+        <Flow name="NotFound">
+            <Description/>
+            <Request>
+                <Step>
+                    <Name>NotFound</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/*")</Condition>
         </Flow>
     </Flows>
     <PostFlow name="PostFlow">
@@ -476,7 +582,7 @@
         </Response>
     </PreFlow>
     <HTTPProxyConnection>
-        <BasePath>/v3/oauth</BasePath>
+        <BasePath>/v2/oauth</BasePath>
         <Properties/>
         <VirtualHost>secure</VirtualHost>
     </HTTPProxyConnection>

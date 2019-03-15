@@ -78,6 +78,24 @@ resources:
            }
           ]
          }'
+      - name: oauth_idp
+        payload: '{
+          "name" : "oauth-jwt-profile.idp",
+          "entry" : [
+          {
+            "name" : "cicp.client_secret",
+            "value" : "fxTco6HPTEiGygRR"
+          }, {
+            "name" : "cicp.client_id",
+            "value" : "Awtd4EqpMuIAnlLTaxdVTGXcRAbZIF4W"
+          }, {
+            "name" : "cicp.authorization_url",
+            "value" : "123"
+          }, {
+            "name" : "cicp.type",
+            "value" : "oidc"
+          }]
+         }'
     - name: oauth_proxies
       type: proxy
       items:
