@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ExtractVariables async="false" continueOnError="false" enabled="true" name="ExtractXmldata">
+    <DisplayName>ExtractXmldata</DisplayName>
+    <XMLPayload>
+        <Namespaces>
+            <Namespace prefix="trust">http://docs.oasis-open.org/ws-sx/ws-trust/200512</Namespace>
+            <Namespace prefix="saml">urn:oasis:names:tc:SAML:1.0:assertion</Namespace>
+        </Namespaces>
+        <Variable name="assertion" type="nodeset">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion</XPath>
+        </Variable>
+        <Variable name="name" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='name']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="givenname" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='givenname']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="surname" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='surname']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="emailaddress" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='emailaddress']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="ultimatesite" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='ultimatesite']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="countryiso" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='countryiso']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="languageiso" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='languageiso']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="ismarketingprospect" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='ismarketingprospect']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="isbentleyemployee" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='isbentleyemployee']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="becommunitiesusername" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='becommunitiesusername']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="becommunitiesemailaddress" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='becommunitiesemailaddress']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="userid" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='userid']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="organization" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='organization']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="has_select" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='has_select']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="organizationid" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='organizationid']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="ultimateid" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='ultimateid']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="ultimatereferenceid" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='ultimatereferenceid']/saml:AttributeValue</XPath>
+        </Variable>
+        <Variable name="usagecountryiso" type="string">
+            <XPath>/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion/saml:AttributeStatement/saml:Attribute[@AttributeName='usagecountryiso']/saml:AttributeValue</XPath>
+        </Variable>
+    </XMLPayload>
+</ExtractVariables>
