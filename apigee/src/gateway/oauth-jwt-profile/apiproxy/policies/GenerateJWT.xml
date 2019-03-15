@@ -4,14 +4,13 @@
     <FaultRules/>
     <Properties/>
     <AdditionalClaims>
-        <Claim name="client_id" ref="apigee.client_id" type="string"></Claim>
-        <Claim name="access_token" ref="apigee.access_token" type="string"></Claim>
-        <Claim array="true" name="api_product_list" ref="apiProductList" type="string"></Claim>
-        <Claim name="application_name" ref="apigee.developer.app.name" type="string"></Claim>
-        <Claim name="developer_email" ref="apigee.developer.email" type="string"></Claim>
-        <Claim array="true" name="scopes" ref="scope" type="string"></Claim>
-        <Claim name="username" ref="request.formparam.username" type="string"></Claim>
-        <Claim name="email" ref="request.formparam.username" type="string"></Claim>
+        <Claim name="client_id" ref="apigee.client_id" type="string"/>
+        <Claim name="access_token" ref="apigee.access_token" type="string"/>
+        <Claim array="true" name="api_product_list" ref="apiProductList" type="string"/>
+        <Claim name="application_name" ref="apigee.developer.app.name" type="string"/>
+        <Claim name="developer_email" ref="apigee.developer.email" type="string"/>
+        <Claim array="true" name="scopes" ref="scope" type="string"/>
+        <Claim name="username" ref="credentials.username" type="string"/>
     </AdditionalClaims>
     <AdditionalHeaders/>
     <Algorithm>RS256</Algorithm>
@@ -19,11 +18,11 @@
     <ExpiresIn>2h</ExpiresIn>
     <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
     <Issuer>urn://chrispage-eval.apigee.net</Issuer>
-    <NotBefore ref="nbf"></NotBefore>
+    <NotBefore ref="nbf"/>
     <OutputVariable>jwt_signed</OutputVariable>
     <PrivateKey>
-        <Value ref="private.privateKey"></Value>
-        <Id ref="private.certificate1_kid"></Id>
+        <Value ref="private.privateKey"/>
+        <Id ref="private.certificate1_kid"/>
     </PrivateKey>
-    <Subject ref="apigee.client_id"></Subject>
+    <Subject ref="apigee.client_id"/>
 </GenerateJWT>

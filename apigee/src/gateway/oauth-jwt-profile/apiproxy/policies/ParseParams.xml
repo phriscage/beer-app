@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ExtractVariables async="false" continueOnError="false" enabled="true" name="ParseParams">
+    <DisplayName>ParseParams</DisplayName>
+    <Properties/>
+    <FormParam name="wa">
+        <Pattern>{wa}</Pattern>
+    </FormParam>
+    <FormParam name="wresult">
+        <Pattern>{wresult}</Pattern>
+    </FormParam>
+    <FormParam name="wreply">
+        <Pattern>{wreply}</Pattern>
+    </FormParam>
+    <FormParam name="wctx">
+        <Pattern>{wctx}</Pattern>
+    </FormParam>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <Source clearPayload="false">request</Source>
+    <VariablePrefix>wsfed</VariablePrefix>
+</ExtractVariables>

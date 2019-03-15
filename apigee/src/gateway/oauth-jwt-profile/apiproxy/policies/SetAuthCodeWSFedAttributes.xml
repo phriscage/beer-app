@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<KeyValueMapOperations async="false" continueOnError="false" enabled="true" name="SetAuthCodeWSFedAttributes" mapIdentifier="authcode">
+    <DisplayName>SetAuthCodeWSFedAttributes</DisplayName>
+    <Properties/>
+    <ExclusiveCache>false</ExclusiveCache>
+    <ExpiryTimeInSecs>300</ExpiryTimeInSecs>
+    <Put override="true">
+        <Key>
+            <Parameter ref="oauthv2authcode.GenerateAuthorizationCode.code"/>
+        </Key>
+        <Value ref="name"/>
+        <Value ref="givenname"/>
+        <Value ref="surname"/>
+        <Value ref="emailaddress"/>
+        <Value ref="ultimatesite"/>
+        <Value ref="countryiso"/>
+        <Value ref="languageiso"/>
+        <Value ref="ismarketingprospect"/>
+        <Value ref="isbentleyemployee"/>
+        <Value ref="becommunitiesusername"/>
+        <Value ref="becommunitiesemailaddress"/>
+        <Value ref="userid"/>
+        <Value ref="organization"/>
+        <Value ref="has_select"/>
+        <Value ref="organizationid"/>
+        <Value ref="ultimateid"/>
+        <Value ref="ultimatereferenceid"/>
+        <Value ref="usagecountryiso"/>
+    </Put>
+    <Scope>environment</Scope>
+</KeyValueMapOperations>
