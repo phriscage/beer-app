@@ -78,7 +78,7 @@
         <!-- Additional Configurations -->
         <div class="ui clearing segment">
           <div class="ui toggle checkbox custom">
-            <input id="promptType" v-on:click="onPromptTypeClick()" v-model.lazy="data.promptType" true-value="consent" false-value=null type="checkbox">
+            <input id="promptType" v-on:click="onPromptTypeClick()" v-model.lazy="data.promptType" true-value="consent" false-value=none type="checkbox">
             <label for="promptType">Prompt Type: <b>{{ data.promptType }}</b></label>
           </div>
           <br>
@@ -320,7 +320,7 @@ export default {
             redirect_uri: 'http://localhost:8080' + _this.$route.path,
             scope: 'openid profile email',
             client_id: _this.$shared.clientId,
-            prompt: _this.$shared.promptType
+            prompt: _this.data.promptType
           })
         )
           .then(function (response) {
