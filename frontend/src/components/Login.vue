@@ -78,6 +78,11 @@
         <!-- Additional Configurations -->
         <div class="ui clearing segment">
           <div class="ui toggle checkbox custom">
+            <input id="promptType" v-on:click="onPromptTypeClick()" v-model.lazy="data.promptType" true-value="consent" false-value=none type="checkbox">
+            <label for="promptType">Prompt Type: <b>{{ data.promptType }}</b></label>
+          </div>
+          <br>
+          <div class="ui toggle checkbox custom">
             <input id="rememberMe" v-model="data.rememberMe" type="checkbox">
             <label for="rememberMe">Remember Me</label>
           </div>
@@ -146,6 +151,7 @@ export default {
         test: false,
         rememberMe: false,
         grantType: this.$session.get('grant_type') || 'password',
+        promptType: this.$session.get('prompt_type_format') || 'none',
         accessTokenFormat: this.$session.get('access_token_format') || 'opaque',
         fetchUser: true
       },
@@ -313,7 +319,8 @@ export default {
             response_type: 'code',
             redirect_uri: 'http://localhost:8080' + _this.$route.path,
             scope: 'openid profile email',
-            client_id: _this.$shared.clientId
+            client_id: _this.$shared.clientId,
+            prompt: _this.data.promptType
           })
         )
           .then(function (response) {
@@ -339,12 +346,18 @@ export default {
       }
     },
     social (type) {
-      // set googleOauth2Data client_id
-      this.$auth.options.googleOauth2Data.params.client_id = this.$shared.googleClientId
+      var params = {
+        client_id: this.$shared.googleClientId
+      }
+      // can't set prompt to None if no cookie session exists
+      if (this.data.promptType !== 'none') {
+        params['prompt'] = this.data.promptType
+      }
       this.$auth.oauth2({
         provider: type || this.type,
         rememberMe: this.data.rememberMe,
-        response_type: 'token id_token'
+        response_type: 'token id_token',
+        params: params
       })
     },
     onErrorClose: function () {
@@ -357,6 +370,13 @@ export default {
         grantType = 'authorization_code'
       }
       this.$session.set('grant_type', grantType)
+    },
+    onPromptTypeClick: function () {
+      var promptType = 'consent'
+      if (this.data.promptType === 'consent') {
+        promptType = 'none'
+      }
+      this.$session.set('prompt_type_format', promptType)
     },
     onAccessTokenFormatClick: function () {
       var accessTokenFormat = 'opaque'
