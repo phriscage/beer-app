@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: beer-api
-          image: gcr.io/chrispage-dev/beer-api:2.2.1
+          image: gcr.io/chrispage-dev/beer-api:2.2.2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
