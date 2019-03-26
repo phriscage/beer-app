@@ -2,7 +2,7 @@ apiVersion: skaffold/v1alpha2
 kind: Config
 build:
   artifacts:
-  - imageName: gcr.io/chrispage-dev/beer-app-frontend
+  - imageName: beer-app-frontend
     workspace: ./frontend/
 deploy:
   kubectl:
