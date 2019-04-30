@@ -13,11 +13,6 @@ spec:
         x-email:
           regex: ".*@google.com"
       uri:
-        regex: /openapi_spec*
-    - headers:
-        x-email:
-          regex: ".*@google.com"
-      uri:
         prefix: /api
     route:
     - destination:
@@ -26,6 +21,11 @@ spec:
   - match:
     - uri:
         regex: /openapi_spec*
+    route:
+    - destination:
+        host: beer-api
+        subset: v2
+  - match:
     - uri:
         prefix: /api
     route:
